@@ -1,0 +1,39 @@
+{
+    "all": {
+        "include": {
+            "all": [
+                "ansible",
+                "distrobox",
+                "emacs",
+                "git",
+                "gnome-tweaks",
+                "htop",
+                "ifuse",
+                "irssi",
+                "libavcodec-freeworld",
+                "libva-utils",
+                "neofetch",
+                "neovim",
+                "vdpauinfo",
+                "virt-install",
+                "virt-manager",
+                "virt-viewer",
+                "VirtualBox",
+                "zsh"
+            ]
+        },
+        "exclude": {
+            "all": [
+                "libavcodec-free",
+                "libavdevice-free",
+                "libavfilter-free",
+                "libavformat-free",
+                "libavutil-free",
+                "libpostproc-free",
+                "libswresample-free",
+                "libswscale-free",
+                "mesa-va-drivers"
+            ]
+        }
+    }
+}
