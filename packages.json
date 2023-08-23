@@ -16,6 +16,7 @@
                 "libva-utils",
                 "neofetch",
                 "neovim",
+                "npm",
                 "vdpauinfo",
                 "virt-install",
                 "virt-manager",
