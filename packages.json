@@ -3,8 +3,10 @@
         "include": {
             "all": [
                 "ansible",
+                "clang",
                 "distrobox",
                 "emacs",
+                "gcc",
                 "git",
                 "gnome-tweaks",
                 "htop",
