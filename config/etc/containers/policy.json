@@ -20,7 +20,7 @@
                     "keyPath": "/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release"
                 }
             ],
-            "ghcr.io/ublue-os": [
+            "ghcr.io/perpixel": [
                 {
                     "type": "sigstoreSigned",
                     "keyPath": "/usr/etc/pki/containers/perpixel.pub",
