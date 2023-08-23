@@ -14,7 +14,7 @@ ARG AKMODS_VERSION=${AKMODS_VERSION}
 COPY --from=${AKMODS_CACHE}:${AKMODS_VERSION} / .
 
 # config
-ADD etc/containers/ /etc/ 
+ADD config/etc/containers /etc/ 
 ADD cosign.pub /usr/etc/pki/containers/perpixel.pub
 
 ADD build.sh /tmp/build.sh
