@@ -11,8 +11,11 @@ ARG NVIDIA_MAJOR_VERSION="${NVIDIA_MAJOR_VERSION}"
 
 ARG AKMODS_CACHE="ghcr.io/perpixel/akmods-perpixel-silverblue"
 ARG AKMODS_VERSION=${AKMODS_VERSION}
-
 COPY --from=${AKMODS_CACHE}:${AKMODS_VERSION} / .
+
+# config
+ADD config/etc/containers /etc/ 
+ADD cosign.pub /usr/etc/pki/containers/perpixel.pub
 
 ADD build.sh /tmp/build.sh
 ADD packages.json /tmp/packages.json
