@@ -27,6 +27,7 @@ if [ $BUILD_AKMODS -eq true ]; then
     --build-arg FEDORA_MAJOR_VERSION=${FEDORA_MAJOR_VERSION} \
     --build-arg NVIDIA_MAJOR_VERSION=${NVIDIA_MAJOR_VERSION} \
     --tag ${AKMODS_IMAGE_NAME}:local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION}
+
   if [$PUSH -eq true]; then
     podman push localhost/${AKMODS_IMAGE_NAME}:local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION} ghcr.io/perpixel/${AKMODS_IMAGE_NAME}:${LOCAL_VERSION}
   fi

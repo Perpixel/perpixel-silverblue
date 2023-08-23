@@ -4,6 +4,7 @@
             "all": [
                 "ansible",
                 "clang",
+                "cmake",
                 "distrobox",
                 "emacs",
                 "flac",
