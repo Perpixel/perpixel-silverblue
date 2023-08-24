@@ -23,6 +23,7 @@
                 "neovim",
                 "npm",
                 "ripgrep",
+                "rclone",
                 "SDL2",
                 "vdpauinfo",
                 "virt-install",
