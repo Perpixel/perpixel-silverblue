@@ -1,3 +1,0 @@
-docker:
-  ghcr.io/perpixel:
-    use-sigstore-attachments: true
