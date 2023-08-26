@@ -1,9 +1,10 @@
 #!/bin/sh
 
-while getopts "np" opt; do
+while getopts "nps" opt; do
   case $opt in 
     n) BUILD_AKMODS=1;;
     p) PUSH=1;;
+    s) BUILD_SYSTEM=1;;
   esac
 done
   
@@ -29,13 +30,14 @@ if [ ${BUILD_AKMODS:-0} -eq 1 ]; then
     --build-arg NVIDIA_MAJOR_VERSION=${NVIDIA_MAJOR_VERSION} \
     --tag ${AKMODS_IMAGE_NAME}:local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION}
 
-  if [ ${PUSH:-0} -eq 1]; then
+  if [ ${PUSH:-0} -eq 1 ]; then
     podman push localhost/${AKMODS_IMAGE_NAME}:local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION} ghcr.io/perpixel/${AKMODS_IMAGE_NAME}:${LOCAL_VERSION}
   fi
 fi 
 
-export IMAGE_NAME=${NVIDIA_IMAGE_NAME}
-podman build \
+if [ ${BUILD_SYSTEM:-0} -eq 1 ]; then
+  export IMAGE_NAME=${NVIDIA_IMAGE_NAME}
+  podman build \
     --file Containerfile.sys \
     --build-arg IMAGE_NAME=${AKMODS_IMAGE_NAME} \
     --build-arg FEDORA_MAJOR_VERSION=${FEDORA_MAJOR_VERSION} \
@@ -43,6 +45,7 @@ podman build \
     --build-arg AKMODS_VERSION=${LOCAL_VERSION} \
     --tag ${NVIDIA_IMAGE_NAME}:local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION}
 
-if [ ${PUSH:-0} -eq 1 ]; then
-  podman push localhost/${NVIDIA_IMAGE_NAME}:local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION} ghcr.io/perpixel/${NVIDIA_IMAGE_NAME}:${LOCAL_VERSION}
+  if [ ${PUSH:-0} -eq 1 ]; then
+    podman push localhost/${NVIDIA_IMAGE_NAME}:local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION} ghcr.io/perpixel/${NVIDIA_IMAGE_NAME}:${LOCAL_VERSION}
+  fi
 fi
