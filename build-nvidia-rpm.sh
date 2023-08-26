@@ -3,19 +3,6 @@
 set -oeux pipefail
 
 RELEASE="$(rpm -E '%fedora.%_arch')"
-RELEASE_NOARCH="$(rpm -E '%fedora')"
-
-sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/fedora-{cisco-openh264,modular,updates-modular}.repo
-
-rpm-ostree install wget
-
-wget -P /tmp/rpms \
-    https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${RELEASE_NOARCH}.noarch.rpm \
-    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${RELEASE_NOARCH}.noarch.rpm
-
-rpm-ostree install \
-    /tmp/rpms/*.rpm \
-    fedora-repos-archive
 
 # nvidia 520.xxx and newer currently don't have a -$VERSIONxx suffix in their
 # package names
@@ -52,15 +39,6 @@ akmods --force --kernels "${KERNEL_VERSION}" --kmod "${NVIDIA_PACKAGE_NAME}"
 
 modinfo /usr/lib/modules/${KERNEL_VERSION}/extra/${NVIDIA_PACKAGE_NAME}/nvidia{,-drm,-modeset,-peermem,-uvm}.ko.xz > /dev/null || \
 (cat /var/cache/akmods/${NVIDIA_PACKAGE_NAME}/${NVIDIA_AKMOD_VERSION}-for-${KERNEL_VERSION}.failed.log && exit 1)
-
-#sed -i "s@gpgcheck=0@gpgcheck=1@" /tmp/ublue-os-nvidia-addons/rpmbuild/SOURCES/nvidia-container-runtime.repo
-
-#install -D /etc/pki/akmods/certs/public_key.der /tmp/ublue-os-nvidia-addons/rpmbuild/SOURCES/public_key.der
-
-#rpmbuild -ba \
-#    --define '_topdir /tmp/ublue-os-nvidia-addons/rpmbuild' \
-#    --define '%_tmppath %{_topdir}/tmp' \
-#    /tmp/ublue-os-nvidia-addons/ublue-os-nvidia-addons.spec
 
 cat <<EOF > /var/cache/akmods/nvidia-vars
 KERNEL_VERSION=${KERNEL_VERSION}

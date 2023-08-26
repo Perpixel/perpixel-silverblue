@@ -19,6 +19,8 @@
                 "libva-utils",
                 "libvorbis",
                 "lldb",
+                "llvm",
+                "llvm-devel",
                 "neofetch",
                 "neovim",
                 "npm",
