@@ -17,11 +17,13 @@ COPY --from=${AKMODS_CACHE}:${AKMODS_VERSION} / .
 ADD config/etc/containers /etc/ 
 ADD cosign.pub /usr/etc/pki/containers/perpixel.pub
 
-ADD build.sh /tmp/build.sh
+ADD pre-install.sh /tmp/pre-install.sh
+ADD package-install.sh /tmp/package-install.sh
 ADD packages.json /tmp/packages.json
 ADD post-install.sh /tmp/post-install.sh
 
-RUN /tmp/build.sh
+RUN /tmp/pre-install.sh
+RUN /tmp/package-install.sh
 RUN /tmp/post-install.sh
 
 RUN rm -rf /tmp/* /var/*
