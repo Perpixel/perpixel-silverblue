@@ -23,6 +23,7 @@
                 "llvm",
                 "llvm-devel",
                 "lm_sensors",
+                "material-icons-fonts",
                 "neofetch",
                 "neovim",
                 "npm",
