@@ -25,9 +25,6 @@
                 "rclone",
                 "SDL2",
                 "vdpauinfo",
-                "virt-install",
-                "virt-manager",
-                "virt-viewer",
                 "VirtualBox",
                 "zsh"
             ]
