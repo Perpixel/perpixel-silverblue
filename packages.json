@@ -23,6 +23,7 @@
                 "npm",
                 "ripgrep",
                 "rclone",
+                "samba",
                 "SDL2",
                 "vdpauinfo",
                 "VirtualBox",
