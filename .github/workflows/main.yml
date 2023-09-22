@@ -254,6 +254,7 @@ jobs:
             AKMODS_VERSION=${{ env.AKMODS_VERSION }}
             SOURCE_IMAGE=${{ env.SOURCE_IMAGE }}
             FEDORA_MAJOR_VERSION=${{ env.FEDORA_MAJOR_VERSION }}
+            AKMODS_SOURCE=${{AKMODS_IMAGE_NAME}}:${{LOCAL_VERSION_TAG}} 
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
 
