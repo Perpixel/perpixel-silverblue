@@ -2,26 +2,68 @@
 
 set -ouex pipefail
 
-INCLUDED_PACKAGES=($(jq -r "[(.all.include | (.all, select(.\"$IMAGE_NAME\" != null).\"$IMAGE_NAME\")[]), \
-                             (select(.\"$FEDORA_MAJOR_VERSION\" != null).\"$FEDORA_MAJOR_VERSION\".include | (.all, select(.\"$IMAGE_NAME\" != null).\"$IMAGE_NAME\")[])] \
-                             | sort | unique[]" /tmp/packages.json))
-EXCLUDED_PACKAGES=($(jq -r "[(.all.exclude | (.all, select(.\"$IMAGE_NAME\" != null).\"$IMAGE_NAME\")[]), \
-                             (select(.\"$FEDORA_MAJOR_VERSION\" != null).\"$FEDORA_MAJOR_VERSION\".exclude | (.all, select(.\"$IMAGE_NAME\" != null).\"$IMAGE_NAME\")[])] \
-                             | sort | unique[]" /tmp/packages.json))
+INCLUDED_PACKAGES=(
+ansible
+distrobox
+emacs
+fd-find
+ffmpeg
+ffmpeg-libs
+ffmpegthumbnailer
+flac
+git
+gnome-tweaks
+htop
+ifuse
+irssi
+libmad
+libavcodec-freeworld
+libva-utils
+libvorbis
+lm_sensors
+material-icons-fonts
+mesa-va-drivers-freeworld
+neovim
+npm
+openh264
+pipewire-codec-aptx
+qemu
+ripgrep
+rclone
+samba
+SDL2
+vdpauinfo
+virt-viewer
+VirtualBox
+zsh
+)
 
-if [[ "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
+EXCLUDED_PACKAGES=(
+libavcodec-free
+libavdevice-free
+libavfilter-free
+libavformat-free
+libavutil-free
+libpostproc-free
+libswresample-free
+libswscale-free
+mesa-va-drivers
+vi
+)
+
+if [[ ${#EXCLUDED_PACKAGES[@]} -gt 0 ]]; then
     EXCLUDED_PACKAGES=($(rpm -qa --queryformat='%{NAME} ' ${EXCLUDED_PACKAGES[@]}))
 fi
 
-if [[ "${#INCLUDED_PACKAGES[@]}" -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -eq 0 ]]; then
+if [[ ${#INCLUDED_PACKAGES[@]} -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -eq 0 ]]; then
     rpm-ostree install \
         ${INCLUDED_PACKAGES[@]}
 
-elif [[ "${#INCLUDED_PACKAGES[@]}" -eq 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
+elif [[ ${#INCLUDED_PACKAGES[@]} -eq 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
     rpm-ostree override remove \
         ${EXCLUDED_PACKAGES[@]}
 
-elif [[ "${#INCLUDED_PACKAGES[@]}" -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
+elif [[ ${#INCLUDED_PACKAGES[@]} -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
     rpm-ostree override remove \
         ${EXCLUDED_PACKAGES[@]} \
         $(printf -- "--install=%s " ${INCLUDED_PACKAGES[@]})

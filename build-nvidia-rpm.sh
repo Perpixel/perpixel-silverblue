@@ -2,15 +2,11 @@
 
 set -oeux pipefail
 
+sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/fedora-{cisco-openh264,updates-testing}.repo
+
 RELEASE="$(rpm -E '%fedora.%_arch')"
 
-# nvidia 520.xxx and newer currently don't have a -$VERSIONxx suffix in their
-# package names
-if [[ "${NVIDIA_MAJOR_VERSION}" -ge 520 ]]; then
-    NVIDIA_PACKAGE_NAME="nvidia"
-else
-    NVIDIA_PACKAGE_NAME="nvidia-${NVIDIA_MAJOR_VERSION}xx"
-fi
+NVIDIA_PACKAGE_NAME="nvidia"
 
 rpm-ostree install \
     akmod-${NVIDIA_PACKAGE_NAME}*:${NVIDIA_MAJOR_VERSION}.*.fc${RELEASE} \

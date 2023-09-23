@@ -1,17 +1,15 @@
-ARG BASE_IMAGE="quay.io/fedora-ostree-desktops/silverblue"
-ARG IMAGE_NAME="${IMAGE_NAME}"
+ARG BASE_IMAGE="${BASE_IMAGE}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 ARG NVIDIA_MAJOR_VERSION="${NVIDIA_MAJOR_VERSION}"
 
 FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} AS builder
 
-ARG IMAGE_NAME="${IMAGE_NAME}"
+ARG AKMODS_IMAGE_NAME="${AKMODS_IMAGE_NAME}"
+ARG AKMODS_VERSION="${AKMODS_VERSION}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 ARG NVIDIA_MAJOR_VERSION="${NVIDIA_MAJOR_VERSION}"
 
-ARG AKMODS_CACHE="ghcr.io/perpixel/akmods-perpixel-silverblue"
-ARG AKMODS_VERSION=${AKMODS_VERSION}
-COPY --from=${AKMODS_CACHE}:${AKMODS_VERSION} / .
+COPY --from="${AKMODS_IMAGE_NAME}:${AKMODS_VERSION}" / .
 
 # config
 ADD config/etc/containers /etc/ 
@@ -19,7 +17,6 @@ ADD cosign.pub /usr/etc/pki/containers/perpixel.pub
 
 ADD pre-install.sh /tmp/pre-install.sh
 ADD package-install.sh /tmp/package-install.sh
-ADD packages.json /tmp/packages.json
 ADD post-install.sh /tmp/post-install.sh
 
 RUN /tmp/pre-install.sh
