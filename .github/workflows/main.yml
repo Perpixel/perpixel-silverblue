@@ -8,6 +8,9 @@ on:
   workflow_dispatch:
 env:
     IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+    FEDORA_MAJOR_VERSION: 39
+    NVIDIA_MAJOR_VERSION: 535
+    BASE_IMAGE: quay.io/fedora-ostree-desktops/silverblue
 
 jobs:
   build-akmods:
@@ -29,8 +32,6 @@ jobs:
         run: |
             REPO=${{ github.repository }}
             echo "IMAGE_NAME=akmods-${REPO##*/}" >> $GITHUB_ENV
-            echo "FEDORA_MAJOR_VERSION=38" >> $GITHUB_ENV
-            echo "NVIDIA_MAJOR_VERSION=535" >> $GITHUB_ENV
 
       - name: Generate tags
         id: generate-tags
@@ -102,7 +103,7 @@ jobs:
           tags: |
             ${{ steps.generate-tags.outputs.alias_tags }}
           build-args: |
-            IMAGE_NAME=${{ env.IMAGE_NAME }}
+            BASE_IMAGE=${{ env.BASE_IMAGE }}
             FEDORA_MAJOR_VERSION=${{ env.FEDORA_MAJOR_VERSION }}
             NVIDIA_MAJOR_VERSION=${{ env.NVIDIA_MAJOR_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -175,9 +176,7 @@ jobs:
         run: |
             REPO=${{ github.repository }}
             echo "IMAGE_NAME=nvidia-${REPO##*/}" >> $GITHUB_ENV
-            echo "FEDORA_MAJOR_VERSION=38" >> $GITHUB_ENV
-            echo "NVIDIA_MAJOR_VERSION=535" >> $GITHUB_ENV
-            echo "SOURCE_IMAGE=silverblue" >> $GITHUB_ENV
+            echo "AKMODS_IMAGE_NAME=akmods-${REPO##*/}" >> $GITHUB_ENV
 
       - name: Generate tags
         id: generate-tags
@@ -221,7 +220,7 @@ jobs:
       - name: Get current version
         id: labels
         run: |
-          ver=$(skopeo inspect docker://quay.io/fedora-ostree-desktops/${SOURCE_IMAGE}:${FEDORA_MAJOR_VERSION} | jq -r '.Labels["org.opencontainers.image.version"]')
+          ver=$(skopeo inspect docker://${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} | jq -r '.Labels["org.opencontainers.image.version"]')
           echo "VERSION=$ver" >> $GITHUB_OUTPUT
 
       # Build metadata
@@ -238,6 +237,14 @@ jobs:
             io.artifacthub.package.readme-url=https://raw.githubusercontent.com/perpixel/perpixel-silverblue/main/README.md
             io.artifacthub.package.logo-url=
 
+      # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
+      # https://github.com/macbre/push-to-ghcr/issues/12
+      - name: Lowercase Registry
+        id: registry_case
+        uses: ASzc/change-string-case-action@v5
+        with:
+          string: ${{ env.IMAGE_REGISTRY }}
+
       # Build image using Buildah action
       - name: Build Image
         id: build_image
@@ -250,20 +257,13 @@ jobs:
           tags: |
             ${{ steps.generate-tags.outputs.alias_tags }}
           build-args: |
-            IMAGE_NAME=${{ env.IMAGE_NAME }}
-            AKMODS_VERSION=${{ env.AKMODS_VERSION }}
-            SOURCE_IMAGE=${{ env.SOURCE_IMAGE }}
+            BASE_IMAGE=${{ env.BASE_IMAGE }}
             FEDORA_MAJOR_VERSION=${{ env.FEDORA_MAJOR_VERSION }}
+            NVIDIA_MAJOR_VERSION=${{ env.NVIDIA_MAJOR_VERSION }}
+            AKMODS_VERSION=${{ env.AKMODS_VERSION }}
+            AKMODS_IMAGE_NAME=${{ steps.registry_case.outputs.lowercase }}/${{ env.AKMODS_IMAGE_NAME }}
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
-
-      # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
-      # https://github.com/macbre/push-to-ghcr/issues/12
-      - name: Lowercase Registry
-        id: registry_case
-        uses: ASzc/change-string-case-action@v5
-        with:
-          string: ${{ env.IMAGE_REGISTRY }}
 
       # Push the image to GHCR (Image Registry)
       - name: Push To GHCR

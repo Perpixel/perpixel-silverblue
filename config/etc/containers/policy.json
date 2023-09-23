@@ -70,6 +70,13 @@
                 }
             ]
         },
+         "oci-archive": {
+            "": [
+                {
+                    "type": "insecureAcceptAnything"
+                }
+            ]
+        },
         "tarball": {
             "": [
                 {

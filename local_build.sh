@@ -1,48 +1,45 @@
 #!/bin/sh
 
-while getopts "np" opt; do
+while getopts "nps" opt; do
   case $opt in 
     n) BUILD_AKMODS=1;;
-    p) PUSH=1;;
+    s) BUILD_SYSTEM=1;;
+    *) ;;
   esac
 done
   
 export REPO="perpixel-silverblue"
+export BASE_IMAGE="quay.io/fedora-ostree-desktops/silverblue"
 export AKMODS_IMAGE_NAME="akmods-${REPO}"
 export NVIDIA_IMAGE_NAME="nvidia-${REPO}"
-export FEDORA_MAJOR_VERSION="38"
+export FEDORA_MAJOR_VERSION="39"
 export NVIDIA_MAJOR_VERSION="535"
-export LOCAL_VERSION="local"
+export VERSION_TAG="local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION}"
 
-if [ ${PUSH:-0} -eq 1 ]; then
-  echo "Attempt to login on ghcr.io."
-  echo "$(<pat.token )" | podman login ghcr.io -u gplourde@protonmail.com --password-stdin
-fi 
-
-if [ ${BUILD_AKMODS:-0} -eq 1 ]; then
+if [ "${BUILD_AKMODS:-0}" -eq 1 ]; then
   echo "Build nvidia akmods rpm."
-  export IMAGE_NAME=${AKMODS_IMAGE_NAME}
-  podman build \
-    --file Containerfile.nvi \
-    --build-arg IMAGE_NAME=${AKMODS_IMAGE_NAME} \
+  buildah bud \
+    --build-arg BASE_IMAGE=${BASE_IMAGE} \
     --build-arg FEDORA_MAJOR_VERSION=${FEDORA_MAJOR_VERSION} \
     --build-arg NVIDIA_MAJOR_VERSION=${NVIDIA_MAJOR_VERSION} \
-    --tag ${AKMODS_IMAGE_NAME}:local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION}
-
-  if [ ${PUSH:-0} -eq 1]; then
-    podman push localhost/${AKMODS_IMAGE_NAME}:local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION} ghcr.io/perpixel/${AKMODS_IMAGE_NAME}:${LOCAL_VERSION}
-  fi
+    --tag ${AKMODS_IMAGE_NAME}:${VERSION_TAG} \
+    --tag ${AKMODS_IMAGE_NAME}:local \
+    Containerfile.nvi
 fi 
 
-export IMAGE_NAME=${NVIDIA_IMAGE_NAME}
-podman build \
-    --file Containerfile.sys \
-    --build-arg IMAGE_NAME=${AKMODS_IMAGE_NAME} \
+if [ "${BUILD_SYSTEM:-0}" -eq 1 ]; then
+  echo "Build system oci archive."
+
+  # tag for local oci archive
+  #--tag oci-archive:/tmp/${NVIDIA_IMAGE_NAME}.tar.gz
+
+  buildah bud \
+    --tag ${NVIDIA_IMAGE_NAME}:${VERSION_TAG} \
+    --tag ${NVIDIA_IMAGE_NAME}:local \
+    --build-arg BASE_IMAGE=${BASE_IMAGE} \
     --build-arg FEDORA_MAJOR_VERSION=${FEDORA_MAJOR_VERSION} \
     --build-arg NVIDIA_MAJOR_VERSION=${NVIDIA_MAJOR_VERSION} \
-    --build-arg AKMODS_VERSION=${LOCAL_VERSION} \
-    --tag ${NVIDIA_IMAGE_NAME}:local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION}
-
-if [ ${PUSH:-0} -eq 1 ]; then
-  podman push localhost/${NVIDIA_IMAGE_NAME}:local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION} ghcr.io/perpixel/${NVIDIA_IMAGE_NAME}:${LOCAL_VERSION}
+    --build-arg AKMODS_VERSION=${VERSION_TAG} \
+    --build-arg AKMODS_IMAGE_NAME="${AKMODS_IMAGE_NAME}" \
+    Containerfile.sys
 fi
