@@ -262,6 +262,7 @@ jobs:
             NVIDIA_MAJOR_VERSION=${{ env.NVIDIA_MAJOR_VERSION }}
             AKMODS_VERSION=${{ env.AKMODS_VERSION }}
             AKMODS_IMAGE_NAME=${{ steps.registry_case.outputs.lowercase }}/${{ env.AKMODS_IMAGE_NAME }}
+
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
 
