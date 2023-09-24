@@ -1,4 +1,4 @@
-name: perpixel-silverblue
+name: prune repo
 on:
   pull_request:
   merge_group:    
