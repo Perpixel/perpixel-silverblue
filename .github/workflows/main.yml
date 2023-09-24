@@ -12,7 +12,7 @@ env:
     NVIDIA_MAJOR_VERSION: 535
     BASE_IMAGE: quay.io/fedora-ostree-desktops/silverblue
 
-jobs:
+jobs:    
   build-akmods:
     name: Build akmods package
     runs-on: ubuntu-22.04
@@ -23,24 +23,7 @@ jobs:
     strategy:
       fail-fast: false
 
-    steps:
-      - name: Delete old containers
-        uses: snok/container-retention-policy@v2
-        with:
-          image-names: nvidia* akmods*
-          cut-off: 1 month ago UTC
-          account-type: personal
-          skip-tags: latest
-          token: ${{ secrets.PAT }}
-      
-      - name: Delete pr containers
-        uses: snok/container-retention-policy@v2
-        with:
-          image-names: pr-*
-          cut-off: 1 day ago
-          account-type: personal
-          token: ${{ secrets.PAT }}
-          
+    steps:      
       # Checkout push-to-registry action GitHub repository
       - name: Checkout Push to Registry action
         uses: actions/checkout@v3
