@@ -24,7 +24,7 @@ jobs:
         uses: snok/container-retention-policy@v2
         with:
           image-names: nvidia* akmods*
-          cut-off: 1 month ago UTC
+          cut-off: 2 weeks ago UTC
           account-type: personal
           skip-tags: latest
           token: ${{ secrets.PAT }}
