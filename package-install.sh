@@ -3,6 +3,7 @@
 set -ouex pipefail
 
 INCLUDED_PACKAGES=(
+alacritty
 ansible
 distrobox
 emacs
@@ -16,6 +17,7 @@ gnome-tweaks
 htop
 ifuse
 irssi
+kitty
 libmad
 libavcodec-freeworld
 libva-utils
