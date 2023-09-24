@@ -32,7 +32,8 @@ jobs:
       - name: Delete pr containers
         uses: snok/container-retention-policy@v2
         with:
-          image-names: pr-*
+          image-names: nvidia* akmods*
           cut-off: 1 day ago UTC
           account-type: personal
+          filter-tags: "pr-*"
           token: ${{ secrets.PAT }}
