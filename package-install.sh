@@ -17,7 +17,6 @@ gnome-tweaks
 htop
 ifuse
 irssi
-kitty
 libmad
 libavcodec-freeworld
 libva-utils
@@ -27,6 +26,7 @@ material-icons-fonts
 mesa-va-drivers-freeworld
 neovim
 npm
+nvtop
 openh264
 pipewire-codec-aptx
 qemu
