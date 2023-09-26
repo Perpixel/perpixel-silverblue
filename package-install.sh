@@ -34,6 +34,7 @@ ripgrep
 rclone
 samba
 SDL2
+tmux
 vdpauinfo
 virt-viewer
 VirtualBox
