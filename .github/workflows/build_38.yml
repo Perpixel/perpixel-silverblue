@@ -1,4 +1,4 @@
-name: perpixel-silverblue
+name: perpixel-silverblue-38
 on:
   pull_request:
   merge_group:    
