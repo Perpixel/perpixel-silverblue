@@ -27,6 +27,7 @@ material-icons-fonts
 mesa-va-drivers-freeworld
 neovim
 npm
+nvtop
 openh264
 pipewire-codec-aptx
 qemu
@@ -34,6 +35,7 @@ ripgrep
 rclone
 samba
 SDL2
+tmux
 vdpauinfo
 virt-viewer
 VirtualBox
