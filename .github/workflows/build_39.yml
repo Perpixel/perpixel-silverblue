@@ -194,7 +194,7 @@ jobs:
           COMMIT_TAGS+=("${SHA_SHORT}")
 
           BUILD_TAGS=("${{ env.FEDORA_MAJOR_VERSION }}" "${{ env.FEDORA_MAJOR_VERSION }}-${TIMESTAMP}")
-          BUILD_TAGS+=("latest")
+          #BUILD_TAGS+=("latest")
 
 
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
