@@ -1,10 +1,10 @@
-name: perpixel-silverblue
+name: perpixel-silverblue-39
 on:
   pull_request:
   merge_group:    
   schedule:
-    #- cron: '0 7 * * *'  # 7 am everyday
-    - cron: '0 12 * * 4' # Runs at 12:00 only on Thursday.
+    - cron: '0 7 * * *'  # 7 am everyday
+    #- cron: '0 12 * * 4' # Runs at 12:00 only on Thursday.
   workflow_dispatch:
 env:
     IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
@@ -12,7 +12,7 @@ env:
     NVIDIA_MAJOR_VERSION: 535
     BASE_IMAGE: quay.io/fedora-ostree-desktops/silverblue
 
-jobs:
+jobs:    
   build-akmods:
     name: Build akmods package
     runs-on: ubuntu-22.04
@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
 
-    steps:
+    steps:      
       # Checkout push-to-registry action GitHub repository
       - name: Checkout Push to Registry action
         uses: actions/checkout@v3
@@ -194,7 +194,7 @@ jobs:
           COMMIT_TAGS+=("${SHA_SHORT}")
 
           BUILD_TAGS=("${{ env.FEDORA_MAJOR_VERSION }}" "${{ env.FEDORA_MAJOR_VERSION }}-${TIMESTAMP}")
-          BUILD_TAGS+=("latest")
+          #BUILD_TAGS+=("latest")
 
 
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then

@@ -1,0 +1,30 @@
+name: prune repo
+
+on:
+  schedule:
+    - cron: '0 5 * * *'  # 5 am everyday
+  workflow_dispatch:
+  
+jobs:
+  clean-ghcr:
+    name: Cleanup repo
+    runs-on: ubuntu-latest    
+    steps:
+    
+      - name: Delete old container
+        uses: snok/container-retention-policy@v2.1.2
+        with:
+          image-names: nvidia-*, akmods-*
+          cut-off: 2 weeks ago UTC
+          account-type: personal
+          skip-tags: latest
+          token: ${{ secrets.PAT }}
+          
+      - name: Delete pr containers
+        uses: snok/container-retention-policy@v2.1.2
+        with:
+          image-names: nvidia*, akmods*
+          cut-off: 1 day ago UTC
+          account-type: personal
+          filter-tags: "pr-*"
+          token: ${{ secrets.PAT }}

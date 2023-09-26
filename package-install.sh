@@ -17,6 +17,7 @@ gnome-tweaks
 htop
 ifuse
 irssi
+kitty
 libmad
 libavcodec-freeworld
 libva-utils

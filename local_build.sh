@@ -12,7 +12,7 @@ export REPO="perpixel-silverblue"
 export BASE_IMAGE="quay.io/fedora-ostree-desktops/silverblue"
 export AKMODS_IMAGE_NAME="akmods-${REPO}"
 export NVIDIA_IMAGE_NAME="nvidia-${REPO}"
-export FEDORA_MAJOR_VERSION="39"
+export FEDORA_MAJOR_VERSION="38"
 export NVIDIA_MAJOR_VERSION="535"
 export VERSION_TAG="local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION}"
 
