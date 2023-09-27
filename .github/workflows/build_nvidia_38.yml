@@ -2,8 +2,6 @@ name: silverblue-akmods
 on:
   pull_request:
   merge_group:    
-  schedule:
-    - cron: '0 7 * * *'  # 7 am everyday
   workflow_dispatch:
 env:
     IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
