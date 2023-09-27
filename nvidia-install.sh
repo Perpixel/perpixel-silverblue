@@ -7,6 +7,8 @@ set -ouex pipefail
 NVIDIA_VERSION=535.113.01-1
 
 rpm-ostree install \
-    xorg-x11-drv-nvidia-{,cuda-,devel-,kmodsrc-,power-}${NVIDIA_VERSION}.fc${FEDORA_MAJOR_VERSION} \
-    nvidia-vaapi-driver \
-    akmod-nvidia-${NVIDIA_VERSION}.fc${FEDORA_MAJOR_VERSION} \
+    akmod-nvidia \
+    nvidia-vaapi-driver
+    #xorg-x11-drv-nvidia-{,cuda-,devel-,kmodsrc-,power-}${NVIDIA_VERSION}.fc${FEDORA_MAJOR_VERSION} \
+    #nvidia-vaapi-driver \
+    #akmod-nvidia-${NVIDIA_VERSION}.fc${FEDORA_MAJOR_VERSION} \
