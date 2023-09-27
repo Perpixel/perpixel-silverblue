@@ -4,12 +4,8 @@ ARG NVIDIA_MAJOR_VERSION="${NVIDIA_MAJOR_VERSION}"
 
 FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} AS builder
 
-ARG AKMODS_IMAGE_NAME="${AKMODS_IMAGE_NAME}"
-ARG AKMODS_VERSION="${AKMODS_VERSION}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 ARG NVIDIA_MAJOR_VERSION="${NVIDIA_MAJOR_VERSION}"
-
-COPY --from="${AKMODS_IMAGE_NAME}:${AKMODS_VERSION}" / .
 
 # config
 ADD config/etc/containers /etc/ 
@@ -18,9 +14,11 @@ ADD cosign.pub /usr/etc/pki/containers/perpixel.pub
 ADD pre-install.sh /tmp/pre-install.sh
 ADD package-install.sh /tmp/package-install.sh
 ADD post-install.sh /tmp/post-install.sh
+ADD nvidia-install.sh /tmp/nvidia-install.sh
 
 RUN /tmp/pre-install.sh
 RUN /tmp/package-install.sh
+RUN /tmp/nvidia-install.sh
 RUN /tmp/post-install.sh
 
 RUN rm -rf /tmp/* /var/*

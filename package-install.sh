@@ -51,6 +51,7 @@ libavutil-free
 libpostproc-free
 libswresample-free
 libswscale-free
+libva-vdpau-driver
 mesa-va-drivers
 vi
 )
@@ -76,12 +77,4 @@ else
     echo "No packages to install."
 fi
 
-# nvidia
-
-source /var/cache/akmods/nvidia-vars
-
-rpm-ostree install \
-    xorg-x11-drv-${NVIDIA_PACKAGE_NAME}-{,cuda-,devel-,kmodsrc-,power-}${NVIDIA_FULL_VERSION} \
-    nvidia-vaapi-driver \
-    nvtop \
-    /var/cache/akmods/${NVIDIA_PACKAGE_NAME}/kmod-${NVIDIA_PACKAGE_NAME}-${KERNEL_VERSION}-${NVIDIA_AKMOD_VERSION}.fc${RELEASE}.rpm \
+echo "Package installation completed."
