@@ -1,4 +1,4 @@
-name: perpixel-silverblue-38
+name: silverblue-akmods
 on:
   pull_request:
   merge_group:    
