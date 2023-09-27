@@ -39,7 +39,5 @@ if [ "${BUILD_SYSTEM:-0}" -eq 1 ]; then
     --build-arg BASE_IMAGE=${BASE_IMAGE} \
     --build-arg FEDORA_MAJOR_VERSION=${FEDORA_MAJOR_VERSION} \
     --build-arg NVIDIA_MAJOR_VERSION=${NVIDIA_MAJOR_VERSION} \
-    --build-arg AKMODS_VERSION=${VERSION_TAG} \
-    --build-arg AKMODS_IMAGE_NAME="${AKMODS_IMAGE_NAME}" \
     Containerfile.sys
 fi
