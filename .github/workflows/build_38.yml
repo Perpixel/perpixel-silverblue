@@ -31,7 +31,6 @@ jobs:
         run: |
             REPO=${{ github.repository }}
             echo "IMAGE_NAME=nvidia-${REPO##*/}" >> $GITHUB_ENV
-            echo "AKMODS_IMAGE_NAME=akmods-${REPO##*/}" >> $GITHUB_ENV
 
       - name: Generate tags
         id: generate-tags
@@ -58,10 +57,8 @@ jobs:
             done
 
             alias_tags=("${COMMIT_TAGS[@]}")
-            echo "AKMODS_VERSION=pr-${{ github.event.number }}-${{ env.FEDORA_MAJOR_VERSION }}-${{ env.NVIDIA_MAJOR_VERSION }}" >> $GITHUB_ENV
           else
             alias_tags=("${BUILD_TAGS[@]}")
-            echo "AKMODS_VERSION=${{ env.FEDORA_MAJOR_VERSION }}-${{ env.NVIDIA_MAJOR_VERSION }}" >> $GITHUB_ENV
           fi
           echo "Generated the following build tags: "
           for TAG in "${BUILD_TAGS[@]}"; do
@@ -114,8 +111,6 @@ jobs:
             BASE_IMAGE=${{ env.BASE_IMAGE }}
             FEDORA_MAJOR_VERSION=${{ env.FEDORA_MAJOR_VERSION }}
             NVIDIA_MAJOR_VERSION=${{ env.NVIDIA_MAJOR_VERSION }}
-            AKMODS_VERSION=${{ env.AKMODS_VERSION }}
-            AKMODS_IMAGE_NAME=${{ steps.registry_case.outputs.lowercase }}/${{ env.AKMODS_IMAGE_NAME }}
 
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
