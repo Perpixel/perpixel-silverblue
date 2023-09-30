@@ -11,4 +11,4 @@ wget -P /tmp/rpms https://proton.me/download/bridge/protonmail-bridge-3.3.2-1.x8
 rpm-ostree install /tmp/rpms/protonmail-bridge*rpm
 
 # cleanup
-rpm-ostree cleanup
+rpm-ostree cleanup -b -r -m
