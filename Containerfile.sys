@@ -15,14 +15,16 @@ COPY --from="${AKMODS_IMAGE_NAME}:${AKMODS_VERSION}" / .
 ADD config/etc/containers /etc/ 
 ADD cosign.pub /usr/etc/pki/containers/perpixel.pub
 
+ADD pin-packages.sh /tmp/pin-packages.sh
 ADD pre-install.sh /tmp/pre-install.sh
 ADD package-install.sh /tmp/package-install.sh
 ADD post-install.sh /tmp/post-install.sh
 
-RUN /tmp/pre-install.sh
-RUN /tmp/package-install.sh
-RUN /tmp/post-install.sh
+RUN /tmp/pin-packages.sh
+#RUN /tmp/pre-install.sh
+#RUN /tmp/package-install.sh
+#RUN /tmp/post-install.sh
 
-RUN rm -rf /tmp/* /var/*
-RUN ostree container commit
-RUN mkdir -p /var/tmp && chmod -R 1777 /var/tmp
+#RUN rm -rf /tmp/* /var/*
+#RUN ostree container commit
+#RUN mkdir -p /var/tmp && chmod -R 1777 /var/tmp
