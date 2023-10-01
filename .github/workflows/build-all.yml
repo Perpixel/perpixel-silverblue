@@ -5,7 +5,8 @@ on:
   schedule:
     - cron: '0 7 * * *'  # 7 am everyday
   workflow_dispatch:
-# build nvidia drivers
+
+  # build nvidia drivers
   job-build-akmods:
     permissions:
       contents: read
@@ -14,7 +15,8 @@ on:
     strategy:
       fail-fast: false
     uses: ./.github/workflows/build-akmods.yml
-# build oci container image
+
+  # build oci container image
   job-build-system:
     permissions:
       contents: read
@@ -23,6 +25,7 @@ on:
     strategy:
       fail-fast: false
     uses: ./.github/workflows/build-system.yml
-# remove old images
+
+  # remove old images
   job-clean:
     uses: ./.github/workflows/cleanup.yml
