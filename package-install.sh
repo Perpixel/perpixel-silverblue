@@ -4,30 +4,22 @@ set -ouex pipefail
 
 INCLUDED_PACKAGES=(
 alacritty
-ansible
 distrobox
-emacs
 fd-find
 ffmpeg
 ffmpeg-libs
-ffmpegthumbnailer
-flac
 git
 gnome-tweaks
 htop
 ifuse
-irssi
 kitty
-libmad
 libavcodec-freeworld
 libva-utils
 libvorbis
 lm_sensors
 material-icons-fonts
 mesa-va-drivers-freeworld
-neovim
 npm
-nvtop
 openh264
 pipewire-codec-aptx
 qemu
@@ -38,7 +30,6 @@ SDL2
 tmux
 vdpauinfo
 virt-viewer
-VirtualBox
 zsh
 )
 
@@ -78,7 +69,7 @@ fi
 
 # nvidia
 
-source /var/cache/akmods/nvidia-vars
+. /var/cache/akmods/nvidia-vars
 
 rpm-ostree install \
     xorg-x11-drv-${NVIDIA_PACKAGE_NAME}-{,cuda-,devel-,kmodsrc-,power-}${NVIDIA_FULL_VERSION} \
