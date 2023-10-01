@@ -1,9 +1,7 @@
 name: prune repo
 
 on:
-  schedule:
-    - cron: '0 5 * * *'  # 5 am everyday
-  workflow_dispatch:
+  workflow_call:
   
 jobs:
   clean-ghcr:

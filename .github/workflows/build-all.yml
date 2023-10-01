@@ -1,14 +1,11 @@
 name: Build All
-
 on:
   pull_request:
   merge_group:
   schedule:
     - cron: '0 7 * * *'  # 7 am everyday
-    #- cron: '0 12 * * 4' # Runs at 12:00 only on Thursday.
   workflow_dispatch:
-#
-jobs:
+# build nvidia drivers
   job-build-akmods:
     permissions:
       contents: read
@@ -17,3 +14,15 @@ jobs:
     strategy:
       fail-fast: false
     uses: ./.github/workflows/build-akmods.yml
+# build oci container image
+  job-build-system:
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    strategy:
+      fail-fast: false
+    uses: ./.github/workflows/build-system.yml
+# remove old images
+  job-clean:
+    uses: ./.github/workflows/cleanup.yml
