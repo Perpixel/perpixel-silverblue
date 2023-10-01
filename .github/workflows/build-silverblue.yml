@@ -9,3 +9,4 @@ env:
 jobs:
   job-build-akmods:
     uses: perpixel/perpixel-silverblue/.github/workflows/build-akmods.yml@main
+
