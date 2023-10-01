@@ -9,4 +9,4 @@ on:
 
 jobs:
   call-workflow-build-akmods:
-    uses: perpixel/perpixel-silverblue/.github/workflows/build-akmods@main
+    uses: perpixel/perpixel-silverblue/.github/workflows/build-akmods.yml@main
