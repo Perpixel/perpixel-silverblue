@@ -17,6 +17,7 @@ jobs:
     strategy:
       fail-fast: false
     uses: ./.github/workflows/build-akmods.yml
+    secrets: inherit
 
   # build oci container image
   job-build-system:
