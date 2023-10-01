@@ -6,26 +6,28 @@ on:
     - cron: '0 7 * * *'  # 7 am everyday
   workflow_dispatch:
 
-# build nvidia drivers
-job-build-akmods:
-  permissions:
-    contents: read
-    packages: write
-    id-token: write
-  strategy:
-    fail-fast: false
-  uses: ./.github/workflows/build-akmods.yml
+jobs:
 
-# build oci container image
-job-build-system:
-  permissions:
-    contents: read
-    packages: write
-    id-token: write
-  strategy:
-    fail-fast: false
-  uses: ./.github/workflows/build-system.yml
+  # build nvidia drivers
+  job-build-akmods:
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    strategy:
+      fail-fast: false
+    uses: ./.github/workflows/build-akmods.yml
 
-# remove old images
-job-clean-images:
-  uses: ./.github/workflows/cleanup.yml
+  # build oci container image
+  job-build-system:
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    strategy:
+      fail-fast: false
+    uses: ./.github/workflows/build-system.yml
+
+  # remove old images
+  job-clean-images:
+    uses: ./.github/workflows/cleanup.yml
