@@ -2,7 +2,7 @@ name: build-silverblue-38
 
 on:
     pull_request:
-     merge_group:
+    merge_group:
     schedule:
         - cron '0 7 * * *' # 7am everyday
     workflow_dispatch:
