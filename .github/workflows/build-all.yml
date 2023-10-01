@@ -27,5 +27,5 @@ on:
     uses: ./.github/workflows/build-system.yml
 
   # remove old images
-  job-clean:
+  job-clean-images:
     uses: ./.github/workflows/cleanup.yml
