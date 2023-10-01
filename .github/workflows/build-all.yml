@@ -29,8 +29,10 @@ jobs:
     strategy:
       fail-fast: false
     uses: ./.github/workflows/build-system.yml
+    secrets: inherit
 
   # remove old images
   job-clean-images:
     needs: job-build-system
     uses: ./.github/workflows/cleanup.yml
+    secrets: inherit
