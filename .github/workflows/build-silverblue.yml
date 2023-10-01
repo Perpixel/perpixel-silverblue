@@ -8,8 +8,5 @@ on:
 env:
 jobs:
   job-build-akmods:
-    runs-on: ubuntu-latest
-      steps:
-        - run: echo test
-#  call-workflow-build-akmods:
-#    uses: perpixel/perpixel-silverblue/.github/workflows/build-akmods.yml@main
+    uses: perpixel/perpixel-silverblue/.github/workflows/build-akmods.yml@main
+
