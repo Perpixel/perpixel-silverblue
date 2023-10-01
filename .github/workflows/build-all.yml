@@ -11,9 +11,9 @@ on:
 jobs:
   job-build-akmods:
     permissions:
-    contents: read
-    packages: write
-    id-token: write
+      contents: read
+      packages: write
+      id-token: write
     strategy:
       fail-fast: false
     uses: ./.github/workflows/build-akmods.yml
