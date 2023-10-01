@@ -9,27 +9,23 @@ fd-find
 ffmpeg
 ffmpeg-libs
 git
-gnome-tweaks
 htop
 ifuse
 kitty
 libavcodec-freeworld
 libva-utils
-libvorbis
 lm_sensors
 material-icons-fonts
 mesa-va-drivers-freeworld
 npm
 openh264
 pipewire-codec-aptx
-qemu
 ripgrep
 rclone
 samba
 SDL2
 tmux
 vdpauinfo
-virt-viewer
 zsh
 )
 
@@ -45,6 +41,8 @@ libswscale-free
 mesa-va-drivers
 vi
 )
+
+df -h
 
 if [[ ${#EXCLUDED_PACKAGES[@]} -gt 0 ]]; then
     EXCLUDED_PACKAGES=($(rpm -qa --queryformat='%{NAME} ' ${EXCLUDED_PACKAGES[@]}))
