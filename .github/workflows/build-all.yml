@@ -8,6 +8,6 @@ on:
     #- cron: '0 12 * * 4' # Runs at 12:00 only on Thursday.
   workflow_dispatch:
 
-      jobs:
+jobs:
   job-build-akmods:
     uses: ./.github/workflows/build-akmods.yml
