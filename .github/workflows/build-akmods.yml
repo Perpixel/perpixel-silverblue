@@ -1,13 +1,13 @@
-name: Build Nvidia driver rpms
+name: Build Nvidia driver packages
 
 on:
   workflow_call:
 
 env:
-    IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-    FEDORA_MAJOR_VERSION: 38
-    NVIDIA_MAJOR_VERSION: 535
-    BASE_IMAGE: quay.io/fedora-ostree-desktops/silverblue
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  FEDORA_MAJOR_VERSION: 38
+  NVIDIA_MAJOR_VERSION: 535
+  BASE_IMAGE: quay.io/fedora-ostree-desktops/silverblue
 
 jobs:    
   build-akmods:
