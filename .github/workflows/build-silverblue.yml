@@ -1,4 +1,4 @@
-name: build-silverblue-38
+name: Build Silverblue image
 
 on:
   pull_request:

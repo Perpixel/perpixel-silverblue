@@ -1,4 +1,4 @@
-name: build-akmods
+name: Build Nvidia driver rpms
 
 on:
   workflow_call:
