@@ -3,8 +3,8 @@
 set -ouex pipefail
 
 INCLUDED_PACKAGES=(
-alacritty
 distrobox
+emacs
 fd-find
 ffmpeg
 ffmpeg-libs
@@ -24,9 +24,7 @@ ripgrep
 rclone
 samba
 SDL2
-tmux
 vdpauinfo
-zsh
 )
 
 EXCLUDED_PACKAGES=(
