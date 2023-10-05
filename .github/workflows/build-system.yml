@@ -3,7 +3,6 @@ on:
   workflow_call:
 env:
     IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-    FEDORA_MAJOR_VERSION: 38
     NVIDIA_MAJOR_VERSION: 535
     BASE_IMAGE: quay.io/fedora-ostree-desktops/silverblue
 
@@ -16,6 +15,8 @@ jobs:
       packages: write
       id-token: write
     strategy:
+      matrix:
+        version: [38, 39]
       fail-fast: false
 
     steps: 
@@ -28,8 +29,9 @@ jobs:
             REPO=${{ github.repository }}
             echo "IMAGE_NAME=nvidia-${REPO##*/}" >> $GITHUB_ENV
             echo "AKMODS_IMAGE_NAME=akmods-${REPO##*/}" >> $GITHUB_ENV
-
-      - name: Generate tags
+            echo "FEDORA_MAJOR_VERSION=${{ matrix.version }}" >> $GITHUB_ENV
+            
+      - name: Generate tags 
         id: generate-tags
         shell: bash
         run: |
