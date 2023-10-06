@@ -25,6 +25,7 @@ rclone
 samba
 SDL2
 vdpauinfo
+zsh
 )
 
 EXCLUDED_PACKAGES=(
