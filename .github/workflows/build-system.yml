@@ -28,7 +28,6 @@ jobs:
         run: |
             REPO=${{ github.repository }}
             echo "IMAGE_NAME=nvidia-${REPO##*/}" >> $GITHUB_ENV
-            echo "AKMODS_IMAGE_NAME=akmods-${REPO##*/}" >> $GITHUB_ENV
             echo "FEDORA_MAJOR_VERSION=${{ matrix.version }}" >> $GITHUB_ENV
             
       - name: Generate tags 
@@ -46,7 +45,7 @@ jobs:
           COMMIT_TAGS+=("pr-${{ github.event.number }}")
           COMMIT_TAGS+=("${SHA_SHORT}")
 
-          BUILD_TAGS=("${{ env.FEDORA_MAJOR_VERSION }}" "${{ env.FEDORA_MAJOR_VERSION }}-${TIMESTAMP}")
+          BUILD_TAGS+=("${{ env.FEDORA_MAJOR_VERSION }}" "${{ env.FEDORA_MAJOR_VERSION }}-${TIMESTAMP}")
           BUILD_TAGS+=("latest")
 
 
@@ -57,11 +56,10 @@ jobs:
             done
 
             alias_tags=("${COMMIT_TAGS[@]}")
-            echo "AKMODS_VERSION=pr-${{ github.event.number }}-${{ env.FEDORA_MAJOR_VERSION }}-${{ env.NVIDIA_MAJOR_VERSION }}" >> $GITHUB_ENV
           else
             alias_tags=("${BUILD_TAGS[@]}")
-            echo "AKMODS_VERSION=${{ env.FEDORA_MAJOR_VERSION }}-${{ env.NVIDIA_MAJOR_VERSION }}" >> $GITHUB_ENV
           fi
+
           echo "Generated the following build tags: "
           for TAG in "${BUILD_TAGS[@]}"; do
               echo "${TAG}"
@@ -87,8 +85,6 @@ jobs:
             org.opencontainers.image.title=${{ env.IMAGE_NAME }}
             org.opencontainers.image.version=${{ steps.labels.outputs.VERSION }}
             org.opencontainers.image.description=${{ env.IMAGE_NAME }}
-            io.artifacthub.package.readme-url=https://raw.githubusercontent.com/perpixel/perpixel-silverblue/main/README.md
-            io.artifacthub.package.logo-url=
 
       # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
       # https://github.com/macbre/push-to-ghcr/issues/12
@@ -104,7 +100,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           containerfiles: |
-            ./Containerfile.sys
+            ./Containerfile
           image: |
             ${{ env.IMAGE_NAME }}
           tags: |
@@ -113,8 +109,6 @@ jobs:
             BASE_IMAGE=${{ env.BASE_IMAGE }}
             FEDORA_MAJOR_VERSION=${{ env.FEDORA_MAJOR_VERSION }}
             NVIDIA_MAJOR_VERSION=${{ env.NVIDIA_MAJOR_VERSION }}
-            AKMODS_VERSION=${{ env.AKMODS_VERSION }}
-            AKMODS_IMAGE_NAME=${{ steps.registry_case.outputs.lowercase }}/${{ env.AKMODS_IMAGE_NAME }}
 
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
