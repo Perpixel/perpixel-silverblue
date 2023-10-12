@@ -1,15 +1,28 @@
 ARG BASE_IMAGE="${BASE_IMAGE}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
+
+FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} as nvidia-builder
+
+ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 ARG NVIDIA_MAJOR_VERSION="${NVIDIA_MAJOR_VERSION}"
 
-FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} AS builder
+RUN ln -s /usr/bin/rpm-ostree /usr/bin/dnf
+
+ADD pre-install.sh /tmp/pre-install.sh
+ADD build-nvidia-rpm.sh /tmp/build-nvidia-rpm.sh
+ADD certs /tmp/certs
+
+RUN /tmp/pre-install.sh
+RUN /tmp/build-nvidia-rpm.sh
+
+FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION}
 
 ARG AKMODS_IMAGE_NAME="${AKMODS_IMAGE_NAME}"
 ARG AKMODS_VERSION="${AKMODS_VERSION}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 ARG NVIDIA_MAJOR_VERSION="${NVIDIA_MAJOR_VERSION}"
 
-COPY --from="${AKMODS_IMAGE_NAME}:${AKMODS_VERSION}" / .
+COPY --from=nvidia-builder /var/cache /var/cache
 
 # config
 ADD config/etc/containers /etc/ 

@@ -8,20 +8,8 @@ on:
 
 jobs:
 
-  # build nvidia drivers
-  job-build-akmods:
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
-    strategy:
-      fail-fast: false
-    uses: ./.github/workflows/build-akmods.yml
-    secrets: inherit
-
   # build oci container image
   job-build-system:
-    needs: job-build-akmods
     permissions:
       contents: read
       packages: write
