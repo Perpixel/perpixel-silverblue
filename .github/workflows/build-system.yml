@@ -16,7 +16,7 @@ jobs:
       id-token: write
     strategy:
       matrix:
-        version: [38, 39]
+        version: [38]
       fail-fast: false
 
     steps: 
