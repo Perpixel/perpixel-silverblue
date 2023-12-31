@@ -9,5 +9,3 @@ ln -s /etc/alternatives/ld /usr/bin/ld
 # Proton mail
 wget -nv -P /tmp/rpms https://proton.me/download/bridge/protonmail-bridge-3.6.1-2.x86_64.rpm
 rpm-ostree install /tmp/rpms/protonmail-bridge*rpm
-
-df -h

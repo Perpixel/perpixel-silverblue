@@ -15,6 +15,19 @@ ADD certs /tmp/certs
 RUN /tmp/pre-install.sh
 RUN /tmp/build-nvidia-rpm.sh
 
+FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} as xone-builder
+
+ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
+
+RUN ln -s /usr/bin/rpm-ostree /usr/bin/dnf
+ADD pre-install.sh /tmp/pre-install.sh
+RUN /tmp/pre-install.sh
+RUN rpm-ostree install dkms
+# xone firmware
+RUN git clone https://github.com/medusalix/xone
+WORKDIR /xone
+RUN ./install.sh --release
+
 FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION}
 
 ARG AKMODS_IMAGE_NAME="${AKMODS_IMAGE_NAME}"
