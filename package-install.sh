@@ -30,15 +30,15 @@ zsh
 )
 
 EXCLUDED_PACKAGES=(
-#libavcodec-free
-#libavdevice-free
-#libavfilter-free
-#libavformat-free
-#libavutil-free
-#libpostproc-free
-#libswresample-free
-#libswscale-free
-#mesa-va-drivers
+libavcodec-free
+libavdevice-free
+libavfilter-free
+libavformat-free
+libavutil-free
+libpostproc-free
+libswresample-free
+libswscale-free
+mesa-va-drivers
 vi
 )
 
