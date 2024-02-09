@@ -12,11 +12,11 @@ git
 htop
 ifuse
 kitty
-libavcodec-freeworld
+#libavcodec-freeworld
 libva-utils
 lm_sensors
 material-icons-fonts
-mesa-va-drivers-freeworld
+#mesa-va-drivers-freeworld
 npm
 openh264
 pipewire-codec-aptx
@@ -25,19 +25,20 @@ rclone
 samba
 SDL2
 vdpauinfo
+vim
 zsh
 )
 
 EXCLUDED_PACKAGES=(
-libavcodec-free
-libavdevice-free
-libavfilter-free
-libavformat-free
-libavutil-free
-libpostproc-free
-libswresample-free
-libswscale-free
-mesa-va-drivers
+#libavcodec-free
+#libavdevice-free
+#libavfilter-free
+#libavformat-free
+#libavutil-free
+#libpostproc-free
+#libswresample-free
+#libswscale-free
+#mesa-va-drivers
 vi
 )
 
