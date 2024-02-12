@@ -4,7 +4,7 @@ set -ouex pipefail
 
 INCLUDED_PACKAGES=(
 distrobox
-emacs
+#emacs
 fd-find
 ffmpeg
 ffmpeg-libs
@@ -24,6 +24,9 @@ ripgrep
 rclone
 samba
 SDL2
+SDL2_mixer
+SDL2_image
+SDL2_net
 vdpauinfo
 vim
 zsh
