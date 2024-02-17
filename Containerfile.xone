@@ -5,8 +5,6 @@ ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 
 FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} as xone-builder
 
-ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
-
 #RUN /tmp/pre-install.sh
 RUN rpm-ostree install cabextract lld dkms
 # xone firmware

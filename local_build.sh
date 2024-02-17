@@ -8,7 +8,6 @@ while getopts "nps" opt; do
   esac
 done
 
-set -euxo pipefail
 
 export REPO="perpixel-silverblue"
 export BASE_IMAGE="quay.io/fedora-ostree-desktops/silverblue"
@@ -24,7 +23,9 @@ if [ "${BUILD_SYSTEM:-0}" -eq 1 ]; then
   # tag for local oci archive
   #--tag oci-archive:/tmp/${NVIDIA_IMAGE_NAME}.tar.gz
 
-  buildah bud \
+#  buildah pull ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION}
+
+  buildah bud --pull=true \
     --tag ${NVIDIA_IMAGE_NAME}:${VERSION_TAG} \
     --tag ${NVIDIA_IMAGE_NAME}:${VERSION_TAG}-${TIMESTAMP} \
     --tag ${NVIDIA_IMAGE_NAME}:local \
@@ -32,7 +33,7 @@ if [ "${BUILD_SYSTEM:-0}" -eq 1 ]; then
     --build-arg BASE_IMAGE=${BASE_IMAGE} \
     --build-arg FEDORA_MAJOR_VERSION=${FEDORA_MAJOR_VERSION} \
     --build-arg NVIDIA_MAJOR_VERSION=${NVIDIA_MAJOR_VERSION} \
-    Containerfile.xone
+    Containerfile
 fi
 
 if [ "${PUSH_IMAGE:-0}" -eq 1 ]; then

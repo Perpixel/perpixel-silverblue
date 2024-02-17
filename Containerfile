@@ -16,17 +16,20 @@ RUN /tmp/pre-install.sh
 RUN /tmp/build-nvidia-rpm.sh
 
 FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} as xone-builder
-
-ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
-
-RUN ln -s /usr/bin/rpm-ostree /usr/bin/dnf
-ADD pre-install.sh /tmp/pre-install.sh
-RUN /tmp/pre-install.sh
-RUN rpm-ostree install dkms
+#RUN /tmp/pre-install.sh
+RUN rpm-ostree install cabextract lld dkms
 # xone firmware
+RUN ln -s /usr/bin/lld /usr/bin/ld
+WORKDIR /tmp
 RUN git clone https://github.com/medusalix/xone
-WORKDIR /xone
-RUN ./install.sh --release
+WORKDIR /tmp/xone
+RUN make -C /lib/modules/`uname -r`/build M=$PWD
+RUN mkdir /var/xone
+RUN cp *.ko /var/xone/
+WORKDIR /var/xone
+RUN curl -L -o driver.cab http://download.windowsupdate.com/c/msdownload/update/driver/drvs/2017/07/1cd6a87c-623f-4407-a52d-c31be49e925c_e19f60808bdcbfbd3c3df6be3e71ffc52e43261e.cab
+RUN cabextract -F FW_ACC_00U.bin driver.cab
+
 
 FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION}
 
@@ -48,6 +51,15 @@ ADD post-install.sh /tmp/post-install.sh
 RUN /tmp/pre-install.sh
 RUN /tmp/package-install.sh
 RUN /tmp/post-install.sh
+
+# Install Xbox dongle driver
+COPY --from=xone-builder /var/xone/FW_ACC_00U.bin /lib/firmware/xow_dongle.bin
+RUN echo -e "\
+blacklist xpad\n\
+blacklist mt76x2u\
+" > /etc/modprobe.d/xone-blacklist.conf
+
+COPY --from=xone-builder /var/xone /kernel/drivers/input/joystick/
 
 RUN rm -rf /tmp/* /var/*
 RUN ostree container commit
