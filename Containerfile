@@ -27,9 +27,6 @@ ADD build-xone.sh /tmp/build-xone.sh
 ADD certs /tmp/certs
 
 RUN /tmp/build-xone.sh
-RUN mkdir /var/xone
-RUN cp *.ko /var/xone/
-RUN cp xow_dongle.bin /var/xone/
 
 #######
 
