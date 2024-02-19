@@ -15,21 +15,23 @@ ADD certs /tmp/certs
 RUN /tmp/pre-install.sh
 RUN /tmp/build-nvidia-rpm.sh
 
+#######
+
 FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} as xone-builder
-#RUN /tmp/pre-install.sh
-RUN rpm-ostree install cabextract lld dkms
-# xone firmware
-RUN ln -s /usr/bin/lld /usr/bin/ld
+
 WORKDIR /tmp
-RUN git clone https://github.com/medusalix/xone
-WORKDIR /tmp/xone
-RUN make -C /lib/modules/`uname -r`/build M=$PWD
+
+RUN ln -s /usr/bin/rpm-ostree /usr/bin/dnf
+
+ADD build-xone.sh /tmp/build-xone.sh
+ADD certs /tmp/certs
+
+RUN /tmp/build-xone.sh
 RUN mkdir /var/xone
 RUN cp *.ko /var/xone/
-WORKDIR /var/xone
-RUN curl -L -o driver.cab http://download.windowsupdate.com/c/msdownload/update/driver/drvs/2017/07/1cd6a87c-623f-4407-a52d-c31be49e925c_e19f60808bdcbfbd3c3df6be3e71ffc52e43261e.cab
-RUN cabextract -F FW_ACC_00U.bin driver.cab
+RUN cp xow_dongle.bin /var/xone/
 
+#######
 
 FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION}
 
@@ -53,7 +55,7 @@ RUN /tmp/package-install.sh
 RUN /tmp/post-install.sh
 
 # Install Xbox dongle driver
-COPY --from=xone-builder /var/xone/FW_ACC_00U.bin /lib/firmware/xow_dongle.bin
+COPY --from=xone-builder /var/xone/xow_dongle.bin /lib/firmware/xow_dongle.bin
 RUN echo -e "\
 blacklist xpad\n\
 blacklist mt76x2u\
