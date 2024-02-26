@@ -3,7 +3,7 @@ on:
   workflow_call:
 env:
     IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-    NVIDIA_MAJOR_VERSION: 545
+    NVIDIA_MAJOR_VERSION: 550
     BASE_IMAGE: quay.io/fedora-ostree-desktops/silverblue
 
 jobs:    
@@ -22,7 +22,7 @@ jobs:
     steps: 
       # Checkout push-to-registry action GitHub repository
       - name: Checkout Push to Registry action
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Variables
         run: |
@@ -76,7 +76,7 @@ jobs:
 
       # Build metadata
       - name: Image Metadata
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         id: meta
         with:
           images: |
@@ -97,7 +97,7 @@ jobs:
       # Build image using Buildah action
       - name: Build Image
         id: build_image
-        uses: redhat-actions/buildah-build@v2
+        uses: redhat-actions/buildah-build@v2.12
         with:
           containerfiles: |
             ./Containerfile
@@ -115,7 +115,7 @@ jobs:
 
       # Push the image to GHCR (Image Registry)
       - name: Push To GHCR
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@v2.7
         id: push
         env:
           REGISTRY_USER: ${{ github.actor }}
@@ -130,7 +130,7 @@ jobs:
             --disable-content-trust
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
