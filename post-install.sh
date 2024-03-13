@@ -10,4 +10,6 @@ ln -s /etc/alternatives/ld /usr/bin/ld
 wget -nv -P /tmp/rpms https://proton.me/download/bridge/protonmail-bridge-3.6.1-2.x86_64.rpm
 rpm-ostree install /tmp/rpms/protonmail-bridge*rpm
 
-df -h
+# nvidia-container-toolkit
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
+rpm-ostree install -y nvidia-container-toolkit
