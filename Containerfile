@@ -15,6 +15,21 @@ ADD certs /tmp/certs
 RUN /tmp/pre-install.sh
 RUN /tmp/build-nvidia-rpm.sh
 
+#######
+
+FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} as xone-builder
+
+WORKDIR /tmp
+
+RUN ln -s /usr/bin/rpm-ostree /usr/bin/dnf
+
+ADD build-xone.sh /tmp/build-xone.sh
+ADD certs /tmp/certs
+
+RUN /tmp/build-xone.sh
+
+#######
+
 FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION}
 
 ARG AKMODS_IMAGE_NAME="${AKMODS_IMAGE_NAME}"
@@ -35,6 +50,15 @@ ADD post-install.sh /tmp/post-install.sh
 RUN /tmp/pre-install.sh
 RUN /tmp/package-install.sh
 RUN /tmp/post-install.sh
+
+# Install Xbox dongle driver
+COPY --from=xone-builder /var/xone/xow_dongle.bin /lib/firmware/xow_dongle.bin
+RUN echo -e "\
+blacklist xpad\n\
+blacklist mt76x2u\
+" > /etc/modprobe.d/xone-blacklist.conf
+
+COPY --from=xone-builder /var/xone /kernel/drivers/input/joystick/
 
 RUN rm -rf /tmp/* /var/*
 RUN ostree container commit
