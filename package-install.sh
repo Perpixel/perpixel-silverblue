@@ -10,6 +10,7 @@ ffmpeg-libs
 git
 htop
 ifuse
+inxi
 kitty
 libva-utils
 lm_sensors
