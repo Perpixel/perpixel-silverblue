@@ -11,6 +11,7 @@ fswatch
 git
 htop
 ifuse
+inxi
 kitty
 libtree-sitter
 libva-utils
@@ -21,6 +22,7 @@ openh264
 pipewire-codec-aptx
 ripgrep
 rclone
+rpmconf
 samba
 SDL2
 SDL2_mixer
