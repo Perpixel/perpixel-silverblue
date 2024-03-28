@@ -4,19 +4,18 @@ set -ouex pipefail
 
 INCLUDED_PACKAGES=(
 distrobox
-#emacs
 fd-find
 ffmpeg
 ffmpeg-libs
+fswatch
 git
 htop
 ifuse
 kitty
-#libavcodec-freeworld
+libtree-sitter
 libva-utils
 lm_sensors
 material-icons-fonts
-#mesa-va-drivers-freeworld
 npm
 openh264
 pipewire-codec-aptx
