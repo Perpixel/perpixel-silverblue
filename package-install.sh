@@ -3,11 +3,13 @@
 set -ouex pipefail
 
 INCLUDED_PACKAGES=(
+clang
 distrobox
 fd-find
 ffmpeg
 ffmpeg-libs
 fswatch
+gcc
 git
 htop
 ifuse
@@ -15,6 +17,8 @@ inxi
 kitty
 libtree-sitter
 libva-utils
+lld
+llvm
 lm_sensors
 material-icons-fonts
 npm
