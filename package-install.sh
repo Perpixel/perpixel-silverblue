@@ -35,6 +35,7 @@ SDL2_net
 tmux
 vdpauinfo
 vim
+xclip
 zsh
 )
 
