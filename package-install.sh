@@ -22,7 +22,7 @@ libva-utils
 lm_sensors
 material-icons-fonts
 npm
-openh264
+#openh264
 pipewire-codec-aptx
 ripgrep
 rclone
@@ -34,7 +34,6 @@ SDL2_image
 SDL2_net
 tmux
 vdpauinfo
-vim
 xclip
 zsh
 )
@@ -49,8 +48,6 @@ libpostproc-free
 libswresample-free
 libswscale-free
 mesa-va-drivers
-nano
-vi
 )
 
 df -h
