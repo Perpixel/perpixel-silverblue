@@ -12,8 +12,7 @@ COPY pre-install.sh /tmp/pre-install.sh
 COPY build-nvidia-rpm.sh /tmp/build-nvidia-rpm.sh
 COPY certs /tmp/certs
 
-RUN /tmp/pre-install.sh
-RUN /tmp/build-nvidia-rpm.sh
+RUN /tmp/pre-install.sh && /tmp/build-nvidia-rpm.sh
 
 #######
 
@@ -47,9 +46,9 @@ COPY pre-install.sh /tmp/pre-install.sh
 COPY package-install.sh /tmp/package-install.sh
 COPY post-install.sh /tmp/post-install.sh
 
-RUN /tmp/pre-install.sh
-RUN /tmp/package-install.sh
-RUN /tmp/post-install.sh
+RUN /tmp/pre-install.sh && \
+  /tmp/package-install.sh && \
+  /tmp/post-install.sh
 
 # Install Xbox dongle driver
 COPY --from=xone-builder /var/xone/xow_dongle.bin /lib/firmware/xow_dongle.bin

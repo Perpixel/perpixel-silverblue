@@ -3,13 +3,13 @@
 set -ouex pipefail
 
 INCLUDED_PACKAGES=(
-clang
+#clang
 distrobox
 fd-find
 ffmpeg
 ffmpeg-libs
 fswatch
-gcc
+#gcc
 git
 htop
 ifuse
@@ -17,12 +17,12 @@ inxi
 kitty
 libtree-sitter
 libva-utils
-lld
-llvm
+#lld
+#llvm
 lm_sensors
 material-icons-fonts
 npm
-openh264
+#openh264
 pipewire-codec-aptx
 ripgrep
 rclone
@@ -34,7 +34,6 @@ SDL2_image
 SDL2_net
 tmux
 vdpauinfo
-vim
 xclip
 zsh
 )
@@ -49,7 +48,6 @@ libpostproc-free
 libswresample-free
 libswscale-free
 mesa-va-drivers
-vi
 )
 
 df -h
