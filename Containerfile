@@ -39,7 +39,10 @@ ARG NVIDIA_MAJOR_VERSION="${NVIDIA_MAJOR_VERSION}"
 COPY --from=nvidia-builder /var/cache /var/cache
 
 # config
-COPY config/etc/containers /etc/ 
+COPY config/etc/containers /etc/
+COPY config/usr/lib /usr/
+RUN rm -rf /usr/lib/dracut/dracut.conf.d/99-nvidia-dracut.conf
+
 COPY cosign.pub /usr/etc/pki/containers/perpixel.pub
 
 COPY pre-install.sh /tmp/pre-install.sh
