@@ -10,6 +10,9 @@ rpm-ostree install \
 	akmod-${NVIDIA_PACKAGE_NAME}*:${NVIDIA_MAJOR_VERSION}.*.fc${RELEASE} \
 	xorg-x11-drv-${NVIDIA_PACKAGE_NAME}-{,cuda,devel,kmodsrc,power}*:${NVIDIA_MAJOR_VERSION}.*.fc${RELEASE}
 
+# alternatives cannot create symlinks on its own during a container build
+ln -s /usr/bin/ld.bfd /etc/alternatives/ld && ln -s /etc/alternatives/ld /usr/bin/ld
+
 if [[ ! -s "/tmp/certs/private_key.priv" ]]; then
 	echo "WARNING: Using test signing key. Run './generate-akmods-key' for production builds."
 	cp /tmp/certs/private_key.priv{.test,}
