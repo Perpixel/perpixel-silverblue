@@ -40,8 +40,13 @@ COPY --from=nvidia-builder /var/cache /var/cache
 
 # config
 COPY config/etc/containers /etc/
-COPY config/usr/lib /usr/
+COPY config/usr/lib/dracut/dracut.conf.d/95-nvidia.conf /usr/lib/dracut/dracut.conf.d/95.nvidia.conf
+COPY config/usr/lib/modprobe.d/nvidia.conf /usr/lib/modprobe.d/nvidia.conf
+
+#RUN ls -la /usr/lib/dracut/dracut.conf.d/
+#RUN ls /usr/lib/dracut/dracut.conf.d/99-nvidia-dracut.conf
 RUN rm -rf /usr/lib/dracut/dracut.conf.d/99-nvidia-dracut.conf
+#RUN ls /usr/lib/dracut/dracut.conf.d/99-nvidia-dracut.conf
 
 COPY cosign.pub /usr/etc/pki/containers/perpixel.pub
 
