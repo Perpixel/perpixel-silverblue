@@ -6,7 +6,7 @@ set -ouex pipefail
 # . /tmp/build/copr-repos.sh
 # . /tmp/build/install-akmods.sh
 . /tmp/scripts/packages.sh
-# . /tmp/scripts/nvidia.sh
+. /tmp/scripts/nvidia.sh
 # . /tmp/build/image-info.sh
 # . /tmp/build/fetch-install.sh
 # . /tmp/build/fetch-quadlets.sh
@@ -16,4 +16,5 @@ set -ouex pipefail
 # . /tmp/build/aurora-changes.sh
 # . /tmp/build/branding.sh
 . /tmp/scripts/initramfs.sh
+. /tmp/scripts/post-install.sh
 # . /tmp/build/cleanup.sh
