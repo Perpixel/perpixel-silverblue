@@ -8,11 +8,10 @@ ARG NVIDIA_MAJOR_VERSION="${NVIDIA_MAJOR_VERSION}"
 
 RUN ln -s /usr/bin/rpm-ostree /usr/bin/dnf
 
-COPY pre-install.sh /tmp/pre-install.sh
-COPY build-nvidia-rpm.sh /tmp/build-nvidia-rpm.sh
+COPY scripts /tmp/scripts
 COPY certs /tmp/certs
 
-RUN /tmp/pre-install.sh && /tmp/build-nvidia-rpm.sh
+RUN /tmp/scripts/install-rpmfusion.sh && /tmp/scripts/build-nvidia-rpm.sh
 
 #######
 
@@ -22,10 +21,10 @@ WORKDIR /tmp
 
 RUN ln -s /usr/bin/rpm-ostree /usr/bin/dnf
 
-COPY build-xone.sh /tmp/build-xone.sh
+COPY scripts /tmp/scripts
 COPY certs /tmp/certs
 
-RUN /tmp/build-xone.sh
+RUN /tmp/scripts/build-xone.sh
 
 #######
 
@@ -38,25 +37,17 @@ ARG NVIDIA_MAJOR_VERSION="${NVIDIA_MAJOR_VERSION}"
 
 COPY --from=nvidia-builder /var/cache /var/cache
 
-# config
-COPY config/etc/containers /etc/
-COPY config/usr/lib/dracut/dracut.conf.d/95-nvidia.conf /usr/lib/dracut/dracut.conf.d/95.nvidia.conf
-COPY config/usr/lib/modprobe.d/nvidia.conf /usr/lib/modprobe.d/nvidia.conf
+COPY scripts /tmp/scripts
+COPY certs /tmp/certs
+COPY system_files / 
 
-#RUN ls -la /usr/lib/dracut/dracut.conf.d/
-#RUN ls /usr/lib/dracut/dracut.conf.d/99-nvidia-dracut.conf
 RUN rm -rf /usr/lib/dracut/dracut.conf.d/99-nvidia-dracut.conf
-#RUN ls /usr/lib/dracut/dracut.conf.d/99-nvidia-dracut.conf
 
 COPY cosign.pub /usr/etc/pki/containers/perpixel.pub
 
-COPY pre-install.sh /tmp/pre-install.sh
-COPY package-install.sh /tmp/package-install.sh
-COPY post-install.sh /tmp/post-install.sh
-
-RUN /tmp/pre-install.sh && \
-  /tmp/package-install.sh && \
-  /tmp/post-install.sh
+RUN rpm-ostree cliwrap install-to-root / && \ 
+  /tmp/scripts/install-rpmfusion.sh && \
+  /tmp/scripts/install.sh
 
 # Install Xbox dongle driver
 COPY --from=xone-builder /var/xone/xow_dongle.bin /lib/firmware/xow_dongle.bin
