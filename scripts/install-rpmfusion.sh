@@ -10,7 +10,6 @@ wget -P /tmp/rpms \
 rpm-ostree install /tmp/rpms/*.rpm fedora-repos-archive
 
 # enable
-#sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/fedora-cisco-openh264.repo
 sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo
 sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-free-updates.repo
 

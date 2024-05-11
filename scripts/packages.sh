@@ -36,6 +36,7 @@ tmux
 vdpauinfo
 xclip
 zsh
+plymouth-theme-spinfinity
 )
 
 EXCLUDED_PACKAGES=(
