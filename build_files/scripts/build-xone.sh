@@ -4,6 +4,8 @@ set -oeux pipefail
 
 KERNELRELEASE="$(rpm -q kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"
 
+ln -s /usr/bin/rpm-ostree /usr/bin/dnf
+
 mkdir /var/xone
 
 # install tools
