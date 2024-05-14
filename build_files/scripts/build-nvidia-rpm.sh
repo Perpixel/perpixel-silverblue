@@ -2,7 +2,7 @@
 
 set -oeux pipefail
 
-#sed -i 's@enabled=1@enabled=0@g' /etc/yum.repos.d/fedora-{cisco-openh264,updates-testing}.repo
+ln -s /usr/bin/rpm-ostree /usr/bin/dnf
 
 RELEASE="$(rpm -E '%fedora.%_arch')"
 
