@@ -1,6 +1,5 @@
 
 .DS_Store
 cosign.key
-certs/private_key.priv.prod
+*.priv*
 pat.token
-certs/public_key.der.prod
