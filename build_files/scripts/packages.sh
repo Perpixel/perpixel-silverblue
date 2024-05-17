@@ -12,6 +12,7 @@ fswatch
 #gcc
 git
 htop
+i3
 ifuse
 inxi
 kitty
