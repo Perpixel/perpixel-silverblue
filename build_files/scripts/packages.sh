@@ -25,6 +25,7 @@ material-icons-fonts
 npm
 #openh264
 pipewire-codec-aptx
+polybar
 ripgrep
 rclone
 rpmconf
