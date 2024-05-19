@@ -6,6 +6,7 @@ INCLUDED_PACKAGES=(
 #clang
 distrobox
 fd-find
+feh
 ffmpeg
 ffmpeg-libs
 fswatch
