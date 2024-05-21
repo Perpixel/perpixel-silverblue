@@ -9,11 +9,13 @@ fd-find
 feh
 ffmpeg
 ffmpeg-libs
+fontawesome-fonts-all
 fswatch
 #gcc
 git
 htop
 i3
+i3blocks
 ifuse
 inxi
 kitty
@@ -25,6 +27,7 @@ lm_sensors
 material-icons-fonts
 npm
 #openh264
+picom
 pipewire-codec-aptx
 polybar
 ripgrep
