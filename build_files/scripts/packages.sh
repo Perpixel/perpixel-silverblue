@@ -3,7 +3,6 @@
 set -ouex pipefail
 
 INCLUDED_PACKAGES=(
-#clang
 distrobox
 fd-find
 feh
@@ -11,7 +10,6 @@ ffmpeg
 ffmpeg-libs
 fontawesome-fonts-all
 fswatch
-#gcc
 git
 htop
 i3
@@ -21,12 +19,9 @@ inxi
 kitty
 libtree-sitter
 libva-utils
-#lld
-#llvm
 lm_sensors
 material-icons-fonts
 npm
-#openh264
 picom
 pipewire-codec-aptx
 polybar
