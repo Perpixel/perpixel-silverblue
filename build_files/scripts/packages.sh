@@ -41,6 +41,7 @@ plymouth-theme-spinfinity
 )
 
 EXCLUDED_PACKAGES=(
+ffmpeg-free
 libavcodec-free
 libavdevice-free
 libavfilter-free
