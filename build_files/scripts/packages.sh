@@ -3,6 +3,7 @@
 set -ouex pipefail
 
 INCLUDED_PACKAGES=(
+binutils
 #clang
 distrobox
 fd-find
