@@ -17,7 +17,7 @@ inxi
 kitty
 libtree-sitter
 libva-utils
-#lld
+lld
 #llvm
 lm_sensors
 material-icons-fonts
