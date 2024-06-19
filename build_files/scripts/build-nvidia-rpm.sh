@@ -9,9 +9,16 @@ RELEASE="$(rpm -E '%fedora.%_arch')"
 NVIDIA_PACKAGE_NAME="nvidia"
 
 rpm-ostree install \
-	akmod-${NVIDIA_PACKAGE_NAME}*:${NVIDIA_MAJOR_VERSION}.*.fc${RELEASE} \
-	xorg-x11-drv-${NVIDIA_PACKAGE_NAME}-{,cuda,devel,kmodsrc,power}*:${NVIDIA_MAJOR_VERSION}.*.fc${RELEASE} \
-	mock
+	nvidia-driver \
+	nvidia-driver-libs \
+	nvidia-driver-cuda \
+	mock \
+	-y
+
+#rpm-ostree install \
+#	akmod-${NVIDIA_PACKAGE_NAME}*:${NVIDIA_MAJOR_VERSION}.*.fc${RELEASE} \
+#	xorg-x11-drv-${NVIDIA_PACKAGE_NAME}-{,cuda,devel,kmodsrc,power}*:${NVIDIA_MAJOR_VERSION}.*.fc${RELEASE} \
+#	mock
 
 # alternatives cannot create symlinks on its own during a container build
 ln -s /usr/bin/ld.bfd /etc/alternatives/ld && ln -s /etc/alternatives/ld /usr/bin/ld
@@ -28,8 +35,8 @@ install -Dm644 /tmp/certs/private_key.priv /etc/pki/akmods/private/private_key.p
 # Either successfully build and install the kernel modules, or fail early with debug output
 KERNEL_VERSION="$(rpm -q kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"
 NVIDIA_AKMOD_VERSION="$(basename "$(rpm -q "akmod-${NVIDIA_PACKAGE_NAME}" --queryformat '%{VERSION}-%{RELEASE}')" ".fc${RELEASE%%.*}")"
-NVIDIA_LIB_VERSION="$(basename "$(rpm -q "xorg-x11-drv-${NVIDIA_PACKAGE_NAME}" --queryformat '%{VERSION}-%{RELEASE}')" ".fc${RELEASE%%.*}")"
-NVIDIA_FULL_VERSION="$(rpm -q "xorg-x11-drv-${NVIDIA_PACKAGE_NAME}" --queryformat '%{EPOCH}:%{VERSION}-%{RELEASE}.%{ARCH}')"
+NVIDIA_LIB_VERSION="$(basename "$(rpm -q "nvidia-driver" --queryformat '%{VERSION}-%{RELEASE}')" ".fc${RELEASE%%.*}")"
+NVIDIA_FULL_VERSION="$(rpm -q "nvidia-driver" --queryformat '%{EPOCH}:%{VERSION}-%{RELEASE}.%{ARCH}')"
 
 akmods --force --kernels "${KERNEL_VERSION}" --kmod "${NVIDIA_PACKAGE_NAME}"
 
