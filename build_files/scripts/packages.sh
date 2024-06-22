@@ -82,6 +82,7 @@ fi
 
 rpm-ostree install \
     nvidia-driver \
+    nvidia-settings \
     nvidia-driver-libs \
     nvidia-driver-cuda \
     nvtop \
