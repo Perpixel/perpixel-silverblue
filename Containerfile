@@ -10,7 +10,7 @@ FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} as nvidia-builder
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 ARG NVIDIA_MAJOR_VERSION="${NVIDIA_MAJOR_VERSION}"
 COPY build_files /tmp/
-RUN /tmp/scripts/install-rpmfusion.sh && \
+RUN /tmp/scripts/install-negativo17.sh && \
   /tmp/scripts/build-nvidia-rpm.sh
 # End
 
@@ -39,6 +39,7 @@ COPY system_files /
 COPY cosign.pub /usr/etc/pki/containers/perpixel.pub
 
 RUN rpm-ostree cliwrap install-to-root / && \ 
+  /tmp/scripts/install-negativo17.sh && \
   /tmp/scripts/install-rpmfusion.sh && \
   /tmp/scripts/install-xone.sh && \
   /tmp/scripts/install.sh

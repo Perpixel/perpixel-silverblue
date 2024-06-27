@@ -4,7 +4,7 @@ export REPO="perpixel-silverblue"
 export BASE_IMAGE="quay.io/fedora-ostree-desktops/silverblue"
 export NVIDIA_IMAGE_NAME="nvidia-${REPO}"
 export FEDORA_MAJOR_VERSION="40"
-export NVIDIA_MAJOR_VERSION="550"
+export NVIDIA_MAJOR_VERSION="555"
 export VERSION_TAG="local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION}"
 export TIMESTAMP="$(date +%Y%m%d)"
 
