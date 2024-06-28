@@ -51,6 +51,8 @@ libpostproc-free
 libswresample-free
 libswscale-free
 mesa-va-drivers
+firefox-langpacks
+firefox
 )
 
 df -h
