@@ -10,8 +10,7 @@ NVIDIA_PACKAGE_NAME="nvidia"
 NVIDIA_VERSION="555.58"
 
 wget https://github.com/Perpixel/nvidia-driver-rpms/releases/download/v555.58/nvidia-drv-555.58.tar.gz
-mkdir x86_64
-tar --no-overwrite-dir -zxvf nvidia-drv-*.tar.gz
+tar -zxf nvidia-drv-*.tar.gz
 
 rpm-ostree install \
 	./x86_64/akmod-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
