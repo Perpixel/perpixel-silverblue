@@ -9,6 +9,9 @@ RELEASE="$(rpm -E '%fedora.%_arch')"
 NVIDIA_PACKAGE_NAME="nvidia"
 NVIDIA_VERSION="555.58"
 
+mkdir -p /tmp/nvidia-drv
+cd /tmp/nvidia-drv
+
 wget https://github.com/Perpixel/nvidia-driver-rpms/releases/download/v555.58/nvidia-drv-555.58.tar.gz
 tar -zxf nvidia-drv-*.tar.gz
 
@@ -51,7 +54,7 @@ akmods --force --kernels "${KERNEL_VERSION}" --kmod "${NVIDIA_PACKAGE_NAME}"
 modinfo /usr/lib/modules/${KERNEL_VERSION}/extra/${NVIDIA_PACKAGE_NAME}/nvidia{,-drm,-modeset,-peermem,-uvm}.ko.xz >/dev/null ||
 	(cat /var/cache/akmods/${NVIDIA_PACKAGE_NAME}/${NVIDIA_AKMOD_VERSION}-for-${KERNEL_VERSION}.failed.log && exit 1)
 
-mv ./x86_64 /var/cache/
+mv /tmp/nvidia-drv/x86_64 /var/cache/
 
 cat <<EOF >/var/cache/akmods/nvidia-vars
 KERNEL_VERSION=${KERNEL_VERSION}
