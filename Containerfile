@@ -10,8 +10,7 @@ FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} as nvidia-builder
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 ARG NVIDIA_MAJOR_VERSION="${NVIDIA_MAJOR_VERSION}"
 COPY build_files /tmp/
-RUN /tmp/scripts/install-rpmfusion.sh && \
-  /tmp/scripts/build-nvidia-rpm.sh
+RUN /tmp/scripts/build-nvidia-drv.sh
 # End
 
 # Build XONE kernel module
