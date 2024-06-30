@@ -86,17 +86,17 @@ fi
 NVIDIA_VERSION="555.58"
 
 rpm-ostree install \
-  /var/cache/x86_64/xorg-x11-drv-nvidia-cuda-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  /var/cache/x86_64/xorg-x11-drv-nvidia-cuda-libs-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/x86_64/xorg-x11-drv-nvidia-devel-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/x86_64/xorg-x11-drv-nvidia-kmodsrc-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/x86_64/xorg-x11-drv-nvidia-libs-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/x86_64/xorg-x11-drv-nvidia-power-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/x86_64/xorg-x11-drv-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/x86_64/nvidia-modprobe-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/x86_64/nvidia-settings-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/x86_64/nvidia-xconfig-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/x86_64/nvidia-persistenced-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+  /var/cache/nvidia-drv/xorg-x11-drv-nvidia-cuda-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+  /var/cache/nvidia-drv/xorg-x11-drv-nvidia-cuda-libs-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-devel-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-kmodsrc-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-libs-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-power-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/nvidia-modprobe-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/nvidia-settings-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/nvidia-xconfig-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/nvidia-persistenced-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
   nvidia-vaapi-driver \
   nvtop \
   /var/cache/akmods/${NVIDIA_PACKAGE_NAME}/kmod-${NVIDIA_PACKAGE_NAME}-${KERNEL_VERSION}-${NVIDIA_AKMOD_VERSION}.fc${RELEASE}.rpm \

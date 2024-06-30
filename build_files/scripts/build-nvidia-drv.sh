@@ -16,19 +16,19 @@ wget https://github.com/Perpixel/nvidia-driver-rpms/releases/download/v555.58/nv
 tar -zxf nvidia-drv-*.tar.gz
 
 rpm-ostree install \
-	./x86_64/akmod-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	./x86_64/xorg-x11-drv-nvidia-cuda-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	./x86_64/xorg-x11-drv-nvidia-cuda-libs-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	./x86_64/xorg-x11-drv-nvidia-devel-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	./x86_64/xorg-x11-drv-nvidia-kmodsrc-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	./x86_64/xorg-x11-drv-nvidia-libs-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	./x86_64/xorg-x11-drv-nvidia-power-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	./x86_64/xorg-x11-drv-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	./x86_64/kmod-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	./x86_64/nvidia-modprobe-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	./x86_64/nvidia-settings-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	./x86_64/nvidia-xconfig-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	./x86_64/nvidia-persistenced-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	./akmod-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	./xorg-x11-drv-nvidia-cuda-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	./xorg-x11-drv-nvidia-cuda-libs-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	./xorg-x11-drv-nvidia-devel-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	./xorg-x11-drv-nvidia-kmodsrc-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	./xorg-x11-drv-nvidia-libs-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	./xorg-x11-drv-nvidia-power-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	./xorg-x11-drv-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	./kmod-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	./nvidia-modprobe-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	./nvidia-settings-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	./nvidia-xconfig-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+	./nvidia-persistenced-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
 	mock
 
 # alternatives cannot create symlinks on its own during a container build
@@ -54,7 +54,7 @@ akmods --force --kernels "${KERNEL_VERSION}" --kmod "${NVIDIA_PACKAGE_NAME}"
 modinfo /usr/lib/modules/${KERNEL_VERSION}/extra/${NVIDIA_PACKAGE_NAME}/nvidia{,-drm,-modeset,-peermem,-uvm}.ko.xz >/dev/null ||
 	(cat /var/cache/akmods/${NVIDIA_PACKAGE_NAME}/${NVIDIA_AKMOD_VERSION}-for-${KERNEL_VERSION}.failed.log && exit 1)
 
-mv /tmp/nvidia-drv/x86_64 /var/cache/
+mv /tmp/nvidia-drv /var/cache/
 
 cat <<EOF >/var/cache/akmods/nvidia-vars
 KERNEL_VERSION=${KERNEL_VERSION}
