@@ -16,11 +16,11 @@ echo "Build system oci archive."
 #  buildah pull ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION}
 
 buildah bud --pull=true \
-	--tag ${NVIDIA_IMAGE_NAME}:${VERSION_TAG} \
-	--tag ${NVIDIA_IMAGE_NAME}:${VERSION_TAG}-${TIMESTAMP} \
-	--tag ${NVIDIA_IMAGE_NAME}:local \
-	--tag ${NVIDIA_IMAGE_NAME}:latest \
-	--build-arg BASE_IMAGE=${BASE_IMAGE} \
-	--build-arg FEDORA_MAJOR_VERSION=${FEDORA_MAJOR_VERSION} \
-	--build-arg NVIDIA_MAJOR_VERSION=${NVIDIA_MAJOR_VERSION} \
-	Containerfile
+  --tag ${NVIDIA_IMAGE_NAME}:${VERSION_TAG} \
+  --tag ${NVIDIA_IMAGE_NAME}:${VERSION_TAG}-${TIMESTAMP} \
+  --tag ${NVIDIA_IMAGE_NAME}:local \
+  --tag ${NVIDIA_IMAGE_NAME}:latest \
+  --build-arg BASE_IMAGE=${BASE_IMAGE} \
+  --build-arg FEDORA_MAJOR_VERSION=${FEDORA_MAJOR_VERSION} \
+  --build-arg NVIDIA_MAJOR_VERSION=${NVIDIA_MAJOR_VERSION} \
+  Containerfile
