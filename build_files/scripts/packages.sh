@@ -3,14 +3,14 @@
 set -ouex pipefail
 
 INCLUDED_PACKAGES=(
+bat
 binutils
-#clang
 distrobox
 fd-find
 ffmpeg
 ffmpeg-libs
 fswatch
-#gcc
+fzf
 git
 htop
 ifuse
@@ -19,11 +19,9 @@ kitty
 libtree-sitter
 libva-utils
 lld
-#llvm
 lm_sensors
 material-icons-fonts
 npm
-#openh264
 pipewire-codec-aptx
 ripgrep
 rclone
@@ -81,7 +79,6 @@ fi
 # nvidia
 
 . /var/cache/akmods/nvidia-vars
-
 
 NVIDIA_VERSION="555.58.02"
 
