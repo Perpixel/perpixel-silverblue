@@ -80,8 +80,6 @@ fi
 
 . /var/cache/akmods/nvidia-vars
 
-NVIDIA_VERSION="560.28.03"
-
 rpm-ostree install \
   /var/cache/nvidia-drv/xorg-x11-drv-nvidia-cuda-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
   /var/cache/nvidia-drv/xorg-x11-drv-nvidia-cuda-libs-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \

@@ -4,8 +4,8 @@ export REPO="perpixel-silverblue"
 export BASE_IMAGE="quay.io/fedora-ostree-desktops/silverblue"
 export NVIDIA_IMAGE_NAME="nvidia-${REPO}"
 export FEDORA_MAJOR_VERSION="40"
-export NVIDIA_MAJOR_VERSION="555"
-export VERSION_TAG="local-${FEDORA_MAJOR_VERSION}-${NVIDIA_MAJOR_VERSION}"
+export NVIDIA_VERSION="560.28.03"
+export VERSION_TAG="local-${FEDORA_MAJOR_VERSION}-${NVIDIA_VERSION}"
 export TIMESTAMP="$(date +%Y%m%d)"
 
 echo "Build system oci archive."
@@ -22,5 +22,5 @@ buildah bud --pull=true \
   --tag ${NVIDIA_IMAGE_NAME}:latest \
   --build-arg BASE_IMAGE=${BASE_IMAGE} \
   --build-arg FEDORA_MAJOR_VERSION=${FEDORA_MAJOR_VERSION} \
-  --build-arg NVIDIA_MAJOR_VERSION=${NVIDIA_MAJOR_VERSION} \
+  --build-arg NVIDIA_VERSION=${NVIDIA_VERSION} \
   Containerfile

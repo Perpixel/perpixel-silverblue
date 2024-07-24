@@ -3,7 +3,7 @@ on:
   workflow_call:
 env:
     IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-    NVIDIA_MAJOR_VERSION: 550
+    NVIDIA_VERSION: 560.28.03
     BASE_IMAGE: quay.io/fedora-ostree-desktops/silverblue
 
 jobs:    
@@ -108,7 +108,7 @@ jobs:
           build-args: |
             BASE_IMAGE=${{ env.BASE_IMAGE }}
             FEDORA_MAJOR_VERSION=${{ env.FEDORA_MAJOR_VERSION }}
-            NVIDIA_MAJOR_VERSION=${{ env.NVIDIA_MAJOR_VERSION }}
+            NVIDIA_VERSION=${{ env.NVIDIA_VERSION }}
 
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
