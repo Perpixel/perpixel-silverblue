@@ -51,6 +51,7 @@ libswscale-free
 mesa-va-drivers
 firefox-langpacks
 firefox
+virtualbox-guest-additions
 )
 
 df -h
