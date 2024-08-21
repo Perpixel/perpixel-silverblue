@@ -31,6 +31,7 @@ SDL2
 SDL2_mixer
 SDL2_image
 SDL2_net
+stow
 tmux
 vdpauinfo
 xclip
