@@ -20,18 +20,18 @@ tar -zxf nvidia-drv-*.tar.gz
 
 rpm-ostree install \
   ./akmod-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-cuda-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-cuda-libs-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-devel-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-kmodsrc-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-libs-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-power-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  ./kmod-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  ./nvidia-modprobe-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  ./nvidia-settings-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  ./nvidia-xconfig-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  ./nvidia-persistenced-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+  ./xorg-x11-drv-nvidia-cuda-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+  ./xorg-x11-drv-nvidia-cuda-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+  ./xorg-x11-drv-nvidia-devel-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+  ./xorg-x11-drv-nvidia-kmodsrc-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+  ./xorg-x11-drv-nvidia-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+  ./xorg-x11-drv-nvidia-power-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+  ./xorg-x11-drv-nvidia-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+  ./kmod-nvidia-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+  ./nvidia-modprobe-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+  ./nvidia-settings-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+  ./nvidia-xconfig-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+  ./nvidia-persistenced-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
   mock
 
 # alternatives cannot create symlinks on its own during a container build

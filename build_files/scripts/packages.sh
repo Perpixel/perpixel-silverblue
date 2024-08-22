@@ -83,17 +83,17 @@ fi
 . /var/cache/akmods/nvidia-vars
 
 rpm-ostree install \
-  /var/cache/nvidia-drv/xorg-x11-drv-nvidia-cuda-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  /var/cache/nvidia-drv/xorg-x11-drv-nvidia-cuda-libs-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-devel-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-kmodsrc-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-libs-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-power-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/nvidia-modprobe-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/nvidia-settings-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/nvidia-xconfig-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/nvidia-persistenced-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
+  /var/cache/nvidia-drv/xorg-x11-drv-nvidia-cuda-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+  /var/cache/nvidia-drv/xorg-x11-drv-nvidia-cuda-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-devel-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-kmodsrc-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-power-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/nvidia-modprobe-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/nvidia-settings-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/nvidia-xconfig-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+	/var/cache/nvidia-drv/nvidia-persistenced-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
   nvidia-vaapi-driver \
   nvtop \
   /var/cache/akmods/${NVIDIA_PACKAGE_NAME}/kmod-${NVIDIA_PACKAGE_NAME}-${KERNEL_VERSION}-${NVIDIA_AKMOD_VERSION}.fc${RELEASE}.rpm \
