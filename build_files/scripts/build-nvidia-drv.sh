@@ -16,9 +16,10 @@ if command -v dnf5 &> /dev/null; then alias dnf=dnf5; fi
 dnf install curl git tar -y
 mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
 curl -O https://download.nvidia.com/XFree86/Linux-${ARCH}/${NVIDIA_VERSION}/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
-sh ./NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run --extract-only --target nvidiapkg &> /dev/null
+sh ./NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run --extract-only --target nvidiapkg || true
 
-exit
+echo "TEST"
+exit 0
 
 build_rpm() {
   rpmbuild ${1} --bb --define "_topdir ${BUILD_PATH}/rpmbuild"
