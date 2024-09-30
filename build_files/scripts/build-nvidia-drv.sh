@@ -11,6 +11,8 @@ RPMBUILD_PATH=${BUILD_PATH}/rpmbuild
 SOURCES_PATH=${RPMBUILD_PATH}/SOURCES
 RPMS_PATH=${BUILD_PATH}/rpmbuild/RPMS/${ARCH}
 
+if command -v dnf5 &> /dev/null; then alias dnf=dnf5; fi
+
 build_rpm() {
   rpmbuild ${1} --bb --define "_topdir ${BUILD_PATH}/rpmbuild"
 }
