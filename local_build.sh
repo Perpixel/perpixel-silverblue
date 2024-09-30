@@ -1,7 +1,7 @@
 #!/bin/sh
 
 export REPO="perpixel-silverblue"
-export BASE_IMAGE="registry.fedoraproject.org/fedora-silverblue"
+export BASE_IMAGE="quay.io/fedora-ostree-desktops/silverblue"
 export NVIDIA_IMAGE_NAME="nvidia-${REPO}"
 export FEDORA_MAJOR_VERSION="41"
 export NVIDIA_VERSION="560.35.03"
