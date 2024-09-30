@@ -7,7 +7,7 @@ ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
 # This will build the rpm from rpmfusion source and then make
 # them available to the final image in this container.
 #
-FROM registry.fedoraproject.org/fedora-minimal:${FEDORA_MAJOR_VERSION} as nvidia-builder
+FROM quay.io/fedora/fedora-minimal:${FEDORA_MAJOR_VERSION} as nvidia-builder
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
 COPY build_files /tmp/
