@@ -18,7 +18,7 @@ build_rpm() {
 }
 
 setup_rpm_build_env() {
-  echo Setting up ${1} sources...
+  echo Setting build environment...
   mkdir -p ${BUILD_PATH}
 
   dnf install wget curl git tar -y
