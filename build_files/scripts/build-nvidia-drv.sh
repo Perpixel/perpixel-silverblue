@@ -42,6 +42,8 @@ setup_rpm_build_env() {
     buildsys-build-rpmfusion-kerneldevpkgs-current elfutils-libelf-devel -y
   }
 
+df -h
+
 setup_sources() {
   echo Setting up ${1} sources...
   mkdir -p ${RPMBUILD_PATH}
