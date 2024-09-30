@@ -13,14 +13,6 @@ RPMS_PATH=${BUILD_PATH}/rpmbuild/RPMS/${ARCH}
 
 if command -v dnf5 &> /dev/null; then alias dnf=dnf5; fi
 
-dnf install curl git tar -y
-mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
-curl -O https://download.nvidia.com/XFree86/Linux-${ARCH}/${NVIDIA_VERSION}/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
-sh ./NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run --extract-only --target nvidiapkg || true
-
-echo "TEST"
-exit 0
-
 build_rpm() {
   rpmbuild ${1} --bb --define "_topdir ${BUILD_PATH}/rpmbuild"
 }
@@ -29,7 +21,7 @@ setup_rpm_build_env() {
   echo Setting up ${1} sources...
   mkdir -p ${BUILD_PATH}
 
-  dnf install curl git tar -y
+  dnf install wget curl git tar -y
   
   # download and install rpm fusion package
   wget -P /tmp/rpms \
@@ -67,10 +59,10 @@ build_driver() {
   setup_sources xorg-x11-drv-nvidia
   NVIDIA_SPEC=$(ls xorg-x11-drv-nvidia*.spec)
   NVIDIA_VERSION=$(grep ^Version: ${NVIDIA_SPEC} | awk '{print $2}')
-  wget https://download.nvidia.com/XFree86/Linux-${ARCH}/${NVIDIA_VERSION}/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
-  df -h
-  sh /tmp/nvidia-drv/rpmbuild/SOURCES/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run --extract-only --target nvidiapkg
-  build_rpm xorg-x11-drv-nvidia.spec
+  mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
+  curl -O https://download.nvidia.com/XFree86/Linux-${ARCH}/${NVIDIA_VERSION}/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
+  # sh /tmp/nvidia-drv/rpmbuild/SOURCES/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run --extract-only --target nvidiapkg || true
+  build_rpm xorg-x11-drv-nvidia.spec || true
   dnf install ${RPMS_PATH}/xorg-x11-drv-nvidia-kmodsrc-*.rpm -y
 }
 
