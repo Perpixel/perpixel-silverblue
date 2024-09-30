@@ -25,7 +25,7 @@ setup_rpm_build_env() {
 
   wget https://download.nvidia.com/XFree86/Linux-x86_64/560.35.03/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
   df -h
-  sh /tmp/nvidia-drv/rpmbuild/SOURCES/NVIDIA-Linux-x86_64-560.35.03.run --extract-only --target nvidiapkg
+  sh ./NVIDIA-Linux-x86_64-560.35.03.run --extract-only --target nvidiapkg
   
   # download and install rpm fusion package
   wget -P /tmp/rpms \
