@@ -13,19 +13,22 @@ RPMS_PATH=${BUILD_PATH}/rpmbuild/RPMS/${ARCH}
 
 if command -v dnf5 &> /dev/null; then alias dnf=dnf5; fi
 
+dnf install curl -y
+mkdir -p ${BUILD_PATH}
+curl -O https://download.nvidia.com/XFree86/Linux-x86_64/560.35.03/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
+sh ./NVIDIA-Linux-x86_64-560.35.03.run --extract-only --target nvidiapkg
+
+exit
+
 build_rpm() {
   rpmbuild ${1} --bb --define "_topdir ${BUILD_PATH}/rpmbuild"
 }
 
 setup_rpm_build_env() {
 
-  mkdir -p /tmp/nvidia-drv
+  mkdir -p ${BUILD_PATH}
 
   dnf install wget git -y
-
-  wget https://download.nvidia.com/XFree86/Linux-x86_64/560.35.03/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
-  df -h
-  sh ./NVIDIA-Linux-x86_64-560.35.03.run --extract-only --target nvidiapkg
   
   # download and install rpm fusion package
   wget -P /tmp/rpms \
