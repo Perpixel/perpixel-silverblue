@@ -15,8 +15,8 @@ if command -v dnf5 &> /dev/null; then alias dnf=dnf5; fi
 
 dnf install curl git tar -y
 mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
-curl -O https://download.nvidia.com/XFree86/Linux-x86_64/560.35.03/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
-sh ./NVIDIA-Linux-x86_64-560.35.03.run --extract-only --target nvidiapkg
+curl -O https://download.nvidia.com/XFree86/Linux-${ARCH}/${NVIDIA_VERSION}/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
+sh ./NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run --extract-only --target nvidiapkg &> /dev/null
 
 exit
 
@@ -25,10 +25,10 @@ build_rpm() {
 }
 
 setup_rpm_build_env() {
-
+  echo Setting up ${1} sources...
   mkdir -p ${BUILD_PATH}
 
-  dnf install wget git -y
+  dnf install curl git tar -y
   
   # download and install rpm fusion package
   wget -P /tmp/rpms \
@@ -36,11 +36,11 @@ setup_rpm_build_env() {
     https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${FEDORA_MAJOR_VERSION}.noarch.rpm
   dnf install /tmp/rpms/*.rpm fedora-repos-archive -y
 
-dnf install \
-  rpm-build rpmspectool libappstream-glib systemd-rpm-macros rpmdevtools gcc \
-  mesa-libGL-devel mesa-libEGL-devel libvdpau-devel libXxf86vm-devel libXv-devel \
-  desktop-file-utils hostname gtk3-devel m4 pkgconfig mock libtirpc-devel \
-  buildsys-build-rpmfusion-kerneldevpkgs-current elfutils-libelf-devel vulkan-headers -y
+  dnf install \
+    rpm-build rpmspectool libappstream-glib systemd-rpm-macros rpmdevtools gcc \
+    mesa-libGL-devel mesa-libEGL-devel libvdpau-devel libXxf86vm-devel libXv-devel \
+    desktop-file-utils hostname gtk3-devel m4 pkgconfig mock libtirpc-devel \
+    buildsys-build-rpmfusion-kerneldevpkgs-current elfutils-libelf-devel vulkan-headers -y
 }
 
 setup_sources() {
@@ -66,9 +66,9 @@ build_driver() {
   setup_sources xorg-x11-drv-nvidia
   NVIDIA_SPEC=$(ls xorg-x11-drv-nvidia*.spec)
   NVIDIA_VERSION=$(grep ^Version: ${NVIDIA_SPEC} | awk '{print $2}')
-  wget https://download.nvidia.com/XFree86/Linux-x86_64/560.35.03/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
+  wget https://download.nvidia.com/XFree86/Linux-${ARCH}/${NVIDIA_VERSION}/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
   df -h
-  sh /tmp/nvidia-drv/rpmbuild/SOURCES/NVIDIA-Linux-x86_64-560.35.03.run --extract-only --target nvidiapkg
+  sh /tmp/nvidia-drv/rpmbuild/SOURCES/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run --extract-only --target nvidiapkg
   build_rpm xorg-x11-drv-nvidia.spec
   dnf install ${RPMS_PATH}/xorg-x11-drv-nvidia-kmodsrc-*.rpm -y
 }
