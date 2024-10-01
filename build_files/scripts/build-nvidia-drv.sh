@@ -2,16 +2,19 @@
 
 set -oeux pipefail
 
-RELEASE="$(rpm -E '%fedora.%_arch')"
+FEDORA_MAJOR_VERSION="$(rpm -E '%fedora')"
 ARCH="$(rpm -E '%_arch')"
 
-NVIDIA_PACKAGE_NAME="nvidia"
+RELEASE=${FEDORA_MAJOR_VERSION}.${ARCH}
 BUILD_PATH=/tmp/nvidia-drv
 RPMBUILD_PATH=${BUILD_PATH}/rpmbuild
 SOURCES_PATH=${RPMBUILD_PATH}/SOURCES
 RPMS_PATH=${BUILD_PATH}/rpmbuild/RPMS/${ARCH}
 
 if command -v dnf5 &> /dev/null; then alias dnf=dnf5; fi
+
+####################################################################################
+# Build RPMs from RpmFusion sources
 
 build_rpm() {
   rpmbuild ${1} --bb --define "_topdir ${BUILD_PATH}/rpmbuild"
@@ -24,10 +27,10 @@ setup_rpm_build_env() {
   dnf install wget curl git tar -y
   
   # download and install rpm fusion package
-  wget -P /tmp/rpms \
+  wget -P ${BUILD_PATH}/rpmfusion \
     https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${FEDORA_MAJOR_VERSION}.noarch.rpm \
     https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${FEDORA_MAJOR_VERSION}.noarch.rpm
-  dnf install /tmp/rpms/*.rpm fedora-repos-archive -y
+  dnf install ${BUILD_PATH}/rpmfusion/*.rpm fedora-repos-archive -y
 
   dnf install \
     rpm-build rpmspectool libappstream-glib systemd-rpm-macros rpmdevtools gcc \
@@ -59,9 +62,8 @@ build_driver() {
   setup_sources xorg-x11-drv-nvidia
   NVIDIA_SPEC=$(ls xorg-x11-drv-nvidia*.spec)
   NVIDIA_VERSION=$(grep ^Version: ${NVIDIA_SPEC} | awk '{print $2}')
-  mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
+  # mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
   curl -O https://download.nvidia.com/XFree86/Linux-${ARCH}/${NVIDIA_VERSION}/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
-  # sh /tmp/nvidia-drv/rpmbuild/SOURCES/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run --extract-only --target nvidiapkg || true
   build_rpm xorg-x11-drv-nvidia.spec || true
   dnf install ${RPMS_PATH}/xorg-x11-drv-nvidia-kmodsrc-*.rpm -y
 }
@@ -98,11 +100,19 @@ build_apps() {
   build_app nvidia-persistenced
 }
 
+create_archive() {
+  cd ${RPMS_PATH}/
+  tar -czvf nvidia-drv-${NVIDIA_VERSION}.fc${FEDORA_MAJOR_VERSION}.${ARCH}.tar.gz *
+  mv nvidia-drv-*.tar.gz /tmp/rpms/
+}
+
 setup_rpm_build_env
 pull_git_repos
 build_driver
 build_kmod
 build_apps
+
+####################################################################################
 
 cd ${RPMBUILD_PATH}/RPMS/x86_64/
 
@@ -136,6 +146,8 @@ fi
 
 install -Dm644 /tmp/certs/public_key.der /etc/pki/akmods/certs/public_key.der
 install -Dm644 /tmp/certs/private_key.priv /etc/pki/akmods/private/private_key.priv
+
+NVIDIA_PACKAGE_NAME="nvidia"
 
 # Either successfully build and install the kernel modules, or fail early with debug output
 KERNEL_VERSION="$(rpm -q kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"
