@@ -3,3 +3,4 @@
 cosign.key
 *.priv*
 pat.token
+./archives

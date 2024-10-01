@@ -62,9 +62,8 @@ build_driver() {
   setup_sources xorg-x11-drv-nvidia
   NVIDIA_SPEC=$(ls xorg-x11-drv-nvidia*.spec)
   NVIDIA_VERSION=$(grep ^Version: ${NVIDIA_SPEC} | awk '{print $2}')
-  # mkdir -p ${BUILD_PATH} && cd ${BUILD_PATH}
   curl -O https://download.nvidia.com/XFree86/Linux-${ARCH}/${NVIDIA_VERSION}/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
-  build_rpm xorg-x11-drv-nvidia.spec || true
+  build_rpm xorg-x11-drv-nvidia.spec &> /dev/null || true
   dnf install ${RPMS_PATH}/xorg-x11-drv-nvidia-kmodsrc-*.rpm -y
 }
 
