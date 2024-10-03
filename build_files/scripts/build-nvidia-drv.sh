@@ -9,7 +9,8 @@ NVIDIA_PACKAGE_NAME="nvidia"
 mkdir -p /tmp/nvidia-drv
 cd /tmp/nvidia-drv
 
-wget https://github.com/Perpixel/nvidia-driver-rpms/releases/download/${NVIDIA_VERSION}/nvidia-drv-${NVIDIA_VERSION}.tar.gz
+wget https://github.com/Perpixel/nvidia-driver-rpms/releases/download/${NVIDIA_VERSION}/nvidia-drv-${NVIDIA_VERSION}.fc${RELEASE}.tar.gz
+
 tar -zxf nvidia-drv-*.tar.gz
 
 rpm-ostree install \
