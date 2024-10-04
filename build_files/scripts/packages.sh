@@ -12,6 +12,7 @@ ffmpeg-libs
 fswatch
 fzf
 git
+gnome-session-xsession
 htop
 ifuse
 inxi

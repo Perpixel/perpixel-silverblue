@@ -40,7 +40,6 @@ COPY cosign.pub /usr/etc/pki/containers/perpixel.pub
 
 RUN rpm-ostree cliwrap install-to-root / && \ 
   /tmp/scripts/install-rpmfusion.sh && \
-  /tmp/scripts/install-xone.sh && \
   /tmp/scripts/install.sh
 
 # Install Xbox dongle driver
