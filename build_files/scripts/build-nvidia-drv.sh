@@ -9,13 +9,8 @@ NVIDIA_PACKAGE_NAME="nvidia"
 mkdir -p /tmp/nvidia-drv
 cd /tmp/nvidia-drv
 
-# dnf update 4.21 beak akmods build
-rpm-ostree install yum-4.19.* python3-dnf-plugin-versionlock
-yum versionlock dnf-4.19
-yum versionlock dnf-4.19.*
-yum versionlock dnf-data-4.19.*
+wget https://github.com/Perpixel/nvidia-driver-rpms/releases/download/${NVIDIA_VERSION}/nvidia-drv-${NVIDIA_VERSION}.fc${RELEASE}.tar.gz
 
-wget https://github.com/Perpixel/nvidia-driver-rpms/releases/download/v${NVIDIA_VERSION}/nvidia-drv-${NVIDIA_VERSION}.tar.gz
 tar -zxf nvidia-drv-*.tar.gz
 
 rpm-ostree install \
@@ -25,6 +20,7 @@ rpm-ostree install \
   ./xorg-x11-drv-nvidia-devel-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
   ./xorg-x11-drv-nvidia-kmodsrc-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
   ./xorg-x11-drv-nvidia-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+  ./xorg-x11-drv-nvidia-xorg-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
   ./xorg-x11-drv-nvidia-power-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
   ./xorg-x11-drv-nvidia-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
   ./kmod-nvidia-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \

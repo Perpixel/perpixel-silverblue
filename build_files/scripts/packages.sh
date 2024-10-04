@@ -88,6 +88,7 @@ rpm-ostree install \
 	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-devel-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
 	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-kmodsrc-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
 	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
+ 	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-xorg-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
 	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-power-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
 	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
 	/var/cache/nvidia-drv/nvidia-modprobe-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \

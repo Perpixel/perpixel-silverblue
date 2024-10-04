@@ -17,9 +17,9 @@ RUN /tmp/scripts/build-nvidia-drv.sh
 # Build XONE kernel module
 #
 #
-FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} as xone-builder
-COPY build_files /tmp/
-RUN /tmp/scripts/build-xone.sh
+# FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} as xone-builder
+# COPY build_files /tmp/
+# RUN /tmp/scripts/build-xone.sh
 # End
 
 # Build final image
@@ -44,8 +44,8 @@ RUN rpm-ostree cliwrap install-to-root / && \
   /tmp/scripts/install.sh
 
 # Install Xbox dongle driver
-COPY --from=xone-builder /var/xone/xow_dongle.bin /lib/firmware/xow_dongle.bin
-COPY --from=xone-builder /var/xone /kernel/drivers/input/joystick/
+# COPY --from=xone-builder /var/xone/xow_dongle.bin /lib/firmware/xow_dongle.bin
+# COPY --from=xone-builder /var/xone /kernel/drivers/input/joystick/
 
 RUN /tmp/scripts/cleanup.sh
 RUN ostree container commit
