@@ -9,6 +9,12 @@ NVIDIA_PACKAGE_NAME="nvidia"
 mkdir -p /tmp/nvidia-drv
 cd /tmp/nvidia-drv
 
+rm -rf /etc/yum.repos.d/fedora-cisco-openh264.repo
+rm -rf /etc/yum.repos.d/fedora-updates-archive.repo
+# rm -rf /etc/yum.repos.d/fedora-updates-testing.repo
+
+rpm-ostree install mock akmods rpmdevtools rpmlint rpm-build rpm -y
+
 wget https://github.com/Perpixel/nvidia-driver-rpms/releases/download/${NVIDIA_VERSION}/nvidia-drv-${NVIDIA_VERSION}.fc${RELEASE}.tar.gz
 
 tar -zxf nvidia-drv-*.tar.gz
@@ -27,8 +33,7 @@ rpm-ostree install \
   ./nvidia-modprobe-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
   ./nvidia-settings-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
   ./nvidia-xconfig-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  ./nvidia-persistenced-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  mock
+  ./nvidia-persistenced-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm -y
 
 # alternatives cannot create symlinks on its own during a container build
 ln -s /usr/bin/ld.bfd /etc/alternatives/ld && ln -s /etc/alternatives/ld /usr/bin/ld
