@@ -21,7 +21,7 @@ nvidia_installer
 
 cd ./kernel-open
 KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
-mkdir -p /lib/modules/${KERNEL_VERSION}/extra/nvidia
-install -D -m 0755 nvidia*.ko /lib/modules/${KERNEL_VERSION}/extra/nvidia/
-
+mkdir -p /lib/modules/${KERNEL_VERSION}/kernel/drivers/video
+install -D -m 0755 nvidia*.ko /lib/modules/${KERNEL_VERSION}/kernel/drivers/video/
+depmod ${KERNEL_VERSION}
 rm -rf /usr/lib/dracut/dracut.conf.d/99-nvidia-dracut.conf

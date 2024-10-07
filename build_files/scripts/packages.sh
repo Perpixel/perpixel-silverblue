@@ -6,6 +6,7 @@ INCLUDED_PACKAGES=(
 bat
 binutils
 clang
+cmake
 distrobox
 fd-find
 #ffmpeg
@@ -18,10 +19,12 @@ htop
 ifuse
 inxi
 kitty
+kmod
 libtree-sitter
 libva-utils
 lld
 lm_sensors
+make
 material-icons-fonts
 npm
 #nvidia-vaa-driver
