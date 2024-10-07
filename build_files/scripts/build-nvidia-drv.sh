@@ -2,70 +2,37 @@
 
 set -oeux pipefail
 
-RELEASE="$(rpm -E '%fedora.%_arch')"
+FEDORA_VERSION="$(rpm -E '%fedora')"
+ARCH=$(rpm -E '%_arch')
+#LIBDIR=/usr/lib64
 
-NVIDIA_PACKAGE_NAME="nvidia"
+mkdir -p /nvidia
+cd /nvidia
 
-mkdir -p /tmp/nvidia-drv
-cd /tmp/nvidia-drv
+# Install RPMs
 
 rm -rf /etc/yum.repos.d/fedora-cisco-openh264.repo
+rm -rf /etc/yum.repos.d/fedora-updates.repo
 rm -rf /etc/yum.repos.d/fedora-updates-archive.repo
-# rm -rf /etc/yum.repos.d/fedora-updates-testing.repo
+rm -rf /etc/yum.repos.d/fedora-updates-testing.repo
+dnf install kernel-headers akmods -y
 
-rpm-ostree install mock akmods rpmdevtools rpmlint rpm-build rpm -y
+# download
+curl -O https://download.nvidia.com/XFree86/Linux-${ARCH}/${NVIDIA_VERSION}/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
+# extract
+sh ./NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run --extract-only --target nvidiapkg
+cd ./nvidiapkg
 
-wget https://github.com/Perpixel/nvidia-driver-rpms/releases/download/${NVIDIA_VERSION}/nvidia-drv-${NVIDIA_VERSION}.fc${RELEASE}.tar.gz
+# WARNING: Unable to determine the path to install the libglvnd EGL vendor library config files.
+# Check that you have pkg-config and the libglvnd development libraries installed, or specify a path with --glvnd-egl-config-path.
 
-tar -zxf nvidia-drv-*.tar.gz
+# compile kernel modules
 
-rpm-ostree install \
-  ./akmod-nvidia-${NVIDIA_VERSION}-1.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-cuda-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-cuda-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-devel-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-kmodsrc-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-xorg-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-power-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  ./xorg-x11-drv-nvidia-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  ./kmod-nvidia-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  ./nvidia-modprobe-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  ./nvidia-settings-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  ./nvidia-xconfig-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  ./nvidia-persistenced-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm -y
+pushd kernel-open
+KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
+make KERNEL_UNAME="${KERNEL_VERSION}" SYSSRC="/usr/src/kernels/${KERNEL_VERSION}" IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1 module
+#mkdir -p /lib/modules/${KERNEL_VERSION}/extra/nvidia
+#install -D -m 0755 nvidia*.ko /lib/modules/${KERNEL_VERSION}/extra/nvidia/
+popd
 
-# alternatives cannot create symlinks on its own during a container build
-ln -s /usr/bin/ld.bfd /etc/alternatives/ld && ln -s /etc/alternatives/ld /usr/bin/ld
-
-if [[ ! -s "/tmp/certs/private_key.priv" ]]; then
-  echo "WARNING: Using test signing key. Run './generate-akmods-key' for production builds."
-  cp /tmp/certs/private_key.priv{.test,}
-  cp /tmp/certs/public_key.der{.test,}
-fi
-
-install -Dm644 /tmp/certs/public_key.der /etc/pki/akmods/certs/public_key.der
-install -Dm644 /tmp/certs/private_key.priv /etc/pki/akmods/private/private_key.priv
-
-# Either successfully build and install the kernel modules, or fail early with debug output
-KERNEL_VERSION="$(rpm -q kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"
-NVIDIA_AKMOD_VERSION="$(basename "$(rpm -q "akmod-${NVIDIA_PACKAGE_NAME}" --queryformat '%{VERSION}-%{RELEASE}')" ".fc${RELEASE%%.*}")"
-NVIDIA_LIB_VERSION="$(basename "$(rpm -q "xorg-x11-drv-${NVIDIA_PACKAGE_NAME}" --queryformat '%{VERSION}-%{RELEASE}')" ".fc${RELEASE%%.*}")"
-NVIDIA_FULL_VERSION="$(rpm -q "xorg-x11-drv-${NVIDIA_PACKAGE_NAME}" --queryformat '%{EPOCH}:%{VERSION}-%{RELEASE}.%{ARCH}')"
-
-akmods --force --kernels "${KERNEL_VERSION}" --kmod "${NVIDIA_PACKAGE_NAME}"
-
-modinfo /usr/lib/modules/${KERNEL_VERSION}/extra/${NVIDIA_PACKAGE_NAME}/nvidia{,-drm,-modeset,-peermem,-uvm}.ko.xz >/dev/null ||
-  (cat /var/cache/akmods/${NVIDIA_PACKAGE_NAME}/${NVIDIA_AKMOD_VERSION}-for-${KERNEL_VERSION}.failed.log && exit 1)
-
-mv /tmp/nvidia-drv /var/cache/
-
-cat <<EOF >/var/cache/akmods/nvidia-vars
-KERNEL_VERSION=${KERNEL_VERSION}
-RELEASE=${RELEASE}
-NVIDIA_PACKAGE_NAME=${NVIDIA_PACKAGE_NAME}
-NVIDIA_VERSION=${NVIDIA_VERSION}
-NVIDIA_FULL_VERSION=${NVIDIA_FULL_VERSION}
-NVIDIA_AKMOD_VERSION=${NVIDIA_AKMOD_VERSION}
-NVIDIA_LIB_VERSION=${NVIDIA_LIB_VERSION}
-EOF
+# akmods --force --kernels "${KERNEL_VERSION}" --kmod "nvidia"

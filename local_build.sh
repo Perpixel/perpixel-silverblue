@@ -13,7 +13,7 @@ echo "Build system oci archive."
 # tag for local oci archive
 #--tag oci-archive:/tmp/${NVIDIA_IMAGE_NAME}.tar.gz
 
-buildah pull ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION}
+podman pull ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION}
 
 buildah bud --pull=true \
   --tag ${NVIDIA_IMAGE_NAME}:${VERSION_TAG} \
