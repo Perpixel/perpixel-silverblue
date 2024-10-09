@@ -110,7 +110,7 @@ jobs:
             NVIDIA_VERSION=${{ env.NVIDIA_VERSION }}
           extra-args: |
             --no-cache
-            --pull always
+            --pull=always
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
 
