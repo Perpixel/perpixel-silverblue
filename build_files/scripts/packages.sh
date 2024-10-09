@@ -28,7 +28,7 @@ libavformat-free
 libavutil-free
 libswresample-free
 libswscale-free
-libavcodec-freeworld
+#libavcodec-freeworld
 libtree-sitter
 libpostproc-free
 libva-utils
