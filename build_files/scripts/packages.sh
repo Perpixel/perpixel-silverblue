@@ -2,6 +2,8 @@
 
 set -ouex pipefail
 
+rpm -qa | grep mesa
+
 INCLUDED_PACKAGES=(
 bat
 binutils
