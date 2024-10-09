@@ -11,8 +11,6 @@ clang
 cmake
 #distrobox
 fd-find
-#ffmpeg
-#ffmpeg-libs
 fswatch
 fzf
 git
@@ -45,6 +43,15 @@ vdpauinfo
 xclip
 zsh
 plymouth-theme-spinfinity
+ffmpeg-free
+libavcodec-free
+libavdevice-free
+libavfilter-free
+libavformat-free
+libavutil-free
+libpostproc-free
+libswresample-free
+libswscale-free
 #libavcodec-freeworld
 mesa-va-drivers-freeworld
 mesa-vdpau-drivers-freeworld
