@@ -89,7 +89,7 @@ EOF
 }
 
 install_nvidia_container_toolkit() {
-  curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
+  curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | tee /etc/yum.repos.d/nvidia-container-toolkit.repo
   dnf install nvidia-container-toolkit -y
 }
 
