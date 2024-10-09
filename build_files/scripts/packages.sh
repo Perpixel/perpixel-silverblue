@@ -9,8 +9,8 @@ clang
 cmake
 #distrobox
 fd-find
-ffmpeg
-ffmpeg-libs
+#ffmpeg
+#ffmpeg-libs
 fswatch
 fzf
 git
