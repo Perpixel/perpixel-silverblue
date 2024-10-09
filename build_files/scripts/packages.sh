@@ -2,9 +2,6 @@
 
 set -ouex pipefail
 
-
-rpm-ostree install libavcodec-freeworld mesa-va-drivers-freeworld mesa-vdpau-drivers-freeworld
-
 INCLUDED_PACKAGES=(
 bat
 binutils
@@ -62,6 +59,7 @@ EXCLUDED_PACKAGES=(
 #libswresample-free
 #libswscale-free
 mesa-va-drivers
+mesa-filesystem
 firefox-langpacks
 firefox
 virtualbox-guest-additions
