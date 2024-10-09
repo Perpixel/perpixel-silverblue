@@ -10,7 +10,7 @@ cmake
 #distrobox
 fd-find
 #ffmpeg
-ffmpeg-libs
+#ffmpeg-libs
 fswatch
 fzf
 git
@@ -51,7 +51,7 @@ mesa-filesystem
 
 EXCLUDED_PACKAGES=(
 #ffmpeg-free
-#libavcodec-free
+libavcodec-free
 #libavdevice-free
 #libavfilter-free
 #libavformat-free
