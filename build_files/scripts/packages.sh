@@ -10,7 +10,7 @@ cmake
 #distrobox
 fd-find
 #ffmpeg
-#ffmpeg-libs
+ffmpeg-libs
 fswatch
 fzf
 git
@@ -45,7 +45,7 @@ zsh
 plymouth-theme-spinfinity
 libavcodec-freeworld
 mesa-va-drivers-freeworld
-mesa-vdpau-drivers-freeworld
+#mesa-vdpau-drivers-freeworld
 )
 
 EXCLUDED_PACKAGES=(
@@ -58,8 +58,8 @@ EXCLUDED_PACKAGES=(
 #libpostproc-free
 #libswresample-free
 #libswscale-free
-mesa-va-drivers
-mesa-filesystem
+#mesa-va-drivers
+#mesa-filesystem
 firefox-langpacks
 firefox
 virtualbox-guest-additions
