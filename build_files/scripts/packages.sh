@@ -12,6 +12,7 @@ cmake
 distrobox
 fd-find
 ffmpeg
+ffmpeg-libs
 fswatch
 fzf
 git
@@ -21,16 +22,11 @@ ifuse
 inxi
 kitty
 kmod
-libtree-sitter
-libpostproc-free
 libva-utils
-libva-nvidia-driver
 lld
 lm_sensors
 make
 material-icons-fonts
-mesa-va-drivers-freeworld
-mesa-vdpau-drivers-freeworld
 npm
 nvtop
 pipewire-codec-aptx
@@ -51,14 +47,15 @@ zsh
 )
 
 EXCLUDED_PACKAGES=(
-ffmpeg-free
-libavcodec-free
 libavdevice-free
+libavcodec-free
 libavfilter-free
 libavformat-free
 libavutil-free
+libpostproc-free
 libswresample-free
 libswscale-free
+ffmpeg-free
 mesa-va-drivers
 firefox-langpacks
 firefox
