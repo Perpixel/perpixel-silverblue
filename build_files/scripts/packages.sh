@@ -45,6 +45,7 @@ zsh
 plymouth-theme-spinfinity
 libavcodec-freeworld
 mesa-va-drivers-freeworld
+mesa-filesystem
 #mesa-vdpau-drivers-freeworld
 )
 
