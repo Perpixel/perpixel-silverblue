@@ -43,7 +43,7 @@ vdpauinfo
 xclip
 zsh
 plymouth-theme-spinfinity
-libavcodec-freeworld
+#libavcodec-freeworld
 mesa-va-drivers-freeworld
 mesa-vdpau-drivers-freeworld
 )
