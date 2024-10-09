@@ -2,13 +2,16 @@
 
 set -ouex pipefail
 
+rpm -qa | grep mesa
+
 INCLUDED_PACKAGES=(
 bat
 binutils
+clang
+cmake
 distrobox
 fd-find
-ffmpeg
-ffmpeg-libs
+ffmpeg-free
 fswatch
 fzf
 git
@@ -17,13 +20,28 @@ htop
 ifuse
 inxi
 kitty
+kmod
+libavcodec-free
+libavdevice-free
+libavfilter-free
+libavformat-free
+libavutil-free
+libswresample-free
+libswscale-free
+libavcodec-freeworld
 libtree-sitter
+libpostproc-free
 libva-utils
 lld
 lm_sensors
+make
 material-icons-fonts
+mesa-va-drivers-freeworld
+mesa-vdpau-drivers-freeworld
 npm
+nvtop
 pipewire-codec-aptx
+plymouth-theme-spinfinity
 ripgrep
 rclone
 rpmconf
@@ -37,19 +55,9 @@ tmux
 vdpauinfo
 xclip
 zsh
-plymouth-theme-spinfinity
 )
 
 EXCLUDED_PACKAGES=(
-ffmpeg-free
-libavcodec-free
-libavdevice-free
-libavfilter-free
-libavformat-free
-libavutil-free
-libpostproc-free
-libswresample-free
-libswscale-free
 mesa-va-drivers
 firefox-langpacks
 firefox
@@ -78,24 +86,3 @@ elif [[ ${#INCLUDED_PACKAGES[@]} -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; t
 else
     echo "No packages to install."
 fi
-
-# nvidia
-
-. /var/cache/akmods/nvidia-vars
-
-rpm-ostree install \
-  /var/cache/nvidia-drv/xorg-x11-drv-nvidia-cuda-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  /var/cache/nvidia-drv/xorg-x11-drv-nvidia-cuda-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-devel-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-kmodsrc-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
- 	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-xorg-libs-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-power-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/xorg-x11-drv-nvidia-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/nvidia-modprobe-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/nvidia-settings-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/nvidia-xconfig-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-	/var/cache/nvidia-drv/nvidia-persistenced-${NVIDIA_VERSION}-*.fc${RELEASE}.rpm \
-  nvidia-vaapi-driver \
-  nvtop \
-  /var/cache/akmods/${NVIDIA_PACKAGE_NAME}/kmod-${NVIDIA_PACKAGE_NAME}-${KERNEL_VERSION}-${NVIDIA_AKMOD_VERSION}.fc${RELEASE}.rpm \
