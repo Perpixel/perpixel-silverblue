@@ -13,13 +13,6 @@ rm -rf /etc/yum.repos.d/fedora-updates-archive.repo
 rm -rf /etc/yum.repos.d/fedora-updates-testing.repo
 dnf install kernel-headers kernel-devel g++ -y
 
-# download
-#curl -O https://download.nvidia.com/XFree86/Linux-${ARCH}/${NVIDIA_VERSION}/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
-
-# extract
-#sh ./NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run --extract-only --target nvidiapkg
-#cd ./nvidiapkg
-
 git clone --depth 1 --branch ${NVIDIA_VERSION} https://github.com/NVIDIA/open-gpu-kernel-modules /build/nvidia
 
 # compile kernel modules
