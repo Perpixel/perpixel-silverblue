@@ -108,7 +108,9 @@ jobs:
             BASE_IMAGE=${{ env.BASE_IMAGE }}
             FEDORA_MAJOR_VERSION=${{ env.FEDORA_MAJOR_VERSION }}
             NVIDIA_VERSION=${{ env.NVIDIA_VERSION }}
-
+          extra-args: |
+            --no-cache
+            --pull always
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
 
