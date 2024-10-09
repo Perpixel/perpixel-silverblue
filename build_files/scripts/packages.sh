@@ -45,13 +45,12 @@ zsh
 plymouth-theme-spinfinity
 libavcodec-freeworld
 mesa-va-drivers-freeworld
-mesa-filesystem
-#mesa-vdpau-drivers-freeworld
+mesa-vdpau-drivers-freeworld
 )
 
 EXCLUDED_PACKAGES=(
 #ffmpeg-free
-libavcodec-free
+#libavcodec-free
 #libavdevice-free
 #libavfilter-free
 #libavformat-free
