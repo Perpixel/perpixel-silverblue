@@ -58,8 +58,8 @@ EXCLUDED_PACKAGES=(
 #libpostproc-free
 #libswresample-free
 #libswscale-free
-#mesa-va-drivers
 #mesa-filesystem
+mesa-va-drivers
 firefox-langpacks
 firefox
 virtualbox-guest-additions
