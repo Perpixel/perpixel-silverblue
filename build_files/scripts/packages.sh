@@ -27,7 +27,6 @@ lm_sensors
 make
 material-icons-fonts
 npm
-nvidia-vaa-driver
 nvtop
 pipewire-codec-aptx
 ripgrep
