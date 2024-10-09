@@ -7,10 +7,10 @@ bat
 binutils
 clang
 cmake
-distrobox
+#distrobox
 fd-find
-#ffmpeg
-#ffmpeg-libs
+ffmpeg
+ffmpeg-libs
 fswatch
 fzf
 git
@@ -27,9 +27,9 @@ lm_sensors
 make
 material-icons-fonts
 npm
-#nvidia-vaa-driver
+nvidia-vaa-driver
 nvtop
-#pipewire-codec-aptx
+pipewire-codec-aptx
 ripgrep
 rclone
 rpmconf
@@ -47,19 +47,19 @@ plymouth-theme-spinfinity
 )
 
 EXCLUDED_PACKAGES=(
-#ffmpeg-free
-#libavcodec-free
-#libavdevice-free
-#libavfilter-free
-#libavformat-free
-#libavutil-free
-#libpostproc-free
-#libswresample-free
-#libswscale-free
-#mesa-va-drivers
+ffmpeg-free
+libavcodec-free
+libavdevice-free
+libavfilter-free
+libavformat-free
+libavutil-free
+libpostproc-free
+libswresample-free
+libswscale-free
+mesa-va-drivers
 firefox-langpacks
 firefox
-#virtualbox-guest-additions
+virtualbox-guest-additions
 )
 
 df -h

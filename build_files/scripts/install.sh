@@ -106,10 +106,15 @@ cleanup() {
   rm -rf /var/*
 }
 
+install_packages() {
+  /tmp/scripts/packages.sh
+}
+
 # run installation
 #
 install_nvidia_drivers
 install_nvidia_container_toolkit
+install_packages
 gen_initramfs
 cleanup
 
