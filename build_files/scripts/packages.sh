@@ -2,6 +2,9 @@
 
 set -ouex pipefail
 
+
+rpm-ostree install libavcodec-freeworld mesa-va-drivers-freeworld mesa-vdpau-drivers-freeworld
+
 INCLUDED_PACKAGES=(
 bat
 binutils
@@ -43,18 +46,21 @@ vdpauinfo
 xclip
 zsh
 plymouth-theme-spinfinity
+libavcodec-freeworld
+mesa-va-drivers-freeworld
+mesa-vdpau-drivers-freeworld
 )
 
 EXCLUDED_PACKAGES=(
-ffmpeg-free
-libavcodec-free
-libavdevice-free
-libavfilter-free
-libavformat-free
-libavutil-free
-libpostproc-free
-libswresample-free
-libswscale-free
+#ffmpeg-free
+#libavcodec-free
+#libavdevice-free
+#libavfilter-free
+#libavformat-free
+#libavutil-free
+#libpostproc-free
+#libswresample-free
+#libswscale-free
 mesa-va-drivers
 firefox-langpacks
 firefox
