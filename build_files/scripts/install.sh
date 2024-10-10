@@ -31,10 +31,10 @@ sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/fedora-updates.repo
 
 # disable
 sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-cisco-openh264.repo
-#sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates-testing.repo
-#sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates-archive.repo
-#sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo
-#sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
+sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates-testing.repo
+sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates-archive.repo
+sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo
+sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
 
 # define nvidia driver install process
 #
