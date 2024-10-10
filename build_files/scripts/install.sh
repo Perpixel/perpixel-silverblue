@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-set -ouex pipefail
+set -oex pipefail
 
 # variables
 #
