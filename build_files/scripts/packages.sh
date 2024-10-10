@@ -11,8 +11,7 @@ clang
 cmake
 distrobox
 fd-find
-ffmpeg
-ffmpeg-libs
+ffmpeg-free
 fswatch
 fzf
 git
@@ -27,6 +26,8 @@ lld
 lm_sensors
 make
 material-icons-fonts
+mesa-va-drivers-freeworld
+mesa-vdpau-drivers-freeworld
 npm
 nvidia-vaapi-driver
 nvtop
