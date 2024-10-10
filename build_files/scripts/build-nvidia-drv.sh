@@ -8,9 +8,8 @@ KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
 
 # Install RPMs
 rm -rf /etc/yum.repos.d/fedora-cisco-openh264.repo
-rm -rf /etc/yum.repos.d/fedora-updates.repo
-rm -rf /etc/yum.repos.d/fedora-updates-archive.repo
-rm -rf /etc/yum.repos.d/fedora-updates-testing.repo
+#rm -rf /etc/yum.repos.d/fedora-updates-archive.repo
+#rm -rf /etc/yum.repos.d/fedora-updates-testing.repo
 dnf install kernel-headers kernel-devel g++ -y
 
 git clone --depth 1 --branch ${NVIDIA_VERSION} https://github.com/NVIDIA/open-gpu-kernel-modules /build/nvidia
