@@ -28,6 +28,7 @@ lm_sensors
 make
 material-icons-fonts
 npm
+nvidia-vaapi-driver
 nvtop
 pipewire-codec-aptx
 plymouth-theme-spinfinity
