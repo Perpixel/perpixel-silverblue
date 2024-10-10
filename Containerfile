@@ -24,7 +24,7 @@ RUN rpm-ostree cliwrap install-to-root / \
 #
 FROM ${BASE_IMAGE}:${FEDORA_VERSION}
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
-COPY --from=packages-list /tmp/old-packages.txt /tmp
+#COPY --from=packages-list /tmp/old-packages.txt /tmp
 COPY build_files /tmp/
 COPY --from=nvidia-builder /build/modules /tmp/nvidia-modules
 COPY build_files /tmp/
