@@ -6,11 +6,11 @@ FEDORA_VERSION="$(rpm -E '%fedora')"
 ARCH=$(rpm -E '%_arch')
 KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
 
-# Install RPMs
-rm -rf /etc/yum.repos.d/fedora-cisco-openh264.repo
-#rm -rf /etc/yum.repos.d/fedora-updates-archive.repo
-#rm -rf /etc/yum.repos.d/fedora-updates-testing.repo
-dnf install kernel-headers kernel-devel g++ -y
+dnf install kernel-headers kernel-devel g++ kmod -y
+
+if [ ${FEDORA_VERSION} == 40 ]; then
+  ln -s /usr/bin/ld.bfd /etc/alternatives/ld && ln -s /etc/alternatives/ld /usr/bin/ld
+fi
 
 git clone --depth 1 --branch ${NVIDIA_VERSION} https://github.com/NVIDIA/open-gpu-kernel-modules /build/nvidia
 

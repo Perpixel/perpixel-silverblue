@@ -110,13 +110,6 @@ install_packages() {
   /tmp/scripts/packages.sh
 }
 
-# test packages only
-
-if [ $1 == "test-packages" ]; then
-  install_packages
-  exit
-fi
-
 # run installation
 
 install_nvidia_drivers

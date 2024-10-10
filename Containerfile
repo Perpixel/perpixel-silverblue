@@ -2,12 +2,6 @@ ARG BASE_IMAGE="${BASE_IMAGE}"
 ARG FEDORA_MAJOR_VERSION="${FEDORA_MAJOR_VERSION}"
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
 
-# Run a rpm package install test to fail early when missing dependecies
-#
-FROM ${BASE_IMAGE}:${FEDORA_MAJOR_VERSION}
-RUN rpm-ostree cliwrap install-to-root / \
-  && /tmp/scripts/install.sh test-packages
-
 # Build NVIDIA drivers
 #
 # This will build the rpm from rpmfusion source and then make
