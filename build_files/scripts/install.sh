@@ -25,12 +25,14 @@ dnf install /tmp/rpms/rpmfusion*.rpm -y
 # enable
 sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo
 sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-free-updates.repo
+sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/fedora-updates.repo
+#sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo
+#sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
 
 # disable
 sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-cisco-openh264.repo
-#sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates.repo
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates-testing.repo
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates-archive.repo
+#sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates-testing.repo
+#sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates-archive.repo
 #sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo
 #sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
 
@@ -50,23 +52,27 @@ install_nvidia_drivers() {
   ./nvidia-installer -s \
     --no-kernel-modules \
     --x-library-path=/usr/lib64 \
-    --no-systemd \
     --no-x-check \
     --no-check-for-alternate-installs \
     --skip-module-load \
     --skip-depmod \
     --no-rebuild-initramfs \
-    --no-questions
+    --glvnd-egl-config-path=/usr/lib64 \
+    --no-questions \
+    --log-file-name=/tmp/nvidia-installer.log
+
+  cat /tmp/nvidia-installer.log
+
+  nvidia-xconfig --allow-empty-initial-configuration --no-sli --base-mosaic
 
   mkdir -p /usr/lib/systemd/system-{sleep,preset}
 
   # Systemd units and script for suspending/resuming
-  cat <<EOF >/usr/lib/systemd/system-preset/70-nvidia.preset
-enable nvidia-hibernate.service
-enable nvidia-resume.service
-enable nvidia-suspend.service
-enable nvidia-powerd.service
-EOF
+  printf '%s\n' 'enable nvidia-hibernate.service' \
+    'enable nvidia-resume.service' \
+    'enable nvidia-suspend.service' \
+    'enable nvidia-powerd.service' >/usr/lib/systemd/system-preset/70-nvidia.preset
+  chmod 0644 /usr/lib/systemd/system-preset/70-nvidia.preset
 
   install -p -m 0644 systemd/system/nvidia-{hibernate,powerd,resume,suspend}.service /usr/lib/systemd/system/
 
@@ -93,7 +99,7 @@ install_nvidia_container_toolkit() {
   dnf install nvidia-container-toolkit -y
 }
 
-gen_initramfs() {
+build_initramfs() {
   # remove deprecated files
   rm -rf /usr/lib/dracut/dracut.conf.d/99-nvidia-dracut.conf
   # generate initramfs
@@ -112,10 +118,10 @@ install_packages() {
 
 # run installation
 
+install_packages
 install_nvidia_drivers
 install_nvidia_container_toolkit
-install_packages
-gen_initramfs
+build_initramfs
 cleanup
 
 #. /tmp/scripts/packages.sh
