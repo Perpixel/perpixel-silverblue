@@ -9,8 +9,7 @@ disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
 disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
 
 FEDORA_VERSION="$(rpm -E '%fedora')"
-#ARCH=$(rpm -E '%_arch')
-KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-)
+KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
 
 dnf install kernel-devel-"${KERNEL_VERSION}" g++ kmod -y
 
