@@ -2,14 +2,19 @@
 
 set -oex pipefail
 
+source "$(dirname "$0")"/functions.sh
+
 # variables
 #
 KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
-FEDORA_VERSION="$(rpm -E '%fedora')"
 ARCH=$(rpm -E '%_arch')
 
 # setup fedora repos
 #
+
+disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
+disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
+
 mkdir -p /nvidia
 cd /nvidia
 
