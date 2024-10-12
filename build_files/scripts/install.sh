@@ -13,27 +13,6 @@ ARCH=$(rpm -E '%_arch')
 mkdir -p /nvidia
 cd /nvidia
 
-# Install RPMs
-
-# download and install rpm fusion package
-wget -P /tmp/rpms \
-  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${FEDORA_VERSION}.noarch.rpm \
-  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${FEDORA_VERSION}.noarch.rpm
-
-dnf install /tmp/rpms/rpmfusion*.rpm -y
-
-# enable
-sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo
-sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-free-updates.repo
-
-# disable
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-cisco-openh264.repo
-#sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates.repo
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates-testing.repo
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates-archive.repo
-#sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo
-#sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
-
 # define nvidia driver install process
 #
 install_nvidia_drivers() {
