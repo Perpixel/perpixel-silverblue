@@ -26,9 +26,9 @@ install_nvidia_drivers() {
   pushd /tmp/nvidia
 
   # download
-  curl -O https://download.nvidia.com/XFree86/Linux-${ARCH}/${NVIDIA_VERSION}/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
+  curl -O https://download.nvidia.com/XFree86/Linux-"${ARCH}"/"${NVIDIA_VERSION}"/NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run
   # extract
-  sh ./NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run --extract-only --target nvidiapkg
+  sh ./NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run --extract-only --target nvidiapkg
   # install driver files
   pushd ./nvidiapkg
   ./nvidia-installer -s \
@@ -70,9 +70,9 @@ install_nvidia_drivers() {
   popd
   # install open kernel modules
   pushd /tmp/nvidia-modules
-  mkdir -p /lib/modules/${KERNEL_VERSION}/kernel/drivers/video
-  install -D -m 0755 nvidia*.ko /lib/modules/${KERNEL_VERSION}/kernel/drivers/video/
-  depmod ${KERNEL_VERSION}
+  mkdir -p /lib/modules/"${KERNEL_VERSION}"/kernel/drivers/video
+  install -D -m 0755 nvidia*.ko /lib/modules/"${KERNEL_VERSION}"/kernel/drivers/video/
+  depmod "${KERNEL_VERSION}"
   popd
 }
 
@@ -86,7 +86,7 @@ build_initramfs() {
   rm -rf /usr/lib/dracut/dracut.conf.d/99-nvidia-dracut.conf
   # generate initramfs
   /usr/libexec/rpm-ostree/wrapped/dracut --no-hostonly --kver "${KERNEL_VERSION}" --reproducible -v --add ostree -f "/lib/modules/${KERNEL_VERSION}/initramfs.img"
-  chmod 0600 /lib/modules/${KERNEL_VERSION}/initramfs.img
+  chmod 0600 /lib/modules/"${KERNEL_VERSION}"/initramfs.img
 }
 
 cleanup() {
