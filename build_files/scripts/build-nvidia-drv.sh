@@ -9,13 +9,16 @@ disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
 disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
 
 FEDORA_VERSION="$(rpm -E '%fedora')"
+ARCH="$(rpm -E '%_arch')"
 KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
 
-dnf install kernel-devel-"${KERNEL_VERSION}" g++ kmod -y
+dnf install koji g++ kmod -y
+koji download-build --arch="${ARCH}" kernel-"${KERNEL_VERSION}"
+rpm install -y kernel-devel-*.rpm
 
-if [ "${FEDORA_VERSION}" == 40 ]; then
-  ln -s /usr/bin/ld.bfd /etc/alternatives/ld && ln -s /etc/alternatives/ld /usr/bin/ld
-fi
+#if [ "${FEDORA_VERSION}" == 40 ]; then
+ln -s /usr/bin/ld.bfd /etc/alternatives/ld && ln -s /etc/alternatives/ld /usr/bin/ld
+#fi
 
 git clone --depth 1 --branch "${NVIDIA_VERSION}" https://github.com/NVIDIA/open-gpu-kernel-modules /build/nvidia
 
