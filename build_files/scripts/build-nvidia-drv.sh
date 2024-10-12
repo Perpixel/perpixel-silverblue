@@ -2,11 +2,11 @@
 
 set -oeux pipefail
 
+dnf install kernel-headers kernel-devel g++ kmod -y
+
 FEDORA_VERSION="$(rpm -E '%fedora')"
 ARCH=$(rpm -E '%_arch')
 KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
-
-dnf install kernel-headers kernel-devel g++ kmod -y
 
 if [ ${FEDORA_VERSION} == 40 ]; then
   ln -s /usr/bin/ld.bfd /etc/alternatives/ld && ln -s /etc/alternatives/ld /usr/bin/ld
