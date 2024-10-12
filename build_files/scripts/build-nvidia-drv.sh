@@ -1,6 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 set -oeux pipefail
+
+source "$(dirname "$0")"/functions.sh
+
+dnf config-manager --set-disabled fedora-cisco-openh264
 
 disable-repo /etc/yum.repos.d/fedora-cisco-openh264.repo
 disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
