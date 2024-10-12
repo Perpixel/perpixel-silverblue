@@ -8,11 +8,11 @@ disable-repo /etc/yum.repos.d/fedora-cisco-openh264.repo
 disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
 disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
 
-dnf install kernel-headers kernel-devel g++ kmod -y
-
 FEDORA_VERSION="$(rpm -E '%fedora')"
 #ARCH=$(rpm -E '%_arch')
-KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
+KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-)
+
+dnf install kernel-devel-"${KERNEL_VERSION}" g++ kmod -y
 
 if [ "${FEDORA_VERSION}" == 40 ]; then
   ln -s /usr/bin/ld.bfd /etc/alternatives/ld && ln -s /etc/alternatives/ld /usr/bin/ld
