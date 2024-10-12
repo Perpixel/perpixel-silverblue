@@ -2,11 +2,10 @@
 
 set -oeux pipefail
 
-FEDORA_VERSION="$(rpm -E '%fedora')"
-ARCH=$(rpm -E '%_arch')
-
 dnf install kernel-headers kernel-devel g++ kmod -y
 
+FEDORA_VERSION="$(rpm -E '%fedora')"
+ARCH=$(rpm -E '%_arch')
 KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
 
 if [ ${FEDORA_VERSION} == 40 ]; then
