@@ -2,6 +2,9 @@
 
 set -oeux pipefail
 
+disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
+disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
+
 dnf install kernel-headers kernel-devel g++ kmod -y
 
 FEDORA_VERSION="$(rpm -E '%fedora')"
