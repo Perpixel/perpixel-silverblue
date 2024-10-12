@@ -28,7 +28,7 @@ jobs:
         run: |
             REPO=${{ github.repository }}
             echo "IMAGE_NAME=nvidia-${REPO##*/}" >> $GITHUB_ENV
-            echo "FEDORA_MAJOR_VERSION=${{ matrix.version }}" >> $GITHUB_ENV
+            echo "FEDORA_VERSION=${{ matrix.version }}" >> $GITHUB_ENV
             
       - name: Generate tags 
         id: generate-tags
@@ -40,12 +40,12 @@ jobs:
           BUILD_TAGS=()
           # Have tags for tracking builds during pull request
           SHA_SHORT="${GITHUB_SHA::7}"
-          COMMIT_TAGS+=("pr-${{ github.event.number }}-${{ env.FEDORA_MAJOR_VERSION }}")
-          COMMIT_TAGS+=("${SHA_SHORT}-${{ env.FEDORA_MAJOR_VERSION }}")
+          COMMIT_TAGS+=("pr-${{ github.event.number }}-${{ env.FEDORA_VERSION }}")
+          COMMIT_TAGS+=("${SHA_SHORT}-${{ env.FEDORA_VERSION }}")
           COMMIT_TAGS+=("pr-${{ github.event.number }}")
           COMMIT_TAGS+=("${SHA_SHORT}")
 
-          BUILD_TAGS+=("${{ env.FEDORA_MAJOR_VERSION }}" "${{ env.FEDORA_MAJOR_VERSION }}-${TIMESTAMP}")
+          BUILD_TAGS+=("${{ env.FEDORA_VERSION }}" "${{ env.FEDORA_VERSION }}-${TIMESTAMP}")
           #BUILD_TAGS+=("latest")
 
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
@@ -70,7 +70,7 @@ jobs:
       - name: Get current version
         id: labels
         run: |
-          ver=$(skopeo inspect docker://${BASE_IMAGE}:${FEDORA_MAJOR_VERSION} | jq -r '.Labels["org.opencontainers.image.version"]')
+          ver=$(skopeo inspect docker://${BASE_IMAGE}:${FEDORA_VERSION} | jq -r '.Labels["org.opencontainers.image.version"]')
           echo "VERSION=$ver" >> $GITHUB_OUTPUT
 
       # Build metadata
@@ -106,7 +106,7 @@ jobs:
             ${{ steps.generate-tags.outputs.alias_tags }}
           build-args: |
             BASE_IMAGE=${{ env.BASE_IMAGE }}
-            FEDORA_MAJOR_VERSION=${{ env.FEDORA_MAJOR_VERSION }}
+            FEDORA_VERSION=${{ env.FEDORA_VERSION }}
             NVIDIA_VERSION=${{ env.NVIDIA_VERSION }}
           extra-args: |
             --no-cache
