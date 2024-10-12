@@ -14,7 +14,7 @@ KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
 
 dnf install koji g++ kmod -y
 koji download-build --arch="${ARCH}" kernel-"${KERNEL_VERSION}"
-rpm install -y kernel-devel-*.rpm
+dnf install -y kernel-devel-*.rpm
 
 #if [ "${FEDORA_VERSION}" == 40 ]; then
 ln -s /usr/bin/ld.bfd /etc/alternatives/ld && ln -s /etc/alternatives/ld /usr/bin/ld
