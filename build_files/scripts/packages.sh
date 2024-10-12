@@ -40,6 +40,12 @@ INCLUDED_PACKAGES=(
   clang
   cmake
   distrobox
+  egl-x11
+  egl-gbm
+  egl-utils
+  egl-wayland
+  libglvnd-egl
+  libwayland-egl
   fd-find
   ffmpeg
   ffmpeg-libs
@@ -53,6 +59,7 @@ INCLUDED_PACKAGES=(
   kitty
   kmod
   libva-utils
+  libtree-sitter
   lld
   lm_sensors
   make
@@ -60,6 +67,7 @@ INCLUDED_PACKAGES=(
   npm
   nvidia-vaapi-driver
   nvtop
+  opencl-filesystem
   pipewire-codec-aptx
   plymouth-theme-spinfinity
   ripgrep
