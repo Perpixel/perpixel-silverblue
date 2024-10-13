@@ -2,39 +2,12 @@
 
 set -oex pipefail
 
+source "$(dirname "$0")"/functions.sh
+
 # variables
 #
 KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
-FEDORA_VERSION="$(rpm -E '%fedora')"
 ARCH=$(rpm -E '%_arch')
-
-# setup fedora repos
-#
-mkdir -p /nvidia
-cd /nvidia
-
-# Install RPMs
-
-# download and install rpm fusion package
-wget -P /tmp/rpms \
-  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${FEDORA_VERSION}.noarch.rpm \
-  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${FEDORA_VERSION}.noarch.rpm
-
-dnf install /tmp/rpms/rpmfusion*.rpm -y
-
-# enable
-sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo
-sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-free-updates.repo
-sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/fedora-updates.repo
-#sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo
-#sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
-
-# disable
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-cisco-openh264.repo
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates-testing.repo
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates-archive.repo
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo
-sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
 
 # define nvidia driver install process
 #
@@ -44,9 +17,9 @@ install_nvidia_drivers() {
   pushd /tmp/nvidia
 
   # download
-  curl -O https://download.nvidia.com/XFree86/Linux-${ARCH}/${NVIDIA_VERSION}/NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run
+  curl -O https://download.nvidia.com/XFree86/Linux-"${ARCH}"/"${NVIDIA_VERSION}"/NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run
   # extract
-  sh ./NVIDIA-Linux-${ARCH}-${NVIDIA_VERSION}.run --extract-only --target nvidiapkg
+  sh ./NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run --extract-only --target nvidiapkg
   # install driver files
   pushd ./nvidiapkg
   ./nvidia-installer -s \
@@ -88,9 +61,9 @@ install_nvidia_drivers() {
   popd
   # install open kernel modules
   pushd /tmp/nvidia-modules
-  mkdir -p /lib/modules/${KERNEL_VERSION}/kernel/drivers/video
-  install -D -m 0755 nvidia*.ko /lib/modules/${KERNEL_VERSION}/kernel/drivers/video/
-  depmod ${KERNEL_VERSION}
+  mkdir -p /lib/modules/"${KERNEL_VERSION}"/kernel/drivers/video
+  install -D -m 0755 nvidia*.ko /lib/modules/"${KERNEL_VERSION}"/kernel/drivers/video/
+  depmod "${KERNEL_VERSION}"
   popd
 }
 
@@ -104,7 +77,7 @@ build_initramfs() {
   rm -rf /usr/lib/dracut/dracut.conf.d/99-nvidia-dracut.conf
   # generate initramfs
   /usr/libexec/rpm-ostree/wrapped/dracut --no-hostonly --kver "${KERNEL_VERSION}" --reproducible -v --add ostree -f "/lib/modules/${KERNEL_VERSION}/initramfs.img"
-  chmod 0600 /lib/modules/${KERNEL_VERSION}/initramfs.img
+  chmod 0600 /lib/modules/"${KERNEL_VERSION}"/initramfs.img
 }
 
 cleanup() {

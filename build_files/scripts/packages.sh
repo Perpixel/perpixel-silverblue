@@ -1,6 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 set -ouex pipefail
+
+FEDORA_VERSION="$(rpm -E '%fedora')"
+source "$(dirname "$0")"/functions.sh
 
 INCLUDED_PACKAGES=(
   bat
@@ -67,25 +70,44 @@ EXCLUDED_PACKAGES=(
   firefox-langpacks
   firefox
   virtualbox-guest-additions
- )
+)
 
 if [[ ${#EXCLUDED_PACKAGES[@]} -gt 0 ]]; then
-    EXCLUDED_PACKAGES=($(rpm -qa --queryformat='%{NAME} ' ${EXCLUDED_PACKAGES[@]}))
+  mapfile -t EXCLUDED_PACKAGES < <(rpm -qa --queryformat='%{NAME}\n' "${EXCLUDED_PACKAGES[@]}")
 fi
 
-if [[ ${#INCLUDED_PACKAGES[@]} -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -eq 0 ]]; then
-    rpm-ostree install \
-        ${INCLUDED_PACKAGES[@]}
+# Install RPMs
 
-elif [[ ${#INCLUDED_PACKAGES[@]} -eq 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
-    rpm-ostree override remove \
-        ${EXCLUDED_PACKAGES[@]}
+rpm-ostree cliwrap install-to-root /
+
+# download and install rpm fusion package
+wget -P /tmp/rpms \
+  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-"${FEDORA_VERSION}".noarch.rpm \
+  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-"${FEDORA_VERSION}".noarch.rpm
+
+# disable
+disable-repo /etc/yum.repos.d/fedora-cisco-openh264.repo
+disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
+disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
+
+dnf install /tmp/rpms/rpmfusion*.rpm -y
+
+disable-repo /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo
+disable-repo /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
+
+if [[ ${#INCLUDED_PACKAGES[@]} -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -eq 0 ]]; then
+  rpm-ostree install \
+    "${INCLUDED_PACKAGES[@]}"
+
+elif [[ "${#INCLUDED_PACKAGES[@]}" -eq 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
+  rpm-ostree override remove \
+    "${EXCLUDED_PACKAGES[@]}"
 
 elif [[ ${#INCLUDED_PACKAGES[@]} -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
-    rpm-ostree override remove \
-        ${EXCLUDED_PACKAGES[@]} \
-        $(printf -- "--install=%s " ${INCLUDED_PACKAGES[@]})
+  rpm-ostree override remove \
+    "${EXCLUDED_PACKAGES[@]}" \
+    $(printf -- '--install=%s ' "${INCLUDED_PACKAGES[@]}")
 
 else
-    echo "No packages to install."
+  echo "No packages to install."
 fi
