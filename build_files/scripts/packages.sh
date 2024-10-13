@@ -3,30 +3,7 @@
 set -ouex pipefail
 
 FEDORA_VERSION="$(rpm -E '%fedora')"
-
 source "$(dirname "$0")"/functions.sh
-
-# Install RPMs
-
-rpm-ostree cliwrap install-to-root /
-
-# download and install rpm fusion package
-wget -P /tmp/rpms \
-  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-"${FEDORA_VERSION}".noarch.rpm \
-  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-"${FEDORA_VERSION}".noarch.rpm
-
-# disable
-disable-repo /etc/yum.repos.d/fedora-cisco-openh264.repo
-#sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/fedora-updates.repo
-disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
-disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
-
-dnf install /tmp/rpms/rpmfusion*.rpm -y
-
-sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-nonfree-updates.repo
-sed -i 's/enabled=0/enabled=1/' /etc/yum.repos.d/rpmfusion-free-updates.repo
-disable-repo /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo
-disable-repo /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
 
 INCLUDED_PACKAGES=(
   bat
@@ -96,8 +73,27 @@ EXCLUDED_PACKAGES=(
 )
 
 if [[ ${#EXCLUDED_PACKAGES[@]} -gt 0 ]]; then
-  EXCLUDED_PACKAGES=($(rpm -qa --queryformat='%{NAME} ' ${EXCLUDED_PACKAGES[@]}))
+  mapfile -t EXCLUDED_PACKAGES < <(rpm -qa --queryformat='%{NAME}\n' "${EXCLUDED_PACKAGES[@]}")
 fi
+
+# Install RPMs
+
+rpm-ostree cliwrap install-to-root /
+
+# download and install rpm fusion package
+wget -P /tmp/rpms \
+  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-"${FEDORA_VERSION}".noarch.rpm \
+  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-"${FEDORA_VERSION}".noarch.rpm
+
+# disable
+disable-repo /etc/yum.repos.d/fedora-cisco-openh264.repo
+disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
+disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
+
+dnf install /tmp/rpms/rpmfusion*.rpm -y
+
+disable-repo /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo
+disable-repo /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
 
 if [[ ${#INCLUDED_PACKAGES[@]} -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -eq 0 ]]; then
   rpm-ostree install \
