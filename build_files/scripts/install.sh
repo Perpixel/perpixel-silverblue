@@ -9,9 +9,6 @@ source "$(dirname "$0")"/functions.sh
 KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
 ARCH=$(rpm -E '%_arch')
 
-mkdir -p /nvidia
-cd /nvidia
-
 # define nvidia driver install process
 #
 install_nvidia_drivers() {
