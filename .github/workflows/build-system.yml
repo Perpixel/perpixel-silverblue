@@ -113,7 +113,14 @@ jobs:
             --pull=always
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
-
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Changelogs - ${{ steps.date.outputs.date }}"
+          body: "nightly-tag-${{ steps.date.outputs.date }}"
+          tag_name: "nightly-tag-${{ steps.date.outputs.date }}"
+          draft: false
+          make_latest: true
       # Push the image to GHCR (Image Registry)
       - name: Push To GHCR
         uses: redhat-actions/push-to-registry@v2

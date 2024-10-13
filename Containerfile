@@ -1,12 +1,12 @@
-#ARG TARGET_IMAGE_NAME="${TARGET_IMAGE_NAME}"
+ARG TARGET_IMAGE_NAME="${TARGET_IMAGE_NAME}"
 ARG BASE_IMAGE="${BASE_IMAGE}"
 ARG FEDORA_VERSION="${FEDORA_VERSION}"
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
 
 # Collect current packages
 
-#FROM ghcr.io/perpixel/${TARGET_IMAGE_NAME}:${FEDORA_VERSION} as packages-list
-#RUN touch /tmp/old-packages.txt
+FROM ghcr.io/perpixel/${TARGET_IMAGE_NAME}:${FEDORA_VERSION} as packages-list
+RUN touch /tmp/packages.old
 
 # Build NVIDIA drivers
 #
@@ -21,10 +21,10 @@ RUN rpm-ostree cliwrap install-to-root / \
 
 # Build final image
 #
-#
+
 FROM ${BASE_IMAGE}:${FEDORA_VERSION}
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
-#COPY --from=packages-list /tmp/old-packages.txt /tmp
+COPY --from=packages-list /tmp/packages.old /tmp/packages.old
 COPY build_files /tmp/
 COPY --from=nvidia-builder /build/modules /tmp/nvidia-modules
 COPY build_files /tmp/

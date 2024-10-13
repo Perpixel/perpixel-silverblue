@@ -111,3 +111,9 @@ elif [[ ${#INCLUDED_PACKAGES[@]} -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; t
 else
   echo "No packages to install."
 fi
+
+if [ -f /tmp/changelist.txt ]; then
+  rpm -qa >/tmp/packages.new
+  diff /tmp/packages.old /tmp/packages.new >/tmp/changelist.txt
+  cat /tmp/changelist.txt
+fi
