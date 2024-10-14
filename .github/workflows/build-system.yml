@@ -28,6 +28,7 @@ jobs:
             REPO=${{ github.repository }}
             echo "IMAGE_NAME=nvidia-${REPO##*/}" >> $GITHUB_ENV
             echo "FEDORA_VERSION=${{ matrix.version }}" >> $GITHUB_ENV
+            echo "NVIDIA_VERSION"=$(<nvidia_version.txt) >> $GITHUB_ENV
             
       - name: Generate tags 
         id: generate-tags
@@ -106,6 +107,7 @@ jobs:
             TARGET_IMAGE_NAME=${{ env.IMAGE_NAME }}
             BASE_IMAGE=${{ env.BASE_IMAGE }}
             FEDORA_VERSION=${{ env.FEDORA_VERSION }}
+            NVIDIA_VERSION=${{ env.NVIDIA_VERSION }}
           extra-args: |
             --no-cache
             --pull=always

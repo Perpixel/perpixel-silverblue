@@ -1,6 +1,7 @@
 ARG TARGET_IMAGE_NAME="${TARGET_IMAGE_NAME}"
 ARG BASE_IMAGE="${BASE_IMAGE}"
 ARG FEDORA_VERSION="${FEDORA_VERSION}"
+ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
 
 # Collect current packages
 
@@ -13,7 +14,7 @@ RUN rpm -qa >/packages.old
 # them available to the final image in this container.i
 
 FROM ${BASE_IMAGE}:${FEDORA_VERSION} as nvidia-builder
-RUN NVIDIA_VERSION=$(<nvidia-version.txt)
+ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
 COPY build_files/scripts /tmp/scripts
 RUN rpm-ostree cliwrap install-to-root / \
   && /tmp/scripts/build-nvidia-drv.sh
@@ -22,7 +23,7 @@ RUN rpm-ostree cliwrap install-to-root / \
 #
 
 FROM ${BASE_IMAGE}:${FEDORA_VERSION}
-RUN NVIDIA_VERSION=$(<nvidia-version.txt)
+ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
 COPY build_files/scripts /tmp/scripts
 COPY --from=nvidia-builder /build/modules /tmp/nvidia-modules
 COPY --from=packages-list /packages.old /tmp/build/packages.old
