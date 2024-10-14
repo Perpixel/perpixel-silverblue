@@ -83,6 +83,7 @@ build_initramfs() {
 cleanup() {
   rm -rf /tmp/*
   rm -rf /var/*
+  dnf -y clean all
 }
 
 install_packages() {

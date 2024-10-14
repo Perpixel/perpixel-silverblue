@@ -6,7 +6,7 @@ ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
 # Collect current packages
 
 FROM ghcr.io/perpixel/${TARGET_IMAGE_NAME}:${FEDORA_VERSION} as packages-list
-RUN touch /tmp/packages.old
+RUN rpm -qa >/packages.old
 
 # Build NVIDIA drivers
 #
@@ -15,7 +15,7 @@ RUN touch /tmp/packages.old
 
 FROM ${BASE_IMAGE}:${FEDORA_VERSION} as nvidia-builder
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
-COPY build_files /tmp/
+COPY build_files/scripts /tmp/scripts
 RUN rpm-ostree cliwrap install-to-root / \
   && /tmp/scripts/build-nvidia-drv.sh
 
@@ -24,10 +24,9 @@ RUN rpm-ostree cliwrap install-to-root / \
 
 FROM ${BASE_IMAGE}:${FEDORA_VERSION}
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
-COPY --from=packages-list /tmp/packages.old /tmp/packages.old
-COPY build_files /tmp/
+COPY build_files/scripts /tmp/scripts
 COPY --from=nvidia-builder /build/modules /tmp/nvidia-modules
-COPY build_files /tmp/
+COPY --from=packages-list /packages.old /tmp/build/packages.old
 COPY system_files / 
 COPY cosign.pub /usr/etc/pki/containers/perpixel.pub
 RUN rpm-ostree cliwrap install-to-root / \
