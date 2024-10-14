@@ -110,10 +110,10 @@ elif [[ "${#INCLUDED_PACKAGES[@]}" -eq 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]];
 
 # Install and remove packages
 elif [[ ${#INCLUDED_PACKAGES[@]} -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
-  INSTALL_CMD=$(printf -- '--install=%s ' "${INCLUDED_PACKAGES[@]}")
+
   rpm-ostree override remove \
     "${EXCLUDED_PACKAGES[@]}" \
-    "${INSTALL_CMD}"
+    $(printf -- '--install=%s ' "${INCLUDED_PACKAGES[@]}")
 else
   echo "No packages to process..."
 fi
