@@ -119,8 +119,8 @@ else
 fi
 
 #
-if [ -f /tmp/changelist.txt ]; then
-  rpm -qa >/tmp/packages.new
-  diff /tmp/packages.old /tmp/packages.new >/tmp/build/changelist.txt
-  cat /tmp/build/changelist.txt
+if [ -f /workspace/packages.old ]; then
+  rpm -qa >/workspace/packages.new
+  diff /workspace/packages.old /workspace/packages.new >/workspace/changelist.txt
+  cat /workspace/changelist.txt
 fi

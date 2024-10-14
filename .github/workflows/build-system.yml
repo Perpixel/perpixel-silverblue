@@ -111,7 +111,7 @@ jobs:
           extra-args: |
             --no-cache
             --pull=always
-            --volume ${{ github.workspace }}:/tmp/build:z
+            --volume ${{ github.workspace }}:/workspace:z
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
       - name: Release
