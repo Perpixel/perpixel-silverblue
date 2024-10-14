@@ -10,7 +10,7 @@ jobs:
     name: Build and push image
     runs-on: ubuntu-24.04
     permissions:
-      contents: read
+      contents: write
       packages: write
       id-token: write
     strategy:
@@ -114,6 +114,7 @@ jobs:
             --volume ${{ github.workspace }}:/workspace:z
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
+      # Create release
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
@@ -122,6 +123,15 @@ jobs:
           tag_name: "nightly-tag-${{ steps.date.outputs.date }}"
           draft: false
           make_latest: true
+
+      # Compare images
+      - name: Compare installed packages
+        id: compare
+        shell: bash
+        run: |
+          podman run -it --rm -v ${{ github.workspace }}:/workspace:z ghcr.io/${{ github.repository_owner }}/${{ IMAGE_NAME }}:latest sh -c "rpm -qa >/workspace/packages.new"
+          podman run -it --rm -v ${{ github.workspace }}:/workspace:z ${{ steps.build_image.outputs.image }}:${SHA_SHORT} sh -c "rpm -qa >/workspace/packages.new"
+
       # Push the image to GHCR (Image Registry)
       - name: Push To GHCR
         uses: redhat-actions/push-to-registry@v2

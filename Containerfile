@@ -1,12 +1,6 @@
-ARG TARGET_IMAGE_NAME="${TARGET_IMAGE_NAME}"
 ARG BASE_IMAGE="${BASE_IMAGE}"
 ARG FEDORA_VERSION="${FEDORA_VERSION}"
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
-
-# Collect current packages
-
-FROM ghcr.io/perpixel/${TARGET_IMAGE_NAME}:${FEDORA_VERSION} as packages-list
-RUN rpm -qa >/workspace/packages.old
 
 # Build NVIDIA drivers
 #

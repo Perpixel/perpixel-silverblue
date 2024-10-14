@@ -117,10 +117,3 @@ elif [[ ${#INCLUDED_PACKAGES[@]} -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; t
 else
   echo "No packages to process..."
 fi
-
-#
-if [ -f /workspace/packages.old ]; then
-  rpm -qa >/workspace/packages.new
-  diff /workspace/packages.old /workspace/packages.new >/workspace/changelist.txt
-  cat /workspace/changelist.txt
-fi
