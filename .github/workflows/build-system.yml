@@ -2,9 +2,8 @@ name: Build Silverblue container
 on:
   workflow_call:
 env:
-    IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-    NVIDIA_VERSION: 560.35.03
-    BASE_IMAGE: quay.io/fedora-ostree-desktops/silverblue
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  BASE_IMAGE: quay.io/fedora-ostree-desktops/silverblue
 
 jobs:    
   push-ghcr:
@@ -46,7 +45,6 @@ jobs:
           COMMIT_TAGS+=("${SHA_SHORT}")
 
           BUILD_TAGS+=("${{ env.FEDORA_VERSION }}" "${{ env.FEDORA_VERSION }}-${TIMESTAMP}")
-          #BUILD_TAGS+=("latest")
 
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             echo "Generated the following commit tags: "
@@ -108,7 +106,6 @@ jobs:
             TARGET_IMAGE_NAME=${{ env.IMAGE_NAME }}
             BASE_IMAGE=${{ env.BASE_IMAGE }}
             FEDORA_VERSION=${{ env.FEDORA_VERSION }}
-            NVIDIA_VERSION=${{ env.NVIDIA_VERSION }}
           extra-args: |
             --no-cache
             --pull=always
