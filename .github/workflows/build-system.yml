@@ -129,7 +129,7 @@ jobs:
         id: compare
         shell: bash
         run: |
-          podman run -it --rm -v ${{ github.workspace }}:/workspace:z ghcr.io/${{ github.repository_owner }}/${{ IMAGE_NAME }}:latest sh -c "rpm -qa >/workspace/packages.new"
+          podman run -it --rm -v ${{ github.workspace }}:/workspace:z ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest sh -c "rpm -qa >/workspace/packages.new"
           podman run -it --rm -v ${{ github.workspace }}:/workspace:z ${{ steps.build_image.outputs.image }}:${SHA_SHORT} sh -c "rpm -qa >/workspace/packages.new"
 
       # Push the image to GHCR (Image Registry)
