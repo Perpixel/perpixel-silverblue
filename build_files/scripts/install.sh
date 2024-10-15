@@ -32,6 +32,9 @@ install_nvidia_drivers() {
     --no-rebuild-initramfs \
     --glvnd-egl-config-path=/usr/lib64 \
     --no-questions \
+    --no-systemd \
+    --no-kernel-module-source \
+    --no-dkms \
     --log-file-name=/tmp/nvidia-installer.log
 
   cat /tmp/nvidia-installer.log
