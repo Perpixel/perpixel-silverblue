@@ -23,10 +23,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      # set build variables
       - name: Variables
         run: |
-            REPO=${{ github.repository }}
-            echo "IMAGE_NAME=nvidia-${REPO##*/}" >> $GITHUB_ENV
+            echo "IMAGE_NAME=nvidia-perpixel-silverblue" >> $GITHUB_ENV
             echo "FEDORA_VERSION=${{ matrix.version }}" >> $GITHUB_ENV
             echo "NVIDIA_VERSION"=$(<nvidia-version.txt) >> $GITHUB_ENV
             
@@ -122,10 +122,10 @@ jobs:
           IFS=' ' read -a TAGS <<< "${{ steps.build_image.outputs.tags }}"
           
           podman run --rm -v ${{ github.workspace }}:/workspace:z \
-            ${{ steps.registry_case.outputs.lowercase }}/${{ env.IMAGE_NAME }}:latest rpm -qa >/packages.old
+            ${{ steps.registry_case.outputs.lowercase }}/${{ env.IMAGE_NAME }}:latest rpm -qa >${{ github.workspace }}/packages.old
          
           podman run --rm -v ${{ github.workspace }}:/workspace:z \
-            ${{ steps.build_image.outputs.image }}:"${TAGS[0]}" rpm -qa >/packages.new
+            ${{ steps.build_image.outputs.image }}:"${TAGS[0]}" rpm -qa >${{ github.workspace }}/packages.new
 
           diff packages.old packages.new >packages.diff
 
