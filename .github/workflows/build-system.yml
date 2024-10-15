@@ -19,8 +19,8 @@ jobs:
       fail-fast: false
 
     steps: 
-      # Checkout push-to-registry action GitHub repository
-      - name: Checkout Push to Registry action
+      # checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Variables
