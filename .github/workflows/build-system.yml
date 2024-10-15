@@ -127,7 +127,7 @@ jobs:
             ${{ steps.registry_case.outputs.lowercase }}/${{ env.IMAGE_NAME }}:latest rpm -qa >packages.old
          
           podman run --rm -v ${{ github.workspace }}:/workspace:z \
-            ${{ steps.build_image.outputs.image }}:"${TAGS[0]}" rpm -qa >/packages.new
+            ${{ steps.build_image.outputs.image }}:"${TAGS[0]}" rpm -qa >packages.new
 
           diff packages.old packages.new >packages.diff
 
