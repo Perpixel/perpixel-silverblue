@@ -122,10 +122,10 @@ jobs:
           IFS=' ' read -a TAGS <<< "${{ steps.build_image.outputs.tags }}"
           
           podman run --rm -v ${{ github.workspace }}:/workspace:z \
-            ${{ steps.registry_case.outputs.lowercase }}/${{ env.IMAGE_NAME }}:latest rpm -qa >/workspace/packages.old
+            ${{ steps.registry_case.outputs.lowercase }}/${{ env.IMAGE_NAME }}:latest rpm -qa >/packages.old
          
           podman run --rm -v ${{ github.workspace }}:/workspace:z \
-            ${{ steps.build_image.outputs.image }}:"${TAGS[0]}" rpm -qa >/workspace/packages.new
+            ${{ steps.build_image.outputs.image }}:"${TAGS[0]}" rpm -qa >/packages.new
 
           diff packages.old packages.new >packages.diff
 
