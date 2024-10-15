@@ -121,14 +121,13 @@ jobs:
         run: |
           IFS=' ' read -a TAGS <<< "${{ steps.build_image.outputs.tags }}"
           
-          podman run -it --rm -v ${{ github.workspace }}:/workspace:z \
-            ${{ steps.registry_case.outputs.lowercase }}/${{ env.IMAGE_NAME }}:latest sh -c "rpm -qa >/workspace/packages.old"
+          podman run --rm -v ${{ github.workspace }}:/workspace:z \
+            ${{ steps.registry_case.outputs.lowercase }}/${{ env.IMAGE_NAME }}:latest rpm -qa >/workspace/packages.old
          
-          podman run -it --rm -v ${{ github.workspace }}:/workspace:z \
-            ${{ steps.build_image.outputs.image }}:"${TAGS[0]}" sh -c "rpm -qa >/workspace/packages.new"
+          podman run --rm -v ${{ github.workspace }}:/workspace:z \
+            ${{ steps.build_image.outputs.image }}:"${TAGS[0]}" rpm -qa >/workspace/packages.new
 
           diff packages.old packages.new >packages.diff
-          cat packages.diff
 
       # Push the image to GHCR (Image Registry)
       - name: Push To GHCR
