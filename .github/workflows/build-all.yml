@@ -11,11 +11,9 @@ jobs:
   # build oci container image
   job-build-system:
     permissions:
-      contents: read
+      contents: write
       packages: write
       id-token: write
-    strategy:
-      fail-fast: false
     uses: ./.github/workflows/build-system.yml
     secrets: inherit
 

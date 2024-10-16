@@ -17,9 +17,9 @@ install_nvidia_drivers() {
   pushd /tmp/nvidia
 
   # download
-  curl -O https://download.nvidia.com/XFree86/Linux-"${ARCH}"/"${NVIDIA_VERSION}"/NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run
+  #curl -O https://download.nvidia.com/XFree86/Linux-"${ARCH}"/"${NVIDIA_VERSION}"/NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run
   # extract
-  sh ./NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run --extract-only --target nvidiapkg
+  #sh ./NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run --extract-only --target nvidiapkg
   # install driver files
   pushd ./nvidiapkg
   ./nvidia-installer -s \
@@ -32,6 +32,9 @@ install_nvidia_drivers() {
     --no-rebuild-initramfs \
     --glvnd-egl-config-path=/usr/lib64 \
     --no-questions \
+    --no-systemd \
+    --no-kernel-module-source \
+    --no-dkms \
     --log-file-name=/tmp/nvidia-installer.log
 
   cat /tmp/nvidia-installer.log
@@ -83,6 +86,7 @@ build_initramfs() {
 cleanup() {
   rm -rf /tmp/*
   rm -rf /var/*
+  dnf -y clean all
 }
 
 install_packages() {

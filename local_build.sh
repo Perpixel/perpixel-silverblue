@@ -1,8 +1,9 @@
 #!/bin/sh
 
-#export REPO="perpixel-silverblue"
+set -oex pipefail
+
+export REPO="perpixel-silverblue"
 export BASE_IMAGE="quay.io/fedora-ostree-desktops/silverblue"
-export TARGET_IMAGE_NAME="nvidia-${REPO}"
 export FEDORA_VERSION="41"
 export NVIDIA_VERSION="560.35.03"
 #export VERSION_TAG="local-${FEDORA_VERSION}-${NVIDIA_VERSION}"
@@ -18,4 +19,7 @@ buildah bud --pull=true \
   --build-arg BASE_IMAGE=${BASE_IMAGE} \
   --build-arg FEDORA_VERSION=${FEDORA_VERSION} \
   --build-arg NVIDIA_VERSION=${NVIDIA_VERSION} \
+  --no-cache \
+  --pull=always \
+  --volume $(pwd):/workspace:z \
   Containerfile

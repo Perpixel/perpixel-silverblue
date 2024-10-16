@@ -2,16 +2,15 @@ name: Build Silverblue container
 on:
   workflow_call:
 env:
-    IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-    NVIDIA_VERSION: 560.35.03
-    BASE_IMAGE: quay.io/fedora-ostree-desktops/silverblue
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  BASE_IMAGE: quay.io/fedora-ostree-desktops/silverblue
 
 jobs:    
   push-ghcr:
     name: Build and push image
     runs-on: ubuntu-24.04
     permissions:
-      contents: read
+      contents: write
       packages: write
       id-token: write
     strategy:
@@ -20,15 +19,16 @@ jobs:
       fail-fast: false
 
     steps: 
-      # Checkout push-to-registry action GitHub repository
-      - name: Checkout Push to Registry action
+      # checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v4
 
+      # set build variables
       - name: Variables
         run: |
-            REPO=${{ github.repository }}
-            echo "IMAGE_NAME=nvidia-${REPO##*/}" >> $GITHUB_ENV
+            echo "IMAGE_NAME=nvidia-perpixel-silverblue" >> $GITHUB_ENV
             echo "FEDORA_VERSION=${{ matrix.version }}" >> $GITHUB_ENV
+            echo "NVIDIA_VERSION"=$(<nvidia-version.txt) >> $GITHUB_ENV
             
       - name: Generate tags 
         id: generate-tags
@@ -46,7 +46,6 @@ jobs:
           COMMIT_TAGS+=("${SHA_SHORT}")
 
           BUILD_TAGS+=("${{ env.FEDORA_VERSION }}" "${{ env.FEDORA_VERSION }}-${TIMESTAMP}")
-          #BUILD_TAGS+=("latest")
 
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             echo "Generated the following commit tags: "
@@ -111,8 +110,20 @@ jobs:
           extra-args: |
             --no-cache
             --pull=always
+            --volume ${{ github.workspace }}:/workspace:z
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
+
+      # Compare images
+      - name: Compare installed packages
+        id: compare
+        shell: bash
+        run: |
+          IFS=' ' read -a TAGS <<< "${{ steps.build_image.outputs.tags }}"
+          cd ${{ github.workspace }}
+          podman run --rm "${BASE_IMAGE}:${FEDORA_VERSION}" rpm -qa >packages.old
+          podman run --rm ${{ steps.build_image.outputs.image }}:"${TAGS[0]}" rpm -qa >packages.new
+          #diff packages.old packages.new >packages.diff
 
       # Push the image to GHCR (Image Registry)
       - name: Push To GHCR
@@ -147,6 +158,17 @@ jobs:
           TAGS: ${{ steps.push.outputs.digest }}
           COSIGN_EXPERIMENTAL: false
           COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_SECRET }}
+      
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Changelogs - TEST"
+          body: "nightly-tag-TEST"
+          tag_name: "nightly-tag-test"
+          draft: true
+          make_latest: false
+          files: |
+            packages.diff
 
       - name: Echo outputs
         run: |
