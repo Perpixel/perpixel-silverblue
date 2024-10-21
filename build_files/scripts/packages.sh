@@ -3,35 +3,40 @@
 set -ouex pipefail
 
 FEDORA_VERSION="$(rpm -E '%fedora')"
-source "$(dirname "$0")"/functions.sh
 
 INCLUDED_PACKAGES=(
+  autoconf
+  automake
   bat
   binutils
+  bison
+  distrobox
   clang
   cmake
-  distrobox
   egl-x11
   egl-gbm
   egl-utils
   egl-wayland
+  gettext
   libglvnd-egl
   libwayland-egl
+  libtool
+  lld
   fd-find
   ffmpeg
   ffmpeg-libs
   fswatch
   fzf
+  gcc
+  gcc-c++
   git
   gnome-session-xsession
   htop
   ifuse
   inxi
   kitty
-  kmod
   libva-utils
   libtree-sitter
-  lld
   lm_sensors
   make
   material-icons-fonts
@@ -43,14 +48,12 @@ INCLUDED_PACKAGES=(
   plymouth-theme-spinfinity
   ripgrep
   rclone
-  rpmconf
   samba
   SDL2
   SDL2_mixer
   SDL2_image
   SDL2_net
   stow
-  tmux
   vdpauinfo
   xclip
   zsh
@@ -72,42 +75,45 @@ EXCLUDED_PACKAGES=(
   virtualbox-guest-additions
 )
 
-if [[ ${#EXCLUDED_PACKAGES[@]} -gt 0 ]]; then
-  mapfile -t EXCLUDED_PACKAGES < <(rpm -qa --queryformat='%{NAME}\n' "${EXCLUDED_PACKAGES[@]}")
-fi
-
-# Install RPMs
-
 rpm-ostree cliwrap install-to-root /
+source "$(dirname "$0")"/functions.sh
 
-# download and install rpm fusion package
-wget -P /tmp/rpms \
-  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-"${FEDORA_VERSION}".noarch.rpm \
-  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-"${FEDORA_VERSION}".noarch.rpm
-
-# disable
+# Disable unwanted Fedora repos
 disable-repo /etc/yum.repos.d/fedora-cisco-openh264.repo
 disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
 disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
 
-dnf install /tmp/rpms/rpmfusion*.rpm -y
+# Keep only package currently installed in the EXCLUDE list
+if [[ ${#EXCLUDED_PACKAGES[@]} -gt 0 ]]; then
+  mapfile -t EXCLUDED_PACKAGES < <(rpm -qa --queryformat='%{NAME}\n' "${EXCLUDED_PACKAGES[@]}")
+fi
 
+# Download and install rpm fusion package
+wget -P /tmp/rpms \
+  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-"${FEDORA_VERSION}".noarch.rpm \
+  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-"${FEDORA_VERSION}".noarch.rpm
+
+# Install RPMFusion
+dnf install /tmp/rpms/rpmfusion*.rpm -y
 disable-repo /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo
 disable-repo /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
 
+# Just install INCLUDED if EXCLUDED is empty
 if [[ ${#INCLUDED_PACKAGES[@]} -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -eq 0 ]]; then
   rpm-ostree install \
     "${INCLUDED_PACKAGES[@]}"
 
+# Just remove unwanted packaged if the include list is empty
 elif [[ "${#INCLUDED_PACKAGES[@]}" -eq 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
   rpm-ostree override remove \
     "${EXCLUDED_PACKAGES[@]}"
 
+# Install and remove packages
 elif [[ ${#INCLUDED_PACKAGES[@]} -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
+
   rpm-ostree override remove \
     "${EXCLUDED_PACKAGES[@]}" \
     $(printf -- '--install=%s ' "${INCLUDED_PACKAGES[@]}")
-
 else
-  echo "No packages to install."
+  echo "No packages to process..."
 fi
