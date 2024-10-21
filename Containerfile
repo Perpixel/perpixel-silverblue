@@ -9,20 +9,29 @@ ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
 
 FROM ${BASE_IMAGE}:${FEDORA_VERSION} as nvidia-builder
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
-COPY build_files/scripts /tmp/scripts
+ARG BUILDROOT=/build
+COPY build_files/ "${BUILDROOT}"
 RUN rpm-ostree cliwrap install-to-root / \
-  && /tmp/scripts/build-nvidia-drv.sh
+  && "${BUILDROOT}"/scripts/nvidia-modules-build.sh
 
 # Build final image
 #
 
 FROM ${BASE_IMAGE}:${FEDORA_VERSION}
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
-COPY build_files/scripts /tmp/scripts
-COPY --from=nvidia-builder /build/modules /tmp/nvidia-modules
-COPY system_files / 
+ARG BUILDROOT=/build
+
+# Copy build scripts
+COPY build_files/ "${BUILDROOT}"
+# Copy built modules from nvidia-builder step
+COPY --from=nvidia-builder /build/modules "${BUILDROOT}"/nvidia-modules
+# Copy configuration files to root
+COPY system_files /
+# Copy cosign public key
 COPY cosign.pub /usr/etc/pki/containers/perpixel.pub
+# Run installer and commit image
 RUN rpm-ostree cliwrap install-to-root / \
-  && /tmp/scripts/install.sh \
+  && "${BUILDROOT}"/scripts/install.sh \
   && ostree container commit \
+  && rm -rf "${BUILDROOT}" \
   && mkdir -p /var/tmp && chmod -R 1777 /var/tmp

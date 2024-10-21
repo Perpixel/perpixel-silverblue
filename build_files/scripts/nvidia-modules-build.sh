@@ -15,7 +15,7 @@ disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
 
 # Install build requirements
 # Getting kernel source from Koji in order to avoid build failure when silverblue image kernel is outdated
-dnf install koji g++ kmod -y
+dnf install koji g++ kmod patch -y
 koji download-build --arch="${ARCH}" kernel-"${KERNEL_VERSION}"
 dnf install -y kernel-devel-*.rpm
 rm -rf kernel*.rpm
@@ -28,6 +28,13 @@ git clone --depth 1 --branch "${NVIDIA_VERSION}" https://github.com/NVIDIA/open-
 
 # Build kernel modules
 cd /build/nvidia
+ln -s kernel-open kernel
+
+# Kernel patchs
+patch -p1 <"${BUILDROOT}"/patchs/nvidia/make_modeset_default.patch
+patch -p1 -d kernel <"${BUILDROOT}"/patchs/nvidia/kernel-611-framebuffer.patch
+
+# Build
 make modules -j"$(nproc)" KERNEL_UNAME="${KERNEL_VERSION}" SYSSRC="/usr/src/kernels/${KERNEL_VERSION}" IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1
 
 # Copy modules

@@ -2,7 +2,7 @@
 
 set -oex pipefail
 
-source "$(dirname "$0")"/functions.sh
+source "${BUILDROOT}"/scripts/functions.sh
 
 # variables
 #
@@ -13,13 +13,13 @@ ARCH=$(rpm -E '%_arch')
 #
 install_nvidia_drivers() {
 
-  mkdir -p /tmp/nvidia
-  pushd /tmp/nvidia
+  mkdir -p /tmp/nvidia-install
+  pushd /tmp/nvidia-install
 
   # download
-  #curl -O https://download.nvidia.com/XFree86/Linux-"${ARCH}"/"${NVIDIA_VERSION}"/NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run
+  curl -O https://download.nvidia.com/XFree86/Linux-"${ARCH}"/"${NVIDIA_VERSION}"/NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run
   # extract
-  #sh ./NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run --extract-only --target nvidiapkg
+  sh ./NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run --extract-only --target nvidiapkg
   # install driver files
   pushd ./nvidiapkg
   ./nvidia-installer -s \
@@ -60,8 +60,8 @@ install_nvidia_drivers() {
   sed -i -e 's/ExecStart=/ExecStart=-/g' /usr/lib/systemd/system/nvidia-powerd.service
   install -p -m 0755 systemd/system-sleep/nvidia /usr/lib/systemd/system-sleep
   install -p -m 0755 systemd/nvidia-sleep.sh /usr/bin/
-
   popd
+
   # install open kernel modules
   pushd /tmp/nvidia-modules
   mkdir -p /lib/modules/"${KERNEL_VERSION}"/kernel/drivers/video
@@ -90,15 +90,20 @@ cleanup() {
 }
 
 install_packages() {
-  /tmp/scripts/packages.sh
+  "${BUILDROOT}"/scripts/packages.sh
 }
 
 # run installation
 
 install_packages
-install_nvidia_drivers
+source "$(dirname "$0")"/nvidia-installer.sh
+# install nvidia kernel modules
+pushd "${BUILDROOT}"/nvidia-modules
+mkdir -p /lib/modules/"${KERNEL_VERSION}"/kernel/drivers/video
+install -D -m 0755 nvidia*.ko /lib/modules/"${KERNEL_VERSION}"/kernel/drivers/video/
+depmod "${KERNEL_VERSION}"
+popd
+#install_nvidia_drivers
 install_nvidia_container_toolkit
 build_initramfs
 cleanup
-
-#. /tmp/scripts/packages.sh
