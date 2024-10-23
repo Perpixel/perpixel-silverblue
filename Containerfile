@@ -24,7 +24,7 @@ ARG BUILDROOT=/build
 # Copy build scripts
 COPY build_files/ "${BUILDROOT}"
 # Copy built modules from nvidia-builder step
-COPY --from=nvidia-builder /build/modules "${BUILDROOT}"/nvidia-modules
+COPY --from=nvidia-builder /tmp/nvidia/modules "${BUILDROOT}"/nvidia-modules
 # Copy configuration files to root
 COPY system_files /
 # Copy cosign public key

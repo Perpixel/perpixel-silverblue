@@ -37,6 +37,6 @@ ln -s kernel-open kernel
 make modules -j"$(nproc)" KERNEL_UNAME="${KERNEL_VERSION}" SYSSRC="/usr/src/kernels/${KERNEL_VERSION}" IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1
 
 # Copy modules
-mkdir -p /build/modules
-cp /build/nvidia/kernel-open/nvidia*.ko /build/modules
+mkdir -p /tmp/nvidia/modules
+cp /build/nvidia/kernel-open/nvidia*.ko /tmp/nvidia/modules
 rm -rf /build/nvidia
