@@ -31,8 +31,7 @@ cd /build/nvidia
 ln -s kernel-open kernel
 
 # Kernel patchs
-patch -p1 <"${BUILDROOT}"/patchs/nvidia/make_modeset_default.patch
-patch -p1 -d kernel <"${BUILDROOT}"/patchs/nvidia/kernel-611-framebuffer.patch
+# patch -p1 <"${BUILDROOT}"/patchs/nvidia/make_modeset_default.patch
 
 # Build
 make modules -j"$(nproc)" KERNEL_UNAME="${KERNEL_VERSION}" SYSSRC="/usr/src/kernels/${KERNEL_VERSION}" IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1
