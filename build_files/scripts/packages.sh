@@ -13,18 +13,19 @@ INCLUDED_PACKAGES=(
   distrobox
   clang
   cmake
-  egl-x11
-  egl-gbm
-  egl-utils
-  egl-wayland
+  # egl-x11
+  # egl-gbm
+  # egl-utils
+  # egl-wayland
   gettext
-  libglvnd-egl
-  libwayland-egl
+  hwinfo
+  # libglvnd-egl
+  # libwayland-egl3
   libtool
   lld
   fd-find
-  ffmpeg
-  ffmpeg-libs
+  # ffmpeg
+  # ffmpeg-libs
   fswatch
   fzf
   gcc
@@ -44,7 +45,7 @@ INCLUDED_PACKAGES=(
   nvidia-vaapi-driver
   nvtop
   opencl-filesystem
-  pipewire-codec-aptx
+  # pipewire-codec-aptx
   plymouth-theme-spinfinity
   ripgrep
   rclone
@@ -60,15 +61,15 @@ INCLUDED_PACKAGES=(
 )
 
 EXCLUDED_PACKAGES=(
-  libavdevice-free
-  libavcodec-free
-  libavfilter-free
-  libavformat-free
-  libavutil-free
-  libpostproc-free
-  libswresample-free
-  libswscale-free
-  ffmpeg-free
+  #  libavdevice-free
+  #  libavcodec-free
+  #  libavfilter-free
+  #  libavformat-free
+  #  libavutil-free
+  #  libpostproc-free
+  #  libswresample-free
+  #  libswscale-free
+  #  ffmpeg-free
   mesa-va-drivers
   firefox-langpacks
   firefox
@@ -89,14 +90,14 @@ if [[ ${#EXCLUDED_PACKAGES[@]} -gt 0 ]]; then
 fi
 
 # Download and install rpm fusion package
-wget -P /tmp/rpms \
-  https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-"${FEDORA_VERSION}".noarch.rpm \
-  https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-"${FEDORA_VERSION}".noarch.rpm
+# wget -P /tmp/rpms \
+#   https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-"${FEDORA_VERSION}".noarch.rpm \
+#   https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-"${FEDORA_VERSION}".noarch.rpm
 
 # Install RPMFusion
-dnf install /tmp/rpms/rpmfusion*.rpm -y
-disable-repo /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo
-disable-repo /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
+# dnf install /tmp/rpms/rpmfusion*.rpm -y
+# disable-repo /etc/yum.repos.d/rpmfusion-nonfree-updates-testing.repo
+# disable-repo /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
 
 # Just install INCLUDED if EXCLUDED is empty
 if [[ ${#INCLUDED_PACKAGES[@]} -gt 0 && "${#EXCLUDED_PACKAGES[@]}" -eq 0 ]]; then
