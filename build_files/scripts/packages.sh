@@ -13,23 +13,13 @@ INCLUDED_PACKAGES=(
   distrobox
   clang
   cmake
-  # egl-x11
-  # egl-gbm
-  # egl-utils
-  # egl-wayland
   gettext
   hwinfo
-  # libglvnd-egl
-  # libwayland-egl3
   libtool
   lld
   fd-find
-  # ffmpeg
-  # ffmpeg-libs
   fswatch
   fzf
-  gcc
-  gcc-c++
   git
   gnome-session-xsession
   htop
@@ -45,7 +35,6 @@ INCLUDED_PACKAGES=(
   nvidia-vaapi-driver
   nvtop
   opencl-filesystem
-  # pipewire-codec-aptx
   plymouth-theme-spinfinity
   ripgrep
   rclone
@@ -61,15 +50,6 @@ INCLUDED_PACKAGES=(
 )
 
 EXCLUDED_PACKAGES=(
-  #  libavdevice-free
-  #  libavcodec-free
-  #  libavfilter-free
-  #  libavformat-free
-  #  libavutil-free
-  #  libpostproc-free
-  #  libswresample-free
-  #  libswscale-free
-  #  ffmpeg-free
   mesa-va-drivers
   firefox-langpacks
   firefox
