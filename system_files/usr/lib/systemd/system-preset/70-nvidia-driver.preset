@@ -1,0 +1,5 @@
+enable nvidia-hibernate.service
+enable nvidia-resume.service
+enable nvidia-suspend.service
+# enable nvidia-powerd.service
+
