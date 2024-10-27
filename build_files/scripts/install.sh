@@ -35,7 +35,6 @@ install_packages() {
 install_packages
 source "$(dirname "$0")"/nvidia-installer.sh
 depmod "${KERNEL_VERSION}"
-#popd
 install_nvidia_container_toolkit
 build_initramfs
 cleanup
