@@ -10,6 +10,7 @@ INCLUDED_PACKAGES=(
   bat
   binutils
   bison
+  bootc
   distrobox
   clang
   cmake
