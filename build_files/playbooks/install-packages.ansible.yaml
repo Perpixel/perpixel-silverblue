@@ -1,0 +1,86 @@
+- name: Install packages
+  hosts: localhost
+  tasks:
+
+    - name: Install ansible dnf
+      ansible.builtin.shell: |
+        dnf install -y python3-dnf
+        exit $(python -c "import dnf")
+      register: ec
+      failed_when: ec.rc != 0
+      changed_when: false
+
+    - name: Install new packages
+      ansible.builtin.dnf:
+        name:
+          - bootc
+          - distrobox
+          - hwinfo
+          - fswatch
+          - gnome-session-xsession
+          - htop
+          - ifuse
+          - inxi
+          - kitty
+          - libva-utils
+          - libtree-sitter
+          - lm_sensors
+          - material-icons-fonts
+          - nvidia-vaapi-driver
+          - opencl-filesystem
+          - plymouth-theme-spinfinity
+          - samba
+          - vdpauinfo
+          - xclip
+          - xorg-x11-server-devel
+          - zsh
+        state: present
+
+    - name: Remove packages
+      ansible.builtin.dnf:
+        name:
+          - firefox
+          - mesa-va-drivers
+          - firefox-langpacks
+          - virtualbox-guest-additions
+        state: absent
+
+    - name: Autoremove unneeded packages installed as dependencies
+      ansible.builtin.dnf:
+        autoremove: true
+
+    - name: Install Nvidia drivers
+      ansible.builtin.shell: |
+        {{ buildroot }}/scripts/nvidia-installer.sh
+      register: result
+      failed_when: result.rc != 0
+      changed_when: false
+
+    - name: Remove existing nvidia dracut config
+      ansible.builtin.file:
+        path: /usr/lib/dracut/dracut.conf.d/99-nvidia-dracut.conf
+        state: absent
+
+    - name: Update initramfs
+      ansible.builtin.shell: |
+        /usr/libexec/rpm-ostree/wrapped/dracut --no-hostonly --kver {{ kernel_version }} \
+          --reproducible -v --add ostree -f "/lib/modules/{{ kernel_version }}/initramfs.img"
+        exit 0
+      register: result
+      failed_when: result.rc != 0
+      changed_when: false
+
+    - name: Set initramfs file mode
+      ansible.builtin.file:
+        path: /lib/modules/{{ kernel_version }}/initramfs.img
+        mode: '0600'
+
+    - name: Cleanup container
+      ansible.builtin.shell: |
+        rm -rf /tmp/*
+        rm -rf /var/*
+        dnf -y clean all
+        exit 0
+      register: result
+      failed_when: result.rc != 0
+      changed_when: false

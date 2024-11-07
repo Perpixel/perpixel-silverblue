@@ -12,7 +12,7 @@ source "$(dirname "$0")"/functions.sh
 # Disable repos unwanted repos
 disable-repo /etc/yum.repos.d/fedora-cisco-openh264.repo
 disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
-disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
+# disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
 
 mkdir -p /tmp/nvidia
 pushd /tmp/nvidia

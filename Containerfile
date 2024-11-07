@@ -9,9 +9,8 @@ FROM ${BASE_IMAGE}:${FEDORA_VERSION} as builder
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
 ARG BUILDROOT=/build
 COPY build_files/ "${BUILDROOT}"
-RUN rpm-ostree cliwrap install-to-root / \
-  && "${BUILDROOT}"/scripts/build-nvidia-modules.sh \
-  && "${BUILDROOT}"/scripts/build-pipewire-aptx.sh
+RUN rpm-ostree cliwrap install-to-root /
+RUN "${BUILDROOT}"/scripts/build-nvidia-modules.sh
 
 # Build final image
 #
