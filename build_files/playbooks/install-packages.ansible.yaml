@@ -49,6 +49,39 @@
       ansible.builtin.dnf:
         autoremove: true
 
+    - name: Install longterm kernel
+      ansible.builtin.shell: |
+        set -o pipefail
+        # dnf copr enable kwizart/kernel-longterm-6.6
+        fedora_release=fedora-{{ fedora_version }}
+        repo_file="kwizart-kernel-longterm-6.6-${fedora_release}.repo"
+        curl -s -L https://copr.fedorainfracloud.org/coprs/kwizart/kernel-longterm-6.6/repo/${fedora_release}/${repo_file} \
+          | tee /etc/yum.repos.d/${repo_file}
+        rpm-ostree cliwrap install-to-root /
+        # tools and tools-lib on fc41
+        rpm-ostree override remove kernel kernel-{core,modules,modules-extra,modules-core} \ 
+          --install kernel-longterm \
+          --install kernel-longterm-modules-core \
+          --install kernel-longterm-core \
+          --install kernel-longterm-modules \
+          --install kernel-longterm-modules-extra
+      args:
+        executable: /bin/bash
+      register: ec
+      failed_when: ec.rc != 0
+      changed_when: false
+
+    - name: Get kernel version
+      ansible.builtin.shell: |
+        echo $(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm)
+      register: kernel_query
+      failed_when: kernel_query.rc != 0
+      changed_when: false
+
+    - name: Set kernel version
+      ansible.builtin.set_fact:
+        kernel_version: "{{ kernel_query.stdout }}"
+
     - name: Install Nvidia drivers
       ansible.builtin.shell: |
         {{ buildroot }}/scripts/nvidia-installer.sh
@@ -84,3 +117,6 @@
       register: result
       failed_when: result.rc != 0
       changed_when: false
+
+      # Write packages list
+      # IFS=$'\n' sorted=($(sort <<<"$(rpm -qa)")) && unset IFS && echo $sorted

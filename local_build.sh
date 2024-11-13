@@ -4,7 +4,9 @@ set -oex pipefail
 
 export REPO="perpixel-silverblue"
 export BASE_IMAGE="quay.io/fedora-ostree-desktops/silverblue"
-export FEDORA_VERSION="41"
+export FEDORA_VERSION="40"
+# export FEDORA_VERSION="41.20241028.0.ceab3e17"
+# export FEDORA_VERSION="41.20241026.0.ceab3e17"
 export NVIDIA_VERSION="565.57.01"
 #export NVIDIA_VERSION="560.35.03"
 

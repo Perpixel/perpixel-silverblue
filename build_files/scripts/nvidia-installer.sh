@@ -14,6 +14,14 @@ if [ ! -d "nvidia_tmp" ]; then
   sh ./NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run --extract-only --target nvidia_tmp
 fi
 
+# Import external functions
+source "$(dirname "$0")"/functions.sh
+# Disable repos unwanted repos
+# disable-repo /etc/yum.repos.d/fedora-cisco-openh264.repo
+# disable-repo /etc/yum.repos.d/fedora-updates.repo
+disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
+disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
+
 dnf install -y xorg-x11-server-devel
 
 pushd nvidia_tmp
@@ -58,7 +66,8 @@ popd
 
 popd
 
-curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | tee /etc/yum.repos.d/nvidia-container-toolkit.repo
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo |
+  tee /etc/yum.repos.d/nvidia-container-toolkit.repo
 dnf install nvidia-container-toolkit -y
 # nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 

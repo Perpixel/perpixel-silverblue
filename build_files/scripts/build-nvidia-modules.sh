@@ -3,7 +3,8 @@
 set -oeux pipefail
 
 ARCH="$(rpm -E '%_arch')"
-KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
+# KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
+
 BUILT_DIR=/tmp/built
 
 # Import external functions
@@ -19,10 +20,18 @@ pushd /tmp/nvidia
 
 # Install build requirements
 # Getting kernel source from Koji in order to avoid build failure when silverblue image kernel is outdated
-dnf install koji g++ kmod patch -y
-koji download-build --arch="${ARCH}" kernel-"${KERNEL_VERSION}"
-dnf install -y kernel-devel-*.rpm
-rm -rf /tmp/nvidia/*.rpm
+# dnf install koji g++ kmod patch -y
+# koji download-build --arch="${ARCH}" kernel-"${KERNEL_VERSION}"
+# dnf install -y kernel-devel-*.rpm
+# rm -rf /tmp/nvidia/*.rpm
+
+# longterm kernel https://copr.fedorainfracloud.org/coprs/kwizart/kernel-longterm-6.6/
+
+# dnf copr enable kwizart/kernel-longterm-6.6
+curl -s -L https://copr.fedorainfracloud.org/coprs/kwizart/kernel-longterm-6.6/repo/fedora-${FEDORA_VERSION}/kwizart-kernel-longterm-6.6-fedora-${FEDORA_VERSION}.repo |
+  tee /etc/yum.repos.d/kwizart-kernel-longterm-6.6-fedora-${FEDORA_VERSION}.repo
+dnf install -y g++ kmod patch kernel-longterm-devel
+KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm-devel)
 
 # Making sure ld is available on fedora 40
 ln -s /usr/bin/ld.bfd /etc/alternatives/ld && ln -s /etc/alternatives/ld /usr/bin/ld

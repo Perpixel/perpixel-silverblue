@@ -7,10 +7,11 @@ ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
 
 FROM ${BASE_IMAGE}:${FEDORA_VERSION} as builder
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
+ARG FEDORA_VERSION="${FEDORA_VERSION}"
 ARG BUILDROOT=/build
 COPY build_files/ "${BUILDROOT}"
-RUN rpm-ostree cliwrap install-to-root /
-RUN "${BUILDROOT}"/scripts/build-nvidia-modules.sh
+RUN rpm-ostree cliwrap install-to-root / \
+  && "${BUILDROOT}"/scripts/build-nvidia-modules.sh
 
 # Build final image
 #
@@ -18,6 +19,7 @@ RUN "${BUILDROOT}"/scripts/build-nvidia-modules.sh
 FROM ${BASE_IMAGE}:${FEDORA_VERSION}
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
 ARG BUILDROOT=/build
+ARG FEDORA_VERSION="${FEDORA_VERSION}"
 
 # Copy build scripts
 COPY build_files/ "${BUILDROOT}"
