@@ -33,6 +33,12 @@
           - vdpauinfo
           - xclip
           - xorg-x11-server-devel
+          - setxkbmap
+          - xhost
+          - xmodmap
+          - xorg-x11-xauth
+          - xorg-x11-xinit
+          - xrdb
           - zsh
         state: present
 
@@ -55,11 +61,10 @@
         # dnf copr enable kwizart/kernel-longterm-6.6
         fedora_release=fedora-{{ fedora_version }}
         repo_file="kwizart-kernel-longterm-6.6-${fedora_release}.repo"
-        curl -s -L https://copr.fedorainfracloud.org/coprs/kwizart/kernel-longterm-6.6/repo/${fedora_release}/${repo_file} \
+        curl -s -L https://copr.fedorainfracloud.org/coprs/kwizart/kernel-longterm-6.6/repo/${fedora_release}/{repo_file} \
           | tee /etc/yum.repos.d/${repo_file}
         rpm-ostree cliwrap install-to-root /
-        # tools and tools-lib on fc41
-        rpm-ostree override remove kernel kernel-{core,modules,modules-extra,modules-core} \ 
+        rpm-ostree override remove kernel kernel-{core,modules,modules-extra,modules-core,tools,tools-libs} \
           --install kernel-longterm \
           --install kernel-longterm-modules-core \
           --install kernel-longterm-core \
