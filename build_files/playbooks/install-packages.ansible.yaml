@@ -58,11 +58,7 @@
     - name: Install longterm kernel
       ansible.builtin.shell: |
         set -o pipefail
-        # dnf copr enable kwizart/kernel-longterm-6.6
-        fedora_release=fedora-{{ fedora_version }}
-        repo_file="kwizart-kernel-longterm-6.6-${fedora_release}.repo"
-        curl -s -L https://copr.fedorainfracloud.org/coprs/kwizart/kernel-longterm-6.6/repo/${fedora_release}/{repo_file} \
-          | tee /etc/yum.repos.d/${repo_file}
+        dnf5 copr enable kwizart/kernel-longterm-6.6 -y
         rpm-ostree cliwrap install-to-root /
         rpm-ostree override remove kernel kernel-{core,modules,modules-extra,modules-core,tools,tools-libs} \
           --install kernel-longterm \

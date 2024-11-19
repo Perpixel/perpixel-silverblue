@@ -26,9 +26,7 @@ pushd /tmp/nvidia
 # rm -rf /tmp/nvidia/*.rpm
 
 # longterm kernel https://copr.fedorainfracloud.org/coprs/kwizart/kernel-longterm-6.6/
-FEDORA_VERSION=41
-curl -s -L https://copr.fedorainfracloud.org/coprs/kwizart/kernel-longterm-6.6/repo/fedora-${FEDORA_VERSION}/kwizart-kernel-longterm-6.6-fedora-${FEDORA_VERSION}.repo |
-  tee /etc/yum.repos.d/kwizart-kernel-longterm-6.6-fedora-${FEDORA_VERSION}.repo
+dnf5 copr enable kwizart/kernel-longterm-6.6 -y
 dnf install -y g++ kmod patch kernel-longterm-devel
 KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm-devel)
 

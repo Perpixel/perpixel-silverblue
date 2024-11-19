@@ -24,7 +24,7 @@ COPY --from=builder /tmp/built/. /
 # Copy configuration files to root
 COPY ./system_files/. /
 # Copy cosign public key
-COPY cosign.pub /usr/etc/pki/containers/perpixel.pub
+# COPY cosign.pub /usr/etc/pki/containers/perpixel.pub
 # Run installer and commit image
 RUN rpm-ostree cliwrap install-to-root / \
   && "${BUILDROOT}"/scripts/install.sh \
