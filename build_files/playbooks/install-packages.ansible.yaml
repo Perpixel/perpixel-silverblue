@@ -66,6 +66,13 @@
       changed_when: false
       # when: 0 > 1
 
+    - name: Get kernel version
+      ansible.builtin.shell: |
+        echo $(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm)
+      register: kernel_query
+      failed_when: kernel_query.rc != 0
+      changed_when: false
+
     - name: Set kernel version
       ansible.builtin.set_fact:
         kernel_version: "{{ kernel_query.stdout }}"
