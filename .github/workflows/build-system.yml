@@ -21,7 +21,10 @@ jobs:
       # set build variables
       - name: Variables
         run: |
-            while read line; do; echo "$line" >> $GITHUB_ENV ; done < ./build_files/scripts/config.sh
+            while read line
+            do
+              echo "$line" >> $GITHUB_ENV
+            done < ./build_files/scripts/config.sh
             
       - name: Generate tags 
         id: generate-tags
