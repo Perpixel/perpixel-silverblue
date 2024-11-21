@@ -3,7 +3,6 @@ on:
   workflow_call:
 env:
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-  BASE_IMAGE: quay.io/fedora-ostree-desktops/silverblue
 
 jobs:    
   push-ghcr:
@@ -13,10 +12,6 @@ jobs:
       contents: write
       packages: write
       id-token: write
-    strategy:
-      matrix:
-        version: [40, 41]
-      fail-fast: false
 
     steps: 
       # checkout repo
@@ -26,9 +21,7 @@ jobs:
       # set build variables
       - name: Variables
         run: |
-            echo "IMAGE_NAME=nvidia-perpixel-silverblue" >> $GITHUB_ENV
-            echo "FEDORA_VERSION=${{ matrix.version }}" >> $GITHUB_ENV
-            echo "NVIDIA_VERSION"=$(<nvidia-version.txt) >> $GITHUB_ENV
+            while read line; do; echo "$line" >> $GITHUB_ENV ; done < ./build_files/scripts/config.sh
             
       - name: Generate tags 
         id: generate-tags
@@ -59,7 +52,7 @@ jobs:
           fi
 
           echo "Generated the following build tags: "
-          for TAG in "${BUILD_TAGS[@]}"; do
+          for TAG in "${BUILD_TAGS[@]} ."; do
               echo "${TAG}"
           done
 
@@ -78,11 +71,11 @@ jobs:
         id: meta
         with:
           images: |
-            ${{ env.IMAGE_NAME }}
+            ${{ env.TARGET_IMAGE_NAME }}
           labels: |
-            org.opencontainers.image.title=${{ env.IMAGE_NAME }}
+            org.opencontainers.image.title=${{ env.TARGET_IMAGE_NAME }}
             org.opencontainers.image.version=${{ steps.labels.outputs.VERSION }}
-            org.opencontainers.image.description=${{ env.IMAGE_NAME }}
+            org.opencontainers.image.description=${{ env.TARGET_IMAGE_NAME }}
 
       # Workaround bug where capital letters in your GitHub username make it impossible to push to GHCR.
       # https://github.com/macbre/push-to-ghcr/issues/12
@@ -100,7 +93,7 @@ jobs:
           containerfiles: |
             ./Containerfile
           image: |
-            ${{ env.IMAGE_NAME }}
+            ${{ env.TARGET_IMAGE_NAME }}
           tags: |
             ${{ steps.generate-tags.outputs.alias_tags }}
           build-args: |
@@ -113,17 +106,6 @@ jobs:
             --volume ${{ github.workspace }}:/workspace:z
           labels: ${{ steps.meta.outputs.labels }}
           oci: false
-
-      # Compare images
-      - name: Compare installed packages
-        id: compare
-        shell: bash
-        run: |
-          IFS=' ' read -a TAGS <<< "${{ steps.build_image.outputs.tags }}"
-          cd ${{ github.workspace }}
-          podman run --rm "${BASE_IMAGE}:${FEDORA_VERSION}" rpm -qa >packages.old
-          podman run --rm ${{ steps.build_image.outputs.image }}:"${TAGS[0]}" rpm -qa >packages.new
-          #diff packages.old packages.new >packages.diff
 
       # Push the image to GHCR (Image Registry)
       - name: Push To GHCR
@@ -140,19 +122,3 @@ jobs:
           password: ${{ env.REGISTRY_PASSWORD }}
           extra-args: |
             --disable-content-trust
-
-      - name: Release
-        uses: softprops/action-gh-release@v2
-        with:
-          name: "Changelogs - TEST"
-          body: "nightly-tag-TEST"
-          tag_name: "nightly-tag-test"
-          draft: true
-          make_latest: false
-          files: |
-            packages.diff
-
-      - name: Echo outputs
-        run: |
-          echo "${{ toJSON(steps.push.outputs) }}"
-

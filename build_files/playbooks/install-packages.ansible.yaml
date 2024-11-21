@@ -57,27 +57,14 @@
 
     - name: Install longterm kernel
       ansible.builtin.shell: |
-        set -o pipefail
-        dnf5 copr enable kwizart/kernel-longterm-6.6 -y
-        rpm-ostree cliwrap install-to-root /
-        rpm-ostree override remove kernel kernel-{core,modules,modules-extra,modules-core,tools,tools-libs} \
-          --install kernel-longterm \
-          --install kernel-longterm-modules-core \
-          --install kernel-longterm-core \
-          --install kernel-longterm-modules \
-          --install kernel-longterm-modules-extra
+        {{ buildroot }}/scripts/kernel-installer.sh
+        echo $(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm)
       args:
         executable: /bin/bash
-      register: ec
-      failed_when: ec.rc != 0
-      changed_when: false
-
-    - name: Get kernel version
-      ansible.builtin.shell: |
-        echo $(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm)
       register: kernel_query
       failed_when: kernel_query.rc != 0
       changed_when: false
+      # when: 0 > 1
 
     - name: Set kernel version
       ansible.builtin.set_fact:
@@ -86,6 +73,13 @@
     - name: Install Nvidia drivers
       ansible.builtin.shell: |
         {{ buildroot }}/scripts/nvidia-installer.sh
+      register: result
+      failed_when: result.rc != 0
+      changed_when: false
+
+    - name: Kernel depmod
+      ansible.builtin.shell: |
+        depmod {{ kernel_version }}
       register: result
       failed_when: result.rc != 0
       changed_when: false

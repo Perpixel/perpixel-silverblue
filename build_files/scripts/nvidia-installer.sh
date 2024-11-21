@@ -56,6 +56,9 @@ systemctl enable nvidia-hibernate nvidia-resume nvidia-suspend
 nvidia-xconfig --allow-empty-initial-configuration --no-sli --base-mosaic
 ldconfig
 
+mkdir -p /usr/share/pixmaps
+install -pm 0644 nvidia-settings.png /usr/share/pixmaps/nvidia-settings.png
+
 # nvidia-persistenced
 tar -xf nvidia-persistenced-init.tar.bz2
 pushd nvidia-persistenced-init
