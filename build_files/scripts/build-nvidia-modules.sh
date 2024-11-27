@@ -17,7 +17,7 @@ disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
 mkdir -p /tmp/nvidia
 pushd /tmp/nvidia
 
-source "$(dirname "$0")"/kernel-installer.sh --devel
+# source "$(dirname "$0")"/kernel-installer.sh --devel
 
 # if [ ${USE_LTS_KERNEL} = true ]; then
 #   # longterm kernel https://copr.fedorainfracloud.org/coprs/kwizart/kernel-longterm-6.6/
@@ -27,10 +27,10 @@ source "$(dirname "$0")"/kernel-installer.sh --devel
 # else
 #   # Install build requirements
 #   # Getting kernel source from Koji in order to avoid build failure when silverblue image kernel is outdated
-#   dnf install koji g++ kmod patch -y
-#   koji download-build --arch="${ARCH}" kernel-"${KERNEL_VERSION}"
-#   dnf install -y kernel-devel-*.rpm
-#   rm -rf /tmp/nvidia/*.rpm
+dnf install koji g++ kmod patch -y
+koji download-build --arch="${ARCH}" kernel-"${KERNEL_VERSION}"
+dnf install -y kernel-devel-*.rpm
+rm -rf /tmp/nvidia/*.rpm
 # fi
 
 # Clone open NVIDIA kernel modules from Github

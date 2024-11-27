@@ -17,7 +17,7 @@
           - distrobox
           - hwinfo
           - fswatch
-          - gnome-session-xsession
+          # - gnome-session-xsession
           - htop
           - ifuse
           - inxi
@@ -32,13 +32,13 @@
           - samba
           - vdpauinfo
           - xclip
-          - xorg-x11-server-devel
-          - setxkbmap
-          - xhost
-          - xmodmap
-          - xorg-x11-xauth
-          - xorg-x11-xinit
-          - xrdb
+          # - xorg-x11-server-devel
+          # - setxkbmap
+          # - xhost
+          # - xmodmap
+          # - xorg-x11-xauth
+          # - xorg-x11-xinit
+          # - xrdb
           - zsh
         state: present
 
@@ -46,9 +46,9 @@
       ansible.builtin.dnf:
         name:
           - firefox
-          - mesa-va-drivers
+          # - mesa-va-drivers
           - firefox-langpacks
-          - virtualbox-guest-additions
+          - virtualbox-guest-additions # because of the dependencies on the kernel package
         state: absent
 
     - name: Autoremove unneeded packages installed as dependencies
@@ -57,6 +57,7 @@
 
     - name: Install longterm kernel
       ansible.builtin.shell: |
+        set -oeux pipefail
         {{ buildroot }}/scripts/kernel-installer.sh
         echo $(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm)
       args:
@@ -64,25 +65,30 @@
       register: kernel_query
       failed_when: kernel_query.rc != 0
       changed_when: false
-      # when: 0 > 1
+      when: 0 > 1
 
     - name: Get kernel version
       ansible.builtin.shell: |
-        echo $(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm)
+        # TODO: Get the kernel version from the /lib/modules folder
+        echo $(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
       register: kernel_query
       failed_when: kernel_query.rc != 0
       changed_when: false
+      # when: 0 > 1
 
     - name: Set kernel version
       ansible.builtin.set_fact:
         kernel_version: "{{ kernel_query.stdout }}"
+      # when: 0 > 1
 
     - name: Install Nvidia drivers
       ansible.builtin.shell: |
+        set -oeux pipefail
         {{ buildroot }}/scripts/nvidia-installer.sh
       register: result
       failed_when: result.rc != 0
       changed_when: false
+      # when: 0 > 1
 
     - name: Kernel depmod
       ansible.builtin.shell: |
@@ -90,11 +96,7 @@
       register: result
       failed_when: result.rc != 0
       changed_when: false
-
-    - name: Remove existing nvidia dracut config
-      ansible.builtin.file:
-        path: /usr/lib/dracut/dracut.conf.d/99-nvidia-dracut.conf
-        state: absent
+      # when: 0 > 1
 
     - name: Update initramfs
       ansible.builtin.shell: |
@@ -104,11 +106,13 @@
       register: result
       failed_when: result.rc != 0
       changed_when: false
+      when: 0 > 1
 
     - name: Set initramfs file mode
       ansible.builtin.file:
         path: /lib/modules/{{ kernel_version }}/initramfs.img
         mode: '0600'
+      when: 0 > 1
 
     - name: Cleanup container
       ansible.builtin.shell: |

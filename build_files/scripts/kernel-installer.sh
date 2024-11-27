@@ -1,7 +1,9 @@
 # install longterm kernel from copr
 # longterm kernel https://copr.fedorainfracloud.org/coprs/kwizart/kernel-longterm-6.6/
 
-set -o pipefail
+set -oeux pipefail
+
+DEV_ONLY=false
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -19,11 +21,13 @@ if [ "${DEV_ONLY}" == true ]; then
   KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm-devel)
 else
   rpm-ostree cliwrap install-to-root /
-  rpm-ostree override remove kernel kernel-{core,modules,modules-extra,modules-core,tools,tools-libs} \
-    --install kernel-longterm \
-    --install kernel-longterm-modules-core \
-    --install kernel-longterm-core \
-    --install kernel-longterm-modules \
-    --install kernel-longterm-modules-extra
+  rpm -e kernel kernel-{core,modules-core,modules,modules-extra,tools,tools-libs}
+  rpm-ostree install kernel-longterm kernel-longterm-{core,modules,modules-extra,modules-core}
+  # rpm-ostree override remove kernel kernel-{core,modules,modules-extra,modules-core,tools,tools-libs} \
+  #   --install kernel-longterm \
+  #   --install kernel-longterm-modules-core \
+  #   --install kernel-longterm-core \
+  #   --install kernel-longterm-modules \
+  #   --install kernel-longterm-modules-extra
   KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm)
 fi
