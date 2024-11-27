@@ -15,29 +15,25 @@ disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
 # disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
 
 mkdir -p /tmp/nvidia
-pushd /tmp/nvidia
-
-# source "$(dirname "$0")"/kernel-installer.sh --devel
+cd /tmp/nvidia
 
 # if [ ${USE_LTS_KERNEL} = true ]; then
-#   # longterm kernel https://copr.fedorainfracloud.org/coprs/kwizart/kernel-longterm-6.6/
-#   dnf5 copr enable kwizart/kernel-longterm-6.6 -y
-#   dnf install -y g++ kmod patch kernel-longterm-devel
-#   KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm-devel)
+source "$(dirname "$0")"/kernel-installer.sh --devel
+KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm-devel)
 # else
 #   # Install build requirements
 #   # Getting kernel source from Koji in order to avoid build failure when silverblue image kernel is outdated
-dnf install koji g++ kmod patch -y
-koji download-build --arch="${ARCH}" kernel-"${KERNEL_VERSION}"
-dnf install -y kernel-devel-*.rpm
-rm -rf /tmp/nvidia/*.rpm
+#   dnf install koji g++ kmod patch -y
+#   koji download-build --arch="${ARCH}" kernel-"${KERNEL_VERSION}"
+#   dnf install -y kernel-devel-*.rpm
+#   rm -rf /tmp/nvidia/*.rpm
 # fi
 
 # Clone open NVIDIA kernel modules from Github
 git clone --depth 1 --branch "${NVIDIA_VERSION}" https://github.com/NVIDIA/open-gpu-kernel-modules /tmp/nvidia/src
 
 # Build kernel modules
-pushd /tmp/nvidia/src
+cd /tmp/nvidia/src
 ln -s kernel-open kernel
 
 # Kernel patchs
@@ -49,8 +45,8 @@ make modules -j"$(nproc)" KERNEL_UNAME="${KERNEL_VERSION}" SYSSRC="/usr/src/kern
 
 # Copy modules
 
-mkdir -p "${BUILT_DIR}"/usr/lib/modules/"${KERNEL_VERSION}"/kernel/drivers/video
-install -D -m 0755 ./kernel/nvidia*.ko ${BUILT_DIR}/usr/lib/modules/"${KERNEL_VERSION}"/kernel/drivers/video/
-popd
-popd
+mkdir -p "${BUILT_DIR}"/nvidia/"${KERNEL_VERSION}"
+install -D -m 0755 ./kernel/nvidia*.ko ${BUILT_DIR}/nvidia/"${KERNEL_VERSION}"
+ls -la ${BUILT_DIR}/nvidia/"${KERNEL_VERSION}"
+cd /
 rm -rf /tmp/nvidia

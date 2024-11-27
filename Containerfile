@@ -20,7 +20,8 @@ ARG BUILDROOT=/build
 # Copy build scripts
 COPY build_files/ "${BUILDROOT}"
 # Copy built modules from builder step
-COPY --from=builder /tmp/built/. /
+COPY --from=builder /tmp/built /tmp/builder
+RUN ls -la /tmp/builder/nvidia
 # Copy configuration files to root
 COPY ./system_files/. /
 # Run installer and commit image

@@ -65,12 +65,13 @@
       register: kernel_query
       failed_when: kernel_query.rc != 0
       changed_when: false
-      when: 0 > 1
+      # when: 0 > 1
 
     - name: Get kernel version
       ansible.builtin.shell: |
         # TODO: Get the kernel version from the /lib/modules folder
-        echo $(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
+        echo $(ls /usr/lib/modules/)
+        # echo $(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
       register: kernel_query
       failed_when: kernel_query.rc != 0
       changed_when: false
@@ -89,6 +90,18 @@
       failed_when: result.rc != 0
       changed_when: false
       # when: 0 > 1
+
+    - name: Install Nvidia kernel modules
+      ansible.builtin.copy:
+        src: "/tmp/builder/nvidia/{{ kernel_version }}/{{ item }}"
+        dest: "/usr/lib/modules/{{ kernel_version }}/kernel/drivers/video/"
+        mode: "0755"
+      loop:
+        - nvidia-drm.ko
+        - nvidia-modeset.ko
+        - nvidia-peermem.ko
+        - nvidia-uvm.ko
+        - nvidia.ko
 
     - name: Kernel depmod
       ansible.builtin.shell: |
