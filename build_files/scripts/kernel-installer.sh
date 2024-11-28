@@ -21,7 +21,7 @@ if [ "${DEV_ONLY}" == true ]; then
   KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm-devel)
 else
   rpm-ostree cliwrap install-to-root /
-  rpm -e kernel kernel-{core,modules-core,modules,modules-extra,tools,tools-libs}
+  rpm -e kernel kernel-{core,modules-core,modules,modules-extra,tools,tools-libs} virtualbox-guest-additions
   rpm-ostree install kernel-longterm kernel-longterm-{core,modules,modules-extra,modules-core}
   # rpm-ostree override remove kernel kernel-{core,modules,modules-extra,modules-core,tools,tools-libs} \
   #   --install kernel-longterm \

@@ -1,6 +1,50 @@
 - name: Install packages
   hosts: localhost
+  vars:
+    kernel_longterm: 1 # Install the longterm kernel from copr
+    with_nvidia: 1 # Install the nvidia drivers and kernel modules
   tasks:
+
+    - name: Install longterm kernel
+      ansible.builtin.shell: |
+        set -oeux pipefail
+        {{ buildroot }}/scripts/kernel-installer.sh
+      args:
+        executable: /bin/bash
+      changed_when: false
+      when: kernel_longterm is defined and kernel_longterm == 1
+
+    - name: Get kernel version
+      ansible.builtin.shell: |
+        echo $(ls /usr/lib/modules/)
+      register: kernel_query
+      failed_when: kernel_query.rc != 0
+      changed_when: false
+
+    - name: Set kernel version
+      ansible.builtin.set_fact:
+        kernel_version: "{{ kernel_query.stdout }}"
+
+    - name: Install Nvidia kernel modules
+      ansible.builtin.copy:
+        src: "/tmp/builder/nvidia/{{ kernel_version }}/{{ item }}"
+        dest: "/usr/lib/modules/{{ kernel_version }}/kernel/drivers/video/"
+        mode: "0755"
+      loop:
+        - nvidia-drm.ko
+        - nvidia-modeset.ko
+        - nvidia-peermem.ko
+        - nvidia-uvm.ko
+        - nvidia.ko
+      when: with_nvidia and with_nvidia == 1
+
+    - name: Kernel depmod
+      ansible.builtin.shell: |
+        depmod {{ kernel_version }}
+      register: result
+      failed_when: result.rc != 0
+      changed_when: false
+      when: with_nvidia and with_nvidia == 1
 
     - name: Install ansible dnf
       ansible.builtin.shell: |
@@ -55,33 +99,6 @@
       ansible.builtin.dnf:
         autoremove: true
 
-    - name: Install longterm kernel
-      ansible.builtin.shell: |
-        set -oeux pipefail
-        {{ buildroot }}/scripts/kernel-installer.sh
-        echo $(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm)
-      args:
-        executable: /bin/bash
-      register: kernel_query
-      failed_when: kernel_query.rc != 0
-      changed_when: false
-      # when: 0 > 1
-
-    - name: Get kernel version
-      ansible.builtin.shell: |
-        # TODO: Get the kernel version from the /lib/modules folder
-        echo $(ls /usr/lib/modules/)
-        # echo $(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel)
-      register: kernel_query
-      failed_when: kernel_query.rc != 0
-      changed_when: false
-      # when: 0 > 1
-
-    - name: Set kernel version
-      ansible.builtin.set_fact:
-        kernel_version: "{{ kernel_query.stdout }}"
-      # when: 0 > 1
-
     - name: Install Nvidia drivers
       ansible.builtin.shell: |
         set -oeux pipefail
@@ -89,26 +106,7 @@
       register: result
       failed_when: result.rc != 0
       changed_when: false
-      # when: 0 > 1
-
-    - name: Install Nvidia kernel modules
-      ansible.builtin.copy:
-        src: "/tmp/builder/nvidia/{{ kernel_version }}/{{ item }}"
-        dest: "/usr/lib/modules/{{ kernel_version }}/kernel/drivers/video/"
-        mode: "0755"
-      loop:
-        - nvidia-drm.ko
-        - nvidia-modeset.ko
-        - nvidia-peermem.ko
-        - nvidia-uvm.ko
-        - nvidia.ko
-
-    - name: Kernel depmod
-      ansible.builtin.shell: |
-        depmod {{ kernel_version }}
-      register: result
-      failed_when: result.rc != 0
-      changed_when: false
+      when: with_nvidia and with_nvidia == 1
 
     - name: Cleanup container
       ansible.builtin.shell: |
