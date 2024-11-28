@@ -109,23 +109,6 @@
       register: result
       failed_when: result.rc != 0
       changed_when: false
-      # when: 0 > 1
-
-    - name: Update initramfs
-      ansible.builtin.shell: |
-        /usr/libexec/rpm-ostree/wrapped/dracut --no-hostonly --kver {{ kernel_version }} \
-          --reproducible -v --add ostree -f "/lib/modules/{{ kernel_version }}/initramfs.img"
-        exit 0
-      register: result
-      failed_when: result.rc != 0
-      changed_when: false
-      when: 0 > 1
-
-    - name: Set initramfs file mode
-      ansible.builtin.file:
-        path: /lib/modules/{{ kernel_version }}/initramfs.img
-        mode: '0600'
-      when: 0 > 1
 
     - name: Cleanup container
       ansible.builtin.shell: |
@@ -136,6 +119,3 @@
       register: result
       failed_when: result.rc != 0
       changed_when: false
-
-      # Write packages list
-      # IFS=$'\n' sorted=($(sort <<<"$(rpm -qa)")) && unset IFS && echo $sorted
