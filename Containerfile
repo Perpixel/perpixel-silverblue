@@ -1,11 +1,13 @@
 ARG BASE_IMAGE="${BASE_IMAGE}"
 ARG FEDORA_VERSION="${FEDORA_VERSION}"
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
+ARG USE_LTS_KERNEL="${USE_LTS_KERNEL}"
 
 # Build NVIDIA drivers and other source packages
 
 FROM ${BASE_IMAGE}:${FEDORA_VERSION} as builder
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
+ARG USE_LTS_KERNEL="${USE_LTS_KERNEL}"
 ARG BUILDROOT=/build
 COPY build_files/ "${BUILDROOT}"
 RUN rpm-ostree cliwrap install-to-root / \
@@ -15,6 +17,7 @@ RUN rpm-ostree cliwrap install-to-root / \
 
 FROM ${BASE_IMAGE}:${FEDORA_VERSION}
 ARG NVIDIA_VERSION="${NVIDIA_VERSION}"
+ARG USE_LTS_KERNEL="${USE_LTS_KERNEL}"
 ARG BUILDROOT=/build
 
 # Copy build scripts

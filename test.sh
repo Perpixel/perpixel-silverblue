@@ -1,8 +1,6 @@
 #!/bin/bash
 
-NVIDIA_VERSION="565.57.01"
-FEDORA_VERSION=41
-IMAGE=quay.io/fedora-ostree-desktops/silverblue:${FEDORA_VERSION}
+source ./build_files/scripts/config.sh
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -28,7 +26,7 @@ done
 podman pull ${IMAGE}
 
 if [ "${TEST_NVIDIA}" == true ] || [ "${TEST_ALL}" == true ]; then
-  podman run -it --rm -e NVIDIA_VERSION="${NVIDIA_VERSION}" -e BUILDROOT="/build" -v ./build_files/:/build ${IMAGE} /build/scripts/build-nvidia-modules.sh
+  podman run -it --rm -e NVIDIA_VERSION="${NVIDIA_VERSION}" -e USE_LTS_KERNEL="${USE_LTS_KERNEL}" -e BUILDROOT="/build" -v ./build_files/:/build ${BASE_IMAGE}:${FEDORA_VERSION} /build/scripts/build-nvidia-modules.sh
 fi
 
 if [ "${TEST_PACKAGES}" == true ] || [ "${TEST_ALL}" == true ]; then

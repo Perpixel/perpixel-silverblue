@@ -35,3 +35,9 @@ echo Services:
 for service in "${services[@]}"; do
   echo "    $service: $(systemctl is-enabled ${service})"
 done
+echo
+
+echo "### Nvidia services status"
+if command -v rpm &> /dev/null; then
+	echo "$(rpm -qa | grep  -E 'gnome-session|xorg')"
+fi

@@ -11,6 +11,7 @@ buildah bud --pull=true \
   --build-arg BASE_IMAGE=${BASE_IMAGE} \
   --build-arg FEDORA_VERSION=${FEDORA_VERSION} \
   --build-arg NVIDIA_VERSION=${NVIDIA_VERSION} \
+  --build-arg USE_LTS_KERNEL=${USE_LTS_KERNEL} \
   --no-cache \
   --pull=always \
   --volume $(pwd):/workspace:z \

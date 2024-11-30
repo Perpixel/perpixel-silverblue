@@ -1,8 +1,8 @@
 - name: Install packages
   hosts: localhost
   vars:
-    kernel_longterm: 1 # Install the longterm kernel from copr
-    with_nvidia: 1 # Install the nvidia drivers and kernel modules
+    # kernel_longterm: false # Install the longterm kernel from copr
+    with_nvidia: true # Install the nvidia drivers and kernel modules
   tasks:
 
     - name: Install longterm kernel
@@ -12,7 +12,7 @@
       args:
         executable: /bin/bash
       changed_when: false
-      when: kernel_longterm is defined and kernel_longterm == 1
+      when: kernel_longterm|bool
 
     - name: Get kernel version
       ansible.builtin.shell: |
@@ -36,7 +36,7 @@
         - nvidia-peermem.ko
         - nvidia-uvm.ko
         - nvidia.ko
-      when: with_nvidia and with_nvidia == 1
+      when: with_nvidia
 
     - name: Kernel depmod
       ansible.builtin.shell: |
@@ -44,7 +44,7 @@
       register: result
       failed_when: result.rc != 0
       changed_when: false
-      when: with_nvidia and with_nvidia == 1
+      when: with_nvidia
 
     - name: Install ansible dnf
       ansible.builtin.shell: |
@@ -106,7 +106,25 @@
       register: result
       failed_when: result.rc != 0
       changed_when: false
-      when: with_nvidia and with_nvidia == 1
+      when: with_nvidia
+
+    - name: Install hyprland copr repo
+      ansible.builtin.shell: |
+        set -oeux pipefail
+        dnf5 copr enable solopasha/hyprland -y
+      changed_when: false
+
+    - name: Install hyprland packages
+      ansible.builtin.dnf:
+        name:
+          - hyprland
+          - hyprland-plugins
+          - hyprlock
+          - hyprpaper
+          - hyprsunset
+          - eww-git
+          - waybar-git
+        state: present
 
     - name: Cleanup container
       ansible.builtin.shell: |
