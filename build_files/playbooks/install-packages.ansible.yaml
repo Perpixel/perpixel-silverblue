@@ -122,8 +122,39 @@
           - hyprlock
           - hyprpaper
           - hyprsunset
+          - hypridle
+          - hyprshot
           - eww-git
           - waybar-git
+        state: present
+
+    - name: Install new packages
+      ansible.builtin.dnf:
+        name:
+          - cosmic-randr
+          - cosmic-panel
+          - cosmic-settings-daemon
+          - cosmic-screenshot
+          - cosmic-icon-theme
+          - cosmic-comp
+          - cosmic-settings
+          - cosmic-config-fedora
+          - cosmic-greeter
+          - cosmic-workspaces
+          - cosmic-files
+          - cosmic-app-library
+          - cosmic-applets
+          - cosmic-bg
+          - cosmic-idle
+          - cosmic-launcher
+          - cosmic-notifications
+          - cosmic-osd
+          - cosmic-session
+          - cosmic-edit
+          - cosmic-store
+          - cosmic-term
+          - cosmic-wallpapers
+          - xdg-desktop-portal-cosmic 
         state: present
 
     - name: Cleanup container
