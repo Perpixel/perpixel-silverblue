@@ -108,24 +108,6 @@
       changed_when: false
       when: with_nvidia
 
-    - name: Install hyprland copr repo
-      ansible.builtin.shell: |
-        set -oeux pipefail
-        dnf5 copr enable solopasha/hyprland -y
-      changed_when: false
-
-    - name: Install hyprland packages
-      ansible.builtin.dnf:
-        name:
-          - hyprland
-          - hyprland-plugins
-          - hyprlock
-          - hyprpaper
-          - hyprsunset
-          - eww-git
-          - waybar-git
-        state: present
-
     - name: Cleanup container
       ansible.builtin.shell: |
         rm -rf /tmp/*
