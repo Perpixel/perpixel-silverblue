@@ -128,7 +128,7 @@
           - waybar-git
         state: present
 
-    - name: Install new packages
+    - name: Install Cosmic from Fedora
       ansible.builtin.dnf:
         name:
           - cosmic-randr
@@ -154,8 +154,17 @@
           - cosmic-store
           - cosmic-term
           - cosmic-wallpapers
-          - xdg-desktop-portal-cosmic 
+          - xdg-desktop-portal-cosmic
         state: present
+      when: 0 > 1
+
+    - name: Install Cosmic copr repo
+      ansible.builtin.shell: |
+        set -oeux pipefail
+        dnf5 copr enable ryanabx/cosmic-epoch -y
+        dnf install cosmic-desktop
+      changed_when: false
+
 
     - name: Cleanup container
       ansible.builtin.shell: |
