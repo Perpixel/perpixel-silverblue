@@ -1,0 +1,5 @@
+# Bus 003 Device 002: ID 046d:c541 Logitech, Inc. USB Receiver
+# Bus 003 Device 003: ID 1532:007d Razer USA, Ltd Razer DeathAdder V2 Pro
+
+ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c541", ATTR{power/wakeup}="disabled"
+ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="1532", ATTRS{idProduct}=="007d", ATTR{power/wakeup}="disabled"
