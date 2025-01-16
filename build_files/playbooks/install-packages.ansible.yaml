@@ -61,7 +61,7 @@
           - distrobox
           - hwinfo
           - fswatch
-          # - gnome-session-xsession
+          - gcc
           - htop
           - ifuse
           - inxi
@@ -69,6 +69,7 @@
           - libva-utils
           - libtree-sitter
           - lm_sensors
+          - make
           - material-icons-fonts
           - nvidia-vaapi-driver
           - opencl-filesystem
@@ -76,13 +77,6 @@
           - samba
           - vdpauinfo
           - xclip
-          # - xorg-x11-server-devel
-          # - setxkbmap
-          # - xhost
-          # - xmodmap
-          # - xorg-x11-xauth
-          # - xorg-x11-xinit
-          # - xrdb
           - zsh
         state: present
 
@@ -90,7 +84,6 @@
       ansible.builtin.dnf:
         name:
           - firefox
-          # - mesa-va-drivers
           - firefox-langpacks
           - virtualbox-guest-additions # because of the dependencies on the kernel package
         state: absent

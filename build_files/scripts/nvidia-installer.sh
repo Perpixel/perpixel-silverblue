@@ -10,15 +10,19 @@ _systemd_util_dir=/usr/lib/systemd
 if [ ! -d "nvidia_tmp" ]; then
   # download
   curl -O https://download.nvidia.com/XFree86/Linux-"${ARCH}"/"${NVIDIA_VERSION}"/NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run
+
   # extract
   sh ./NVIDIA-Linux-"${ARCH}"-"${NVIDIA_VERSION}".run --extract-only --target nvidia_tmp
+fi
+
+if [ ! -d "nvidia_tmp" ]; then
+  echo "failed to extract nvidia driver package does exist."
+  exit 1
 fi
 
 # Import external functions
 source "$(dirname "$0")"/functions.sh
 # Disable repos unwanted repos
-# disable-repo /etc/yum.repos.d/fedora-cisco-openh264.repo
-# disable-repo /etc/yum.repos.d/fedora-updates.repo
 disable-repo /etc/yum.repos.d/fedora-updates-testing.repo
 disable-repo /etc/yum.repos.d/fedora-updates-archive.repo
 
@@ -53,7 +57,6 @@ install -p -m 0755 -D systemd/system-sleep/nvidia ${_systemd_util_dir}/system-sl
 install -p -m 0644 -D nvidia-dbus.conf ${_datadir}/dbus-1/system.d/nvidia-dbus.conf
 
 systemctl enable nvidia-hibernate nvidia-resume nvidia-suspend
-nvidia-xconfig --allow-empty-initial-configuration --no-sli --base-mosaic
 ldconfig
 
 mkdir -p /usr/share/pixmaps
