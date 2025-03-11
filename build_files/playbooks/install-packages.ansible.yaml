@@ -61,7 +61,8 @@
           - distrobox
           - hwinfo
           - fswatch
-          - gcc
+          # - gcc
+          # - g++
           - htop
           - ifuse
           - inxi
@@ -69,7 +70,7 @@
           - libva-utils
           - libtree-sitter
           - lm_sensors
-          - make
+          # - make
           - material-icons-fonts
           - nvidia-vaapi-driver
           - opencl-filesystem
@@ -77,6 +78,7 @@
           - samba
           - vdpauinfo
           - xclip
+          # - xorg-x11-drv-amdgpu
           - zsh
         state: present
 
