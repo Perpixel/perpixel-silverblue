@@ -14,7 +14,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-dnf5 copr enable kwizart/kernel-longterm-6.6 -y
+dnf5 copr enable kwizart/kernel-longterm-6.12 -y
 
 if [ "${DEV_ONLY}" == true ]; then
   dnf install -y g++ kmod patch kernel-longterm-devel

@@ -58,11 +58,11 @@
       ansible.builtin.dnf:
         name:
           - bootc
+          - btop
           - distrobox
           - hwinfo
           - fswatch
-          # - gcc
-          # - g++
+          - fzf
           - htop
           - ifuse
           - inxi
@@ -70,17 +70,48 @@
           - libva-utils
           - libtree-sitter
           - lm_sensors
-          # - make
           - material-icons-fonts
           - nvidia-vaapi-driver
+          - nvtop
           - opencl-filesystem
           - plymouth-theme-spinfinity
+          - ripgrep
           - samba
+          - stow
           - vdpauinfo
           - xclip
           # - xorg-x11-drv-amdgpu
           - zsh
         state: present
+    
+    - name: Install development packages
+      ansible.builtin.dnf:
+        name:
+          - binutils
+          - clang
+          - cmake
+          - cpp
+          - gcc
+          - g++
+          - git
+          - glibc-devel
+          - kernel-headers
+          - lld
+          - libstdc++-devel
+          - make
+          - patch
+          - SDL2-devel
+          - SDL3-devel
+          - spirv-tools
+          - fd-find
+          - fswatch
+          - llvm
+          - luarocks
+          - ninja-build
+          - meson
+          - nodejs-npm
+        state: present
+
 
     - name: Remove packages
       ansible.builtin.dnf:
