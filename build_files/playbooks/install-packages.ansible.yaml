@@ -83,12 +83,11 @@
           # - xorg-x11-drv-amdgpu
           - zsh
         state: present
-    
+
     - name: Install development packages
       ansible.builtin.dnf:
         name:
           - binutils
-          - clang
           - cmake
           - cpp
           - gcc
@@ -96,7 +95,6 @@
           - git
           - glibc-devel
           - kernel-headers
-          - lld
           - libstdc++-devel
           - make
           - patch
@@ -105,7 +103,6 @@
           - spirv-tools
           - fd-find
           - fswatch
-          - llvm
           - luarocks
           - ninja-build
           - meson

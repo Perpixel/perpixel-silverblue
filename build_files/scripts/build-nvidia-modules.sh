@@ -23,7 +23,7 @@ if [ ${USE_LTS_KERNEL} = true ]; then
 else
   # Install build requirements
   # Getting kernel source from Koji in order to avoid build failure when silverblue image kernel is outdated
-  dnf install koji g++ kmod patch -y
+  dnf install koji gcc-c++ kmod patch -y
   koji download-build --arch="${ARCH}" kernel-"${KERNEL_VERSION}"
   dnf install -y kernel-devel-*.rpm
   rm -rf /tmp/nvidia/*.rpm
@@ -41,6 +41,7 @@ ln -s kernel-open kernel
 # patch -p1 <"${BUILDROOT}"/patchs/nvidia/8ac26d3c66ea88b0f80504bdd1e907658b41609d.patch
 
 # Build
+export CC="gcc -std=gnu17"
 make modules -j"$(nproc)" KERNEL_UNAME="${KERNEL_VERSION}" SYSSRC="/usr/src/kernels/${KERNEL_VERSION}" IGNORE_CC_MISMATCH=1 IGNORE_XEN_PRESENCE=1 IGNORE_PREEMPT_RT_PRESENCE=1
 
 # Copy modules
