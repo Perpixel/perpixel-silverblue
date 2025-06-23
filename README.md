@@ -17,3 +17,8 @@ rpm-ostree rebase ostree-unverified-image:docker://ghcr.io/perpixel/<tag>
 local_build.sh && rpm-ostree rebase ostree-unverified-image:oci-archive:/tmp/...
 ```
 
+### Kernel args
+
+``` sh
+sudo rpm-ostree kargs --append=rd.driver.blacklist=nouveau --append=modprobe.blacklist=nouveau
+```
