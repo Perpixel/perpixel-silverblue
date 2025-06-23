@@ -69,6 +69,7 @@
           - bootc
           - btop
           - distrobox
+          - egl-x11
           - hwinfo
           - fswatch
           - fzf
