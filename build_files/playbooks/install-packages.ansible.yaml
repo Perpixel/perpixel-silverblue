@@ -92,8 +92,8 @@
           - samba
           - stow
           - vdpauinfo
-	  - vulkan-headers
-	  - vulkan-loader-devel
+          - vulkan-headers
+          - vulkan-loader-devel
           - xclip
           # - xorg-x11-drv-amdgpu
           - zsh
