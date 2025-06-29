@@ -76,25 +76,27 @@
           - ifuse
           - inxi
           - kitty
+          - libva-nvidia-driver
+          # - libva-vdpau-driver
           - libva-utils
           - libtree-sitter
           - lm_sensors
           - material-icons-fonts
-          - nvidia-vaapi-driver
+          - mpv
           - nvtop
           - opencl-filesystem
-          - plymouth-theme-spinfinity
-          - qemu
-          - cifs-utils
-          - libguestfs-tools
+          # - plymouth-theme-spinfinity
+          # - qemu
+          # - cifs-utils
+          # - libguestfs-tools
           - ripgrep
-          - samba
+          # - samba
           - steam
           - stow
           - vdpauinfo
           # - vlc
-          - vulkan-headers
-          - vulkan-loader-devel
+          # - vulkan-headers
+          # - vulkan-loader-devel
           - xclip
           # - xorg-x11-drv-amdgpu
           - zsh
@@ -110,12 +112,12 @@
           - g++
           - git
           - glibc-devel
-          - kernel-headers
+          # - kernel-headers
           - libstdc++-devel
           - make
           - patch
-          - SDL2-devel
-          - SDL3-devel
+          # - SDL2-devel
+          # - SDL3-devel
           - spirv-tools
           - fd-find
           - fswatch
