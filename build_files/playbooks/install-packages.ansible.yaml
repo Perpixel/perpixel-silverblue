@@ -89,8 +89,10 @@
           - libguestfs-tools
           - ripgrep
           - samba
+          - steam
           - stow
           - vdpauinfo
+          # - vlc
           - vulkan-headers
           - vulkan-loader-devel
           - xclip
