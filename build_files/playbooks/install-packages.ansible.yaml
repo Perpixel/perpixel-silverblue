@@ -66,9 +66,9 @@
       ansible.builtin.dnf:
         name:
           - bootc
-          - btop
+          # - btop
           - distrobox
-          - egl-x11
+          # - egl-x11
           - hwinfo
           - fswatch
           - fzf
@@ -92,7 +92,7 @@
           # - samba
           - steam
           - stow
-          - vdpauinfo
+          # - vdpauinfo
           # - vlc
           # - vulkan-headers
           # - vulkan-loader-devel
@@ -125,7 +125,6 @@
           - meson
           - nodejs-npm
         state: present
-
 
     - name: Remove packages
       ansible.builtin.dnf:
