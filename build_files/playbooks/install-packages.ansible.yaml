@@ -72,18 +72,17 @@
           - hwinfo
           - fswatch
           - fzf
-          - htop
+          # - htop
           - ifuse
           - inxi
           - kitty
           - libva-nvidia-driver
-          # - libva-vdpau-driver
           - libva-utils
           - libtree-sitter
           - lm_sensors
           - material-icons-fonts
-          - mpv
-          - nvtop
+          # - mpv
+          # - nvtop
           - opencl-filesystem
           # - plymouth-theme-spinfinity
           # - qemu
