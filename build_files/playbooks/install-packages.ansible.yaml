@@ -111,19 +111,9 @@
           - g++
           - git
           - glibc-devel
-          # - kernel-headers
           - libstdc++-devel
           - make
           - patch
-          # - SDL2-devel
-          # - SDL3-devel
-          - spirv-tools
-          - fd-find
-          - fswatch
-          - luarocks
-          - ninja-build
-          - meson
-          - nodejs-npm
         state: present
 
     - name: Remove packages
