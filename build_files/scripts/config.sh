@@ -1,5 +1,5 @@
 TARGET_IMAGE_NAME=perpixel-silverblue
 BASE_IMAGE=quay.io/fedora-ostree-desktops/silverblue
-FEDORA_VERSION=42
+FEDORA_VERSION=43
 USE_LTS_KERNEL=false
-NVIDIA_VERSION=580.82.09
+NVIDIA_VERSION=580.95.05
