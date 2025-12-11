@@ -2,9 +2,22 @@
 
 set -oex pipefail
 
-source ./build_files/scripts/config.sh
 
-podman pull ${BASE_IMAGE}:${FEDORA_VERSION}
+# Resolve script directory to locate config.env
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+CONFIG_FILE="${SCRIPT_DIR}/config.env"
+
+# Load configuration
+if [ -f "${CONFIG_FILE}" ]; then
+    set -a
+    . "${CONFIG_FILE}"
+    set +a
+else
+    echo "Error: config.env not found at ${CONFIG_FILE}."
+    exit 1
+fi
+
+buildah pull ${BASE_IMAGE}:${FEDORA_VERSION}
 
 buildah bud --pull=true \
   --tag=oci-archive:/tmp/${TARGET_IMAGE_NAME}.tar.gz \

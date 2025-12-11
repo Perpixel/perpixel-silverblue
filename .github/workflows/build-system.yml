@@ -24,7 +24,7 @@ jobs:
             while read line
             do
               echo "$line" >> $GITHUB_ENV
-            done < ./build_files/scripts/config.sh
+            done < ./config.env
             
       - name: Generate tags 
         id: generate-tags
