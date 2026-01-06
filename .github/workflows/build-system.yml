@@ -39,11 +39,15 @@ jobs:
       # set build variables
       - name: Variables
         run: |
-          NVIDIA_VERSION=$(./get_nvidia_versions.sh)
           while read line
           do
             echo "$line" >> $GITHUB_ENV
           done < ./config.env
+
+          # fetch NVIDIA driver version
+          NVIDIA_VERSION=$(./get_nvidia_versions.sh)
+          echo ${NVIDIA_VERSION} >> $GITHUB_ENV
+          echo ${NVIDIA_VERSION}
 
       - name: Generate tags
         id: generate-tags
