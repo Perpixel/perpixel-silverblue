@@ -2,19 +2,19 @@
 
 set -oex pipefail
 
-
 # Resolve script directory to locate config.env
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 CONFIG_FILE="${SCRIPT_DIR}/config.env"
+NVIDIA_VERSION=$(./get_nvidia_versions.sh)
 
 # Load configuration
 if [ -f "${CONFIG_FILE}" ]; then
-    set -a
-    . "${CONFIG_FILE}"
-    set +a
+  set -a
+  . "${CONFIG_FILE}"
+  set +a
 else
-    echo "Error: config.env not found at ${CONFIG_FILE}."
-    exit 1
+  echo "Error: config.env not found at ${CONFIG_FILE}."
+  exit 1
 fi
 
 buildah pull ${BASE_IMAGE}:${FEDORA_VERSION}

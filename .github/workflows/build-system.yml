@@ -4,7 +4,7 @@ on:
 env:
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
 
-jobs:    
+jobs:
   push-ghcr:
     name: Build and push image
     runs-on: ubuntu-24.04
@@ -13,7 +13,7 @@ jobs:
       packages: write
       id-token: write
 
-    steps: 
+    steps:
       # checkout repo
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -39,12 +39,13 @@ jobs:
       # set build variables
       - name: Variables
         run: |
-            while read line
-            do
-              echo "$line" >> $GITHUB_ENV
-            done < ./config.env
-            
-      - name: Generate tags 
+          NVIDIA_VERSION=$(./get_nvidia_versions.sh)
+          while read line
+          do
+            echo "$line" >> $GITHUB_ENV
+          done < ./config.env
+
+      - name: Generate tags
         id: generate-tags
         shell: bash
         run: |
