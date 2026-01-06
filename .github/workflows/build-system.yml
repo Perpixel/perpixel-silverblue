@@ -45,9 +45,7 @@ jobs:
           done < ./config.env
 
           # fetch NVIDIA driver version
-          NVIDIA_VERSION=$(./get_nvidia_versions.sh)
-          echo ${NVIDIA_VERSION} >> $GITHUB_ENV
-          echo ${NVIDIA_VERSION}
+          echo "NVIDIA_VERSION=${NVIDIA_VERSION}" >> $GITHUB_ENV
 
       - name: Generate tags
         id: generate-tags
