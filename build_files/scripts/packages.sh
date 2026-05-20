@@ -3,7 +3,7 @@
 set -ouex pipefail
 
 # Variables
-WITH_NVIDIA=true
+WITH_NVIDIA=false
 
 # 1. Install longterm kernel
 if [[ "${USE_LTS_KERNEL}" == "true" ]]; then
@@ -76,6 +76,10 @@ dnf install -y \
   cosmic-term \
   cosmic-workspaces
 
+# Ghostty
+# dnf5 copr enable scottames/ghostty
+# dnf install ghostty
+
 # 5. Install development packages
 dnf install -y \
   binutils \
@@ -87,7 +91,8 @@ dnf install -y \
   glibc-devel \
   libstdc++-devel \
   make \
-  patch
+  patch \
+  rocm
 
 # 6. Remove packages
 dnf remove -y \
