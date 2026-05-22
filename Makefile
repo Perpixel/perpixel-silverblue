@@ -17,13 +17,13 @@ container:
 
 rebase:
 	@echo "Rebasing to local image: $(TARGET_IMAGE_NAME)..."
-	# rpm-ostree rebase ostree-unverified-image:oci-archive:/tmp/$(TARGET_IMAGE_NAME).tar.gz
-	bootc switch ostree-unverified-image:oci-archive:/tmp/$(TARGET_IMAGE_NAME).tar.gz
+	# rpm-ostree alternative: rpm-ostree rebase ostree-unverified-image:oci-archive:/tmp/$(TARGET_IMAGE_NAME).tar.gz
+	bootc switch --transport oci-archive /tmp/$(TARGET_IMAGE_NAME).tar.gz
 
 update:
 	@echo "Updating to latest local image..."
-	# rpm-ostree update
-	bootc update
+	# rpm-ostree alternative: rpm-ostree upgrade
+	bootc upgrade
 
 clean:
 	@echo "Cleaning up..."

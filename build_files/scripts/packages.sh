@@ -2,32 +2,12 @@
 
 set -ouex pipefail
 
-# Variables
-WITH_NVIDIA=false
-
-# 1. Install longterm kernel
-if [[ "${USE_LTS_KERNEL}" == "true" ]]; then
-  bash "${BUILDROOT}/scripts/kernel-installer.sh"
-  KERNEL_VERSION=$(rpm -q --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-longterm)
-else
-  # Get kernel version from standard kernel
-  KERNEL_VERSION=$(ls /usr/lib/modules/ | head -n 1)
-fi
-
-# 2. Install Nvidia kernel modules
-if [[ "${WITH_NVIDIA}" == "true" ]]; then
-  echo "Installing Nvidia kernel modules for ${KERNEL_VERSION}..."
-  mkdir -p "/usr/lib/modules/${KERNEL_VERSION}/kernel/drivers/video/"
-  cp /tmp/builder/nvidia/"${KERNEL_VERSION}"/*.ko "/usr/lib/modules/${KERNEL_VERSION}/kernel/drivers/video/"
-  depmod "${KERNEL_VERSION}"
-fi
-
-# 3. Install RPM Fusion repo
+# 1. Install RPM Fusion repo
 dnf install -y \
   https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm \
   https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-# 4. Install new packages
+# 2. Install new packages
 dnf install -y \
   bootc \
   distrobox \
@@ -37,17 +17,27 @@ dnf install -y \
   ifuse \
   inxi \
   kitty \
-  libva-nvidia-driver \
   libva-utils \
   libtree-sitter \
   lm_sensors \
   material-icons-fonts \
+  mesa-va-drivers-freeworld \
   opencl-filesystem \
+  radeontop \
   ripgrep \
   steam \
   stow \
+  vdpauinfo \
+  vulkan-tools \
   xclip \
   zsh
+
+# 32-bit (multilib) graphics drivers for Steam / Proton gaming
+dnf install -y \
+  mesa-dri-drivers.i686 \
+  mesa-vulkan-drivers.i686 \
+  mesa-libGL.i686 \
+  mesa-libEGL.i686
 
 dnf install -y \
   cosmic-app-library \
@@ -80,7 +70,7 @@ dnf install -y \
 # dnf5 copr enable scottames/ghostty
 # dnf install ghostty
 
-# 5. Install development packages
+# 3. Install development packages
 dnf install -y \
   binutils \
   cmake \
@@ -94,18 +84,13 @@ dnf install -y \
   patch \
   rocm
 
-# 6. Remove packages
+# 4. Remove packages
 dnf remove -y \
   firefox \
   firefox-langpacks \
   virtualbox-guest-additions
 
-# 7. Install Nvidia drivers
-if [[ "${WITH_NVIDIA}" == "true" ]]; then
-  bash "${BUILDROOT}/scripts/nvidia-installer.sh"
-fi
-
-# 8. Cleanup
+# 5. Cleanup
 rm -rf /tmp/*
 rm -rf /var/*
 dnf -y clean all
