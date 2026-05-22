@@ -44,10 +44,6 @@ jobs:
             echo "$line" >> $GITHUB_ENV
           done < ./config.env
 
-          # fetch NVIDIA driver version
-          NVIDIA_VERSION=$(./get_nvidia_versions.sh)
-          echo "NVIDIA_VERSION=$(./get_nvidia_versions.sh)" >> $GITHUB_ENV
-
       - name: Generate tags
         id: generate-tags
         shell: bash
@@ -124,7 +120,6 @@ jobs:
           build-args: |
             BASE_IMAGE=${{ env.BASE_IMAGE }}
             FEDORA_VERSION=${{ env.FEDORA_VERSION }}
-            NVIDIA_VERSION=${{ env.NVIDIA_VERSION }}
           extra-args: |
             --no-cache
             --pull=always
