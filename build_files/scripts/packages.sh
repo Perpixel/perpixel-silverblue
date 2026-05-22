@@ -42,6 +42,7 @@ dnf install -y \
   libtree-sitter \
   lm_sensors \
   material-icons-fonts \
+  mesa-va-drivers-freeworld \
   opencl-filesystem \
   ripgrep \
   steam \
