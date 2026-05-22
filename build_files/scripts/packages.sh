@@ -28,6 +28,9 @@ dnf install -y \
   https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
 # 4. Install new packages
+
+#libva-nvidia-driver \
+
 dnf install -y \
   bootc \
   distrobox \
@@ -37,7 +40,6 @@ dnf install -y \
   ifuse \
   inxi \
   kitty \
-  libva-nvidia-driver \
   libva-utils \
   libtree-sitter \
   lm_sensors \
