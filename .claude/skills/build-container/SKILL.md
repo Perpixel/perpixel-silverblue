@@ -30,7 +30,7 @@ clean build takes many minutes and a lot of disk/network. The output is an OCI a
 
 3. **On success**, report the archive path and the rebase command:
    ```sh
-   make rebase   # bootc switch onto ostree-unverified-image:oci-archive:/tmp/perpixel-silverblue.tar.gz
+   make rebase   # bootc switch --transport oci-archive /tmp/perpixel-silverblue.tar.gz
    ```
    Do not run `make rebase` unless the user asks — it switches the running system's deployment.
 
