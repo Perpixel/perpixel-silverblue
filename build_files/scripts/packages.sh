@@ -30,7 +30,14 @@ dnf install -y \
   vdpauinfo \
   vulkan-tools \
   xclip \
-  zsh
+  zsh \
+  fuse3-libs \
+  fuse-common \
+  fuse3 \
+  fuse \
+  fuse-libs \
+  fuse-devel \
+  fuse-overlayfs
 
 # 32-bit (multilib) graphics drivers for Steam / Proton gaming
 dnf install -y \
