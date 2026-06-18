@@ -25,7 +25,6 @@ dnf install -y \
   opencl-filesystem \
   radeontop \
   ripgrep \
-  steam \
   stow \
   vdpauinfo \
   vulkan-tools \
@@ -46,36 +45,36 @@ dnf install -y \
   mesa-libGL.i686 \
   mesa-libEGL.i686
 
-dnf install -y \
-  cosmic-app-library \
-  cosmic-applets \
-  cosmic-bg \
-  cosmic-comp \
-  cosmic-config-fedora \
-  cosmic-edit \
-  cosmic-files \
-  cosmic-greeter \
-  cosmic-icon-theme \
-  cosmic-idle \
-  cosmic-initial-setup \
-  cosmic-launcher \
-  cosmic-notifications \
-  cosmic-osd \
-  cosmic-panel \
-  cosmic-player \
-  cosmic-randr \
-  cosmic-screenshot \
-  cosmic-session \
-  cosmic-store \
-  cosmic-wallpapers \
-  cosmic-settings \
-  cosmic-settings-daemon \
-  cosmic-term \
-  cosmic-workspaces
-
 # Ghostty
-# dnf5 copr enable scottames/ghostty
-# dnf install ghostty
+dnf5 copr enable scottames/ghostty -y
+dnf install ghostty -y
+
+# dnf install -y \
+#   cosmic-app-library \
+#   cosmic-applets \
+#   cosmic-bg \
+#   cosmic-comp \
+#   cosmic-config-fedora \
+#   cosmic-edit \
+#   cosmic-files \
+#   cosmic-greeter \
+#   cosmic-icon-theme \
+#   cosmic-idle \
+#   cosmic-initial-setup \
+#   cosmic-launcher \
+#   cosmic-notifications \
+#   cosmic-osd \
+#   cosmic-panel \
+#   cosmic-player \
+#   cosmic-randr \
+#   cosmic-screenshot \
+#   cosmic-session \
+#   cosmic-store \
+#   cosmic-wallpapers \
+#   cosmic-settings \
+#   cosmic-settings-daemon \
+#   cosmic-term \
+#   cosmic-workspaces
 
 # 3. Install development packages
 dnf install -y \
