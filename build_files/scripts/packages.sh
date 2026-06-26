@@ -16,7 +16,6 @@ dnf install -y \
   fzf \
   ifuse \
   inxi \
-  kitty \
   libva-utils \
   libtree-sitter \
   lm_sensors \
