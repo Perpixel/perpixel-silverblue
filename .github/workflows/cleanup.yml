@@ -10,19 +10,19 @@ jobs:
     steps:
     
       - name: Delete old container
-        uses: snok/container-retention-policy@v2.2.1
+        uses: snok/container-retention-policy@v3.1.0
         with:
           image-names: perpixel-silverblue
-          cut-off: 1 weeks ago UTC
-          account-type: personal
-          skip-tags: latest
+          cut-off: 1w
+          account: user
+          image-tags: "!latest"
           token: ${{ secrets.PAT }}
-          
+
       - name: Delete pr containers
-        uses: snok/container-retention-policy@v2.2.1
+        uses: snok/container-retention-policy@v3.1.0
         with:
           image-names: perpixel-silverblue
-          cut-off: 1 day ago UTC
-          account-type: personal
-          filter-tags: "pr-*"
+          cut-off: 1d
+          account: user
+          image-tags: "pr-*"
           token: ${{ secrets.PAT }}
