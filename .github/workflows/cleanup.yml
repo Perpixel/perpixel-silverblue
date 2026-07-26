@@ -2,27 +2,20 @@ name: prune repo
 
 on:
   workflow_call:
-  
+
 jobs:
   clean-ghcr:
     name: Cleanup repo
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
-    
-      - name: Delete old container
+
+      - name: Delete old container versions
         uses: snok/container-retention-policy@v3.1.0
         with:
           image-names: perpixel-silverblue
           cut-off: 1w
           account: user
-          image-tags: "!latest"
-          token: ${{ secrets.PAT }}
-
-      - name: Delete pr containers
-        uses: snok/container-retention-policy@v3.1.0
-        with:
-          image-names: perpixel-silverblue
-          cut-off: 1d
-          account: user
-          image-tags: "pr-*"
-          token: ${{ secrets.PAT }}
+          keep-n-most-recent: 3
+          token: ${{ github.token }}

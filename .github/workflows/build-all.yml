@@ -20,5 +20,7 @@ jobs:
   # remove old images
   job-clean-images:
     needs: job-build-system
+    permissions:
+      packages: write
     uses: ./.github/workflows/cleanup.yml
     secrets: inherit
